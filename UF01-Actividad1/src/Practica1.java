@@ -67,7 +67,7 @@ public class Practica1 {
 
         double perimetroRadio = 2 * Math.PI * radio;
         double areaRadio = Math.PI * radio * radio;
-        double volumeRadio = (Math.PI * radio * radio * radio) * 3/4;
+        double volumeRadio = (Math.PI * radio * radio * radio) * (4.0/3.0);
 
         System.out.println("Para un radio de valor: " + radio);
         System.out.println("La area de un circulo es: " + areaRadio);
@@ -84,7 +84,7 @@ public class Practica1 {
         System.out.println("Introduce el valor real del producto: ");
         double valorReal = sc.nextDouble();
 
-        double porcentajeDescuento = 1-((producto/valorReal) * 100);
+        double porcentajeDescuento = (1-(producto/valorReal))*100;
 
         System.out.println("El producto tiene un descuento del " + porcentajeDescuento + "%");
 
@@ -94,7 +94,7 @@ public class Practica1 {
 
         System.out.println("Introduce el valor en millas marinas: ");
         double valorMilla = sc.nextDouble();
-        double valorMetro = 1.812 *  valorMilla;
+        double valorMetro = 1852 *  valorMilla;
 
         System.out.println("El valor en metros de " + valorMilla + " millas es de: " + valorMetro);
 
@@ -130,7 +130,7 @@ public class Practica1 {
         numDos = sc.nextDouble();
 
         if (numUno == numDos) {
-            System.out.println("Ambos números son iguales.");
+            System.out.println("Ambos numeros son iguales.");
         }
         else if (numUno > numDos) {
             System.out.println("El numero mayor es " + numUno);
@@ -205,7 +205,7 @@ public class Practica1 {
         numDos = sc.nextDouble();
 
         if (numUno == numDos) {
-            System.out.println("Ambos números son iguales y es: " + numUno);
+            System.out.println("Ambos numeros son iguales y es: " + numUno);
         }
         else if (numUno > numDos) {
             System.out.println("El numero mayor es " + numUno);
