@@ -49,7 +49,7 @@ public class Practica2 {
         System.out.println("\n\nEjercicio 4");//Se declara el ejercicio de nuevo, doble linea requerida
 
         //Definimos primero un contador, que vaya de 2 en 2. Por eso, tendremos que contar de dos desde 2.
-        for (int i = 1; i<201;i+=2) {
+        for (int i = 2; i<201;i+=2) {
             if(i%2==0) {//No se necesita el If ya que sabemos de antemano que todos van a ser pares, pero para comprobarlo, nos sirve
                 if (i==2){
                     System.out.print(i);//El dos, el primer par, es marcado sin comas para buen formato
@@ -68,7 +68,7 @@ public class Practica2 {
         for (int i = 1; i<201;i++) {
             if(i%2==0) {//En este caso, si necesitamos el If
                 if (i==2){
-                    System.out.println(i);//El dos, el primer par, es marcado sin comas para buen formato
+                    System.out.print(i);//El dos, el primer par, es marcado sin comas para buen formato
                 }
                 else {
                     System.out.print(", " + i);//Se imprimen solo los numeros pares, de todas formas, los impares no
@@ -81,7 +81,7 @@ public class Practica2 {
         System.out.println("\n\nEjercicio 6");//Llamando al ejercicio, doble linea requerida
         sc = new Scanner(System.in);//Redefinimos el escaner cuando se necesite
 
-        System.out.println("Por favor, escribe un numero N: ");//El dato es pedido
+        System.out.println("Por favor, escribe un numero N hasta el que contar: ");//El dato es pedido
         int n = sc.nextInt();//Se define un entero N al que vamos a contar
 
         for (int i = 1; i<=n; i++) {//Cuenta de 1 en 1 hasta un entero N
@@ -102,7 +102,7 @@ public class Practica2 {
         double nota = sc.nextDouble();//Se toma la nota, como un numero racional/real, ya que pueden tener decimales
 
         if (nota < 0 || nota > 10) {
-            System.err.println("La nota debe ser menor ou igual a 10");//Definimos un error si no esta en el rango requerido
+            System.err.println("La nota debe ser entre 0 y 10");//Definimos un error si no esta en el rango requerido
         }
 
         if (nota >= 0 &&  nota < 3) {
@@ -183,8 +183,27 @@ public class Practica2 {
             hora -= 24;
         }
 
-        //Se imprime la hora completa, por ultimo
-        System.out.println("La hora es " + hora + ":" + minutos + ":" + segundos );
+        //Se imprime la hora completa, por ultimo, per veamos que tengan un zero a la izquierda
+        String horaFinal="";
+        if (hora / 10 == 0) {
+            horaFinal= "0" + hora + ":";
+        }
+        else {
+            horaFinal= hora + ":";
+        }
+        if (minutos / 10 == 0) {
+            horaFinal+= "0" + minutos + ":";
+        }
+        else {
+            horaFinal+= minutos + ":";
+        }
+        if (segundos / 10 == 0) {
+            horaFinal+= "0" + segundos;
+        }
+        else {
+            horaFinal+= segundos;
+        }
+        System.out.println("La hora es " + horaFinal);
 
         //Ejercicio 10
 
@@ -193,7 +212,7 @@ public class Practica2 {
 
         int[] misResultados = new int[10];//Se define una matriz de 10 valores y una columna
         for (int i = 0; i<10; i++) {
-            System.out.println("Introduce un numero: ");
+            System.out.println("Introduce un numero no nulo hasta 10, " + (10-i) + " restantes: ");
             misResultados[i] = sc.nextInt();
             while (misResultados[i] == 0) {
                 System.out.println("Numero nulo, repite este numero: ");
@@ -218,7 +237,7 @@ public class Practica2 {
 
         misResultados = new int[10];//Se define una matriz de 10 valores y una columna
         for (int i = 0; i<10; i++) {
-            System.out.println("Introduce un numero: ");
+            System.out.println("Introduce un numero no nulo hasta 10, " + (10-i) + " restantes: ");
             misResultados[i] = sc.nextInt();
             while (misResultados[i] == 0) {
                 System.out.println("Numero nulo, repite este numero: ");
@@ -249,7 +268,7 @@ public class Practica2 {
         positivos = 0;//Se resetean positivos
         negativos = 0;//Se resetean negativos
         while (true) {
-            System.out.println("Introduce un numero: ");
+            System.out.println("Introduce un numero hasta que uno sea nulo: ");
             valor = sc.nextInt();
             if (valor == 0) {
                 break;
@@ -294,13 +313,43 @@ public class Practica2 {
 
         System.out.println("Introduce tu nombre: ");
         String nombre = sc.nextLine();
-
         System.out.println("Introduce tus horas trabajadas: ");
-        short horasTrabajadas = sc.nextShort();
-        int salarioBruto;
-        int tasas;
-        int salarioNeto;
+        double horasTrabajadas = sc.nextDouble();
+        System.out.println("Introduce tu tarifa por hora: ");
+        double tarifaNormal = sc.nextDouble();
+        double salarioBruto = 0;
+        String tasas = "";
+        double salarioNeto = 0;
         //Se definen las horas, las tasas y el Salario que se va a obtener
 
+        //Se hace el calculo del salario
+        if (horasTrabajadas <= 35) {
+            salarioBruto = tarifaNormal*horasTrabajadas;
+        }
+        if (35 < horasTrabajadas) {
+            salarioBruto = (tarifaNormal*35) + (tarifaNormal*(horasTrabajadas-35)*1.5);
+        }
+
+        //Ahora, se calcula cual es la tasa de impuestos
+        if (salarioBruto <= 500) {
+            salarioNeto = salarioBruto;
+            tasas = "cotiza por debajo de 500 euros, por lo que no hay impuestos";
+        }
+        if (salarioBruto > 500 &&  salarioBruto <= 900) {
+            salarioNeto = 500 +  ((salarioBruto - 500)*0.75);
+            tasas = "cotiza entre 500 y 900 euros, por lo que tras los primeros 500, hay 25% impuestos";
+        }
+        if (salarioBruto > 900) {
+            salarioNeto = 500 +  (400*0.75) + ((salarioBruto - 900)*0.55);
+            tasas = "cotiza a mas de 900 euros, por lo que tras los primeros 500, \nhay 25% impuestos en los siguientes" +
+                    " 400 euros, y cualquier tasa mayor es a 45% de impuestos";
+        }
+
+        //Se evalua la salida
+        System.out.println("El salario de " + nombre + " es de un valor bruto de " + salarioBruto + " euros y tras unas " +
+                "\ntasas por las que " + tasas + ", \ntenemos que el salario neto sale a " + salarioNeto + " euros");
+
+        sc.close();
+        //Se cierra el escaner para que no salgan errores
     }
 }
