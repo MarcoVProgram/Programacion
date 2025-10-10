@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Practica2 {
+public class Practica_2 {
     public static void main(String[] args) {
         //Ejercicio 1
 
@@ -267,12 +267,10 @@ public class Practica2 {
         int valor;//Se define una matriz de un valor
         positivos = 0;//Se resetean positivos
         negativos = 0;//Se resetean negativos
-        while (true) {
+        valor =1; //Le damos un valor No Cero.
+        while (valor != 0) {
             System.out.println("Introduce un numero hasta que uno sea nulo: ");
             valor = sc.nextInt();
-            if (valor == 0) {
-                break;
-            }
             if (valor > 0) {
                 positivos++;
             }
