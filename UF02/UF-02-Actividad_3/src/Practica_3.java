@@ -18,53 +18,58 @@ public class Practica_3 {
 
         System.out.println("Ejercicio 1:");
 
-        System.out.print("Ingresa una cantidad de euros que sea un multiplo de 5: ");
-        int euros = input.nextInt();
+        int euros = 0;
+        boolean noMultiplo = false;
+        do {
+            if (noMultiplo) {
+                System.out.println("\u001B[31mEl numero de euros mo es un multiplo de 5\u001B[38m");
+            }
+            System.out.print("Ingresa una cantidad de euros que sea un multiplo de 5: ");
+            euros = input.nextInt();
+            noMultiplo = !(euros % 5 == 0);
+        } while (noMultiplo);
 
         int tracker = euros;
         int[] billetes;
         billetes = new int[7];
         //Se definen todas las variables que vamos a usar
-
-        boolean multiplo = (euros % 5 == 0);
-        if (!multiplo) {
-            System.out.println("\u001B[31mEl numero de euros mo es un multiplo de 5\u001B[38m");
-        }//Saltamos los que no pueden tener multiplos de 5.
-        else {
-            while(tracker > 0) {
-                if (tracker >= 500) {
-                    billetes[6]++;
-                    tracker -= 500;
-                }
-                else if (tracker >= 200) {
-                    billetes[5]++;
-                    tracker -= 200;
-                }
-                else if (tracker >= 100) {
-                    billetes[4]++;
-                    tracker -= 100;
-                }
-                else if (tracker >= 50) {
-                    billetes[3]++;
-                    tracker -= 50;
-                }
-                else if (tracker >= 20) {
-                    billetes[2]++;
-                    tracker -= 20;
-                }
-                else if (tracker >= 10) {
-                    billetes[1]++;
-                    tracker -= 10;
-                }
-                else if (tracker >= 5) {
-                    billetes[0]++;
-                    tracker -= 5;
-                }
-            }//Clasificamos todos los que si pueden tener multiplos
-            System.out.println("Los billetes en euros son de " + billetes[6] + " de 500, " +  billetes[5]
-                    + " de 200, " + billetes[4] + " de 100, " + billetes[3]  + " de 50, " + billetes[2]
-                    + " de 20, " +  billetes[1] +  " de 10 y " + billetes[0] + " de 5 ");
+        String textoDinero = "El dinero en euros es:";
+        if (tracker >= 500) {
+            billetes[6] = tracker /500;
+            tracker %= 500;
+            textoDinero += "\n" + billetes[6] + " billetes de 500€ ";
         }
+        if (tracker >= 200) {
+            billetes[5] = tracker/200;
+            tracker %= 200;
+            textoDinero += "\n" + billetes[5] + " billetes de 200€ ";
+        }
+        if (tracker >= 100) {
+            billetes[4] = tracker/100;
+            tracker %= 100;
+            textoDinero += "\n" + billetes[4] + " billetes de 100€ ";
+        }
+        if (tracker >= 50) {
+            billetes[3] = tracker/50;
+            tracker %= 50;
+            textoDinero += "\n" + billetes[3] + " billetes de 50€ ";
+        }
+        if (tracker >= 20) {
+            billetes[2] = tracker/20;
+            tracker %= 20;
+            textoDinero += "\n" + billetes[2] + " billetes de 20€ ";
+        }
+        if (tracker >= 10) {
+            billetes[1] = tracker/10;
+            tracker %= 10;
+            textoDinero += "\n" + billetes[1] + " billetes de 10€";
+        }
+        if (tracker >= 5) {
+            billetes[0] = tracker/5;
+            textoDinero += "\n" + billetes[0] + " billetes de 5€";
+        }
+            System.out.println(textoDinero);
+
 
         /*
             Realiza un programa que muestre un menú de opciones como el siguiente:
@@ -77,7 +82,7 @@ public class Practica_3 {
          */
         System.out.println("\nEjercicio 2:");//Empezamos el Ejercicio 2
         input = new Scanner(System.in);//Limpiamos el Input
-        String opcion;
+        String raw,opcion;
         double num[];
         num = new double[2];
         double resultado;
@@ -85,11 +90,11 @@ public class Practica_3 {
         do {
             input = new Scanner(System.in);//Es NECESARIO limpiar la consola, o da error.
             System.out.println("\n\u001B[32m1. Sumar\n\u001B[33m2. Restar\n\u001B[34m3. Multiplicar\n\u001B[35m4. Dividir\n\u001B[36m5. Salir\n\u001B[38mPor Favor, Elija un Numero: ");
-            opcion = input.nextLine();
+            raw = input.nextLine();
 
-            /*
-            opcion = opcion.replaceAll("\\D",""); //Este es una posible linea para ignorar caracteres no numeros.
-            */
+
+            opcion = raw.replaceAll("\\D",""); //Este es una linea para ignorar caracteres no numeros.
+
 
             switch (opcion) {
                 case "1"://Suma
@@ -101,7 +106,7 @@ public class Practica_3 {
 
                     resultado = num[0] + num[1];
 
-                    System.out.println("La Suma de ambos numeros es: " + resultado);
+                    System.out.println("La Suma de ambos numeros es: \u001B[37m" + resultado + "\u001B[38m");
                     break;
 
                 case "2":
@@ -113,7 +118,7 @@ public class Practica_3 {
 
                     resultado = num[0] - num[1];
 
-                    System.out.println("La Resta de ambos numeros es: " + resultado);
+                    System.out.println("La Resta de ambos numeros es: \u001B[37m" + resultado + "\u001B[38m");
                     break;
 
                 case "3":
@@ -125,7 +130,7 @@ public class Practica_3 {
 
                     resultado = num[0] * num[1];
 
-                    System.out.println("La Multiplicacion de ambos numeros es: " + resultado);
+                    System.out.println("La Multiplicacion de ambos numeros es: \u001B[37m" + resultado + "\u001B[0m");
                     break;
 
                 case "4":
@@ -144,15 +149,15 @@ public class Practica_3 {
 
                     resultado = num[0] / num[1];
 
-                    System.out.println("La Division de ambos numeros es: " + resultado);
+                    System.out.println("La Division de ambos numeros es: \u001B[37m" + resultado + "\u001B[0m");
                     break;
 
                 case "5":
-                    System.out.println("Saliendo del programa");
+                    System.out.println("\u001B[37mSaliendo del programa...\u001B[0m");
                     break;
 
                 default:
-                    System.out.println("\u001B[31mEl input (\u001B[37m" + opcion +"\u001B[31m) no es valido," +
+                    System.out.println("\u001B[31mEl input (\u001B[37m" + raw +"\u001B[31m) no es valido," +
                             " por favor, presione un numero del 1 al 5\u001B[38m");
             }
         } while (!opcion.equals("5"));
