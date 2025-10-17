@@ -3,6 +3,11 @@ import java.util.Scanner;
 public class Ejercicio1 {
     public static void main(String[] args) {
 
+        /*
+            Crea un programa que pida una cadena de texto por teclado y luego muestre cada
+            palabra de la cadena en una línea distinta.
+         */
+
         System.out.println("\u001B[36mEjercicio 1\u001B[0m");
         //Escribimos el nombre del ejercicio
 
