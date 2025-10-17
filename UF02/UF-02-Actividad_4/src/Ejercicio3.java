@@ -9,20 +9,22 @@ public class Ejercicio3 {
         /*
             Crea un programa que pida diez números reales por teclado, los almacene en un array,
             y luego lo recorra para averiguar el máximo y mínimo y mostrarlos por pantalla.
-         */
+        */
         System.out.println("\n\u001B[34mEjercicio 3\u001B[38m");
 
         System.out.println("Va a introducir 10 numeros reales y mostraremos su maximo");
         double[] reales;
         reales = new double[10];
-        double suma = 0;
 
         for  (int i = 0; i < reales.length; i++) {
             System.out.println("Ingrese el valor del real: ");
+            reales[i] = en.nextDouble();
         }
 
         Arrays.sort(reales);
 
         System.out.println("El valor maximo de los numeros es: " + reales[reales.length-1]);
+
+        en.close();//Se cierra
     }//Fin de public static void main
 }//Fin de Ejercicio 3

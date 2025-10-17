@@ -8,7 +8,7 @@ public class Ejercicio2 {
         /*
             Crea un programa que pida diez números reales por teclado, los almacene en un array,
             y luego muestre la suma de todos los valores.
-         */
+        */
         System.out.println("\n\u001B[34mEjercicio 2\u001B[38m");
 
         System.out.println("Va a introducir 10 numeros reales para mostrar su suma");

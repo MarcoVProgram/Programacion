@@ -212,7 +212,7 @@ public class Practica_2 {
 
         int[] misResultados = new int[10];//Se define una matriz de 10 valores y una columna
         for (int i = 0; i<10; i++) {
-            System.out.println("Introduce un numero no nulo hasta 10, " + (10-i) + " restantes: ");
+            System.out.println("Introduce un numero no nulo hasta 10 totales, " + (10-i) + " restantes: ");
             misResultados[i] = sc.nextInt();
             while (misResultados[i] == 0) {
                 System.out.println("Numero nulo, repite este numero: ");
