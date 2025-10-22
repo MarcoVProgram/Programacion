@@ -7,8 +7,8 @@ public class Ejercicio7 {
         Scanner en = new Scanner(System.in);//Definimos el Escanner
         
         /*
-            Crea un programa que pida dos valores enteros N y M, luego cree un array de tamaño
-            N, escriba M en todas sus posiciones y lo muestre por pantalla.
+            Crea un programa que pida dos valores enteros P y Q, luego cree un array que contenga
+            todos los valores desde P hasta Q, y lo muestre por pantalla.
         */
         System.out.println("\n\u001B[34mEjercicio 7\u001B[38m");
 
@@ -23,9 +23,8 @@ public class Ejercicio7 {
 
 
         int[] respuesta = new int[(1+q-p)];
-        respuesta[0] = p;
-        for (int i = 1; i < respuesta.length; i++) {
-            respuesta[i] = respuesta[i-1] + 1;
+        for (int i = 0; i < respuesta.length; i++) {
+            respuesta[i] = p+i;
         }
 
         System.out.println("La lista en orden es: " +  Arrays.toString(respuesta));

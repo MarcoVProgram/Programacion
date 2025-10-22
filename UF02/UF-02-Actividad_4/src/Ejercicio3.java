@@ -23,7 +23,7 @@ public class Ejercicio3 {
 
         Arrays.sort(reales);
 
-        System.out.println("El valor maximo de los numeros es: " + reales[reales.length-1]);
+        System.out.println("El valor maximo de los numeros es: " + reales[reales.length-1] + " y el minimo es " + reales[0]);
 
         en.close();//Se cierra
     }//Fin de public static void main

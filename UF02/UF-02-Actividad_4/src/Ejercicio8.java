@@ -16,14 +16,10 @@ public class Ejercicio8 {
         System.out.print("Ingresa el numero R: ");
         double r = en.nextDouble();
         double[] lista = new double[100];
-
-        for  (int i = 0; i < lista.length; i++) {
-            lista[i] = Math.random();
-        }
-
         int contador = 0;
 
         for  (int i = 0; i < lista.length; i++) {
+            lista[i] = Math.random();
             if(lista[i] >= r) {
                 contador++;
             }

@@ -33,6 +33,7 @@ public class Ejercicio10 {
                max = lista[0];
         int mayorMedia = 0,
             menorMedia = 0;
+        //Double.MIN_VALUE y Double.MAX_VALUE
 
         for  (int i = 0; i < lista.length; i++) {
             if(lista[i] > max) {

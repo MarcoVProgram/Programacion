@@ -12,7 +12,7 @@ public class Ejercicio2 {
         //Definimos un scanner
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("Introduce una frase: ");
+        System.out.println("\nIntroduce una frase: ");
         String frase1 = sc.nextLine();
         System.out.println("Introduce otra frase: ");
         String frase2 = sc.nextLine();

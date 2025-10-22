@@ -23,11 +23,11 @@ public class Ejercicio14 {
         //de ser el resultado.
 
         int[] secuencia = new int[numValores];
-        int contador = 0;
+
         //Aqui, tenemos dos formas de solucionarlo. Una de estas siendo que sea por un contador para tener siempre como
         //recordatorio cual puesto vamos a modificar, y la segunda forma es reemplazarlo por la formula basada en i, j.
 
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1, contador = 0; i <= 10; i++) {
             for (int j = i; j >= 1; j--) {
                 secuencia[contador] = i;
                 contador++;

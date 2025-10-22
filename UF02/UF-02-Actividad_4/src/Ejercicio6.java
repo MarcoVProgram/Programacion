@@ -13,10 +13,13 @@ public class Ejercicio6 {
         System.out.println("\n\u001B[34mEjercicio 6\u001B[38m");
 
         System.out.println("Va a introducir dos numeros enteros M y N y se le va a mostrar un vector N dimensional con M como valores");
+        int m,n;
         System.out.print("Ingresa el numero M: ");
-        int m = en.nextInt();
-        System.out.print("Ingresa el numero N: ");
-        int n = en.nextInt();
+        m = en.nextInt();
+        do {
+            System.out.print("Ingresa el numero N: ");
+            n = en.nextInt();
+        } while (n<0);
 
         int[] vector = new int[n];
         Arrays.fill(vector, m);
