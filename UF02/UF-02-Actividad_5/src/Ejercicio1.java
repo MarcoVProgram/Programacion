@@ -20,9 +20,17 @@ public class Ejercicio1 {
         String [] palabras = frase.split(" ");
 
         System.out.println("La frase es:\n");
-        for (int i = 0; i < palabras.length; i++) {
-            System.out.println(palabras[i]);
+
+        for (String palabra : palabras) {
+            System.out.println(palabra);
         }
+        //Introduccion al For Each.
+
+        /*for (int i = 0; i < palabras.length; i++) {
+            System.out.println(palabras[i]);
+        }*/
+        //Otro metodo alternativo
+
         sc.close();//Cerramos Scanner
     }//Fin del Main
 }//Fin del Ejercicio
