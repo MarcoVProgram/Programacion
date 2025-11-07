@@ -19,7 +19,7 @@ public class Ejercicio2 {
 
         boolean equal = frase1.equalsIgnoreCase(frase2);
 
-        System.out.println("Son las frases iguales (ignorando mayusculas y minusculas)? " + equal);
+        System.out.println("¿Son las frases iguales (ignorando mayusculas y minusculas)? " + equal);
 
 
         sc.close();

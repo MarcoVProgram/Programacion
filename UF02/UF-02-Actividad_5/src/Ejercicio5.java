@@ -43,6 +43,10 @@ public class Ejercicio5 {
         //System.out.println("\nDebug:\n" + resultado + "\n" + comparacion +  "\n" + frase);
         //Esta linea arriba nos sirve para comprobar que resultado esta dando cada cadena string.
 
+        /*
+        Se puede mejorar. Menos pasos si empiezas desde la izquierda y la derecha hasta que un lado se cruze con el otro
+        */
+
         sc.close();
     }
 }

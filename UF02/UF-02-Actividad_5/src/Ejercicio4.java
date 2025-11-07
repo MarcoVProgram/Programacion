@@ -27,22 +27,17 @@ public class Ejercicio4 {
             u = 0;
 
         for (int j=0;j<frase.length();j++) {
-            if (frase.matches("[aA]")) {
-                //(frase.charAt(j)=='a' || frase.charAt(j)=='A') is a valid boolean
+            if (frase.charAt(j)=='a' || frase.charAt(j)=='A') {
                 a++;
-            } else if (frase.matches("[bB]")) {
-                //(frase.charAt(j)=='b' || frase.charAt(j)=='B') is a valid boolean
+            } else if (frase.charAt(j)=='e' || frase.charAt(j)=='E') {
                 e++;
-            } else if (frase.matches("[cC]")) {
-                //(frase.charAt(j)=='c' || frase.charAt(j)=='C') is a valid boolean
+            } else if (frase.charAt(j)=='i' || frase.charAt(j)=='I') {
                 i++;
-            } else if (frase.matches("[dD]")) {
-                //(frase.charAt(j)=='d' || frase.charAt(j)=='D') is a valid boolean
+            } else if (frase.charAt(j)=='o' || frase.charAt(j)=='O') {
                 o++;
-            } else if (frase.matches("[eE]")) {
-                //(frase.charAt(j)=='e' || frase.charAt(j)=='E') is a valid boolean
+            } else if (frase.charAt(j)=='u' || frase.charAt(j)=='U') {
                 u++;
-            }
+            } //No merece la pena hacer .matches()
         }
 
         System.out.println("Nº de A's: " + a
