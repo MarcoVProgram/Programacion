@@ -1,4 +1,3 @@
-import javax.management.MBeanRegistration;
 import java.util.Scanner;
 
 public class GamePPTLS {
@@ -33,6 +32,10 @@ public class GamePPTLS {
         String raw = "";
         char opcion = 'X';
         boolean entradaNecesaria = true; //Usaremos esta de aqui para poder hacer loops sin pedir datos.
+
+        int victorias;
+        int derrotas;
+        int resultado = 0;
 
         //Aqui vamos a definir los controles principales del juego, que luego el usuario podrá cambiar en ajustes.
         final char piedra = 'P', papel = 'L', tijeras = 'T', lagarto = 'Z', spock = 'S', menu = 'M'; //Variables de Juego
@@ -91,12 +94,17 @@ public class GamePPTLS {
                     //pausa(3); //Unos segundos de espera para leer los controles. (Este es el caso si se quisiece usar el Thread.sleep)
                     break;
                 case jugar:
+                    victorias = 0;
+                    derrotas = 0;
                     do {
                         /*
                             A la hora de desarrollar el grueso del juego, voy a optar por hacerlo que sea parte del programa en
                             si, ya que se va a necesitar algunas herramientas dentro del programa de igual manera.
                          */
                         System.out.println(black + "\n[ " + cyan + "Piedra Papel Tijera Lagarto Spock" + black + " ]" + reset);
+                        if (victorias != 0 || derrotas != 0) {
+                            System.out.println("¡Has ganado " + green + victorias + reset + " veces y has perdido + " + red + derrotas + reset + " veces!");
+                        }
                         System.out.println("\nElije una " + red + "Opcion" + reset + " entre " + purple + piedra + " " + white + papel + " " +
                                 yellow + tijeras + " " + green + lagarto + " " + blue + spock + reset + "\n(O cualquier otra tecla para abortar)");
                         System.out.print("\nHaga su eleccion: ");
@@ -107,7 +115,18 @@ public class GamePPTLS {
                         //convertir estas dos lineas en una función aparte, es innecesario.
                         switch (opcion) {
                             case piedra, papel, tijeras, lagarto, spock:
-                                partida(opcion, piedra, papel, tijeras, lagarto, spock);
+                                resultado = partida(opcion, piedra, papel, tijeras, lagarto, spock);
+                                switch (resultado) {
+                                    case 1:
+                                        victorias++;
+                                        break;
+                                    case -1:
+                                        derrotas++;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                entradaNecesaria = true;
                                 break;
                             case reglas, controles, menu, jugar, salir:
                                 entradaNecesaria = false;
@@ -118,7 +137,7 @@ public class GamePPTLS {
                                 opcion = menu;
                                 break;
                         }
-                    } while (!entradaNecesaria);
+                    } while (entradaNecesaria);
                     break;
                 case salir:
                     salir();
@@ -171,7 +190,7 @@ public class GamePPTLS {
         System.out.println("\n\033[37mSaliendo del Programa ...\033[0m");
         System.out.println("¡Hasta la próxima!");
     }
-    public static void partida(char jugada, char piedra, char papel, char tijeras, char lagarto, char spock) {
+    public static int partida(char jugada, char piedra, char papel, char tijeras, char lagarto, char spock) {
         //Esta es la funcion que vamos a diseñar para introducir dentro de esta la jugada del jugador, crear la jugada de la máquina, y determinar quien es el ganador
         //Necesitamos reintroducir todas las variables de piedra/papel/tijeras/lagarto/spock por un motivo de elección personal. Si queremos tenerlas todas dependientes de
         //una unica variable para en cualquier momento decidir cambiarlas sin romper el codigo, entoonces tendremos que tenerlas siempre refrescadas.
@@ -255,20 +274,20 @@ public class GamePPTLS {
             case 3:
                 jugadaMaquina = lagarto;
                 if (jugada == papel) {
-                    resultado = 1;
-                    interaccion = white + "Papel" + reset + " envuelve a " + purple + "Piedra" + reset;
+                    resultado = -1;
+                    interaccion = green + "Lagarto" + reset + " come a " + white + "Papel" + reset;
                 } else if (jugada == spock) {
-                    resultado = 1;
-                    interaccion = blue + "Spock" + reset + " desintegra a " + purple + "Piedra" + reset;
+                    resultado = -1;
+                    interaccion = green + "Lagarto" + reset + " envenena a " + purple + "Spock" + reset;
                 } else if (jugada == tijeras) {
-                    resultado = -1;
-                    interaccion = purple + "Piedra" + reset + " rompe a " + yellow + "Tijera" + reset;
-                } else if (jugada == lagarto) {
-                    resultado = -1;
+                    resultado = 1;
+                    interaccion = yellow + "Tijeras" + reset + " decapitan a " + green + "Lagarto" + reset;
+                } else if (jugada == piedra) {
+                    resultado = 1;
                     interaccion = purple + "Piedra" + reset + " aplasta a " + green + "Lagarto" + reset;
                 } else {
                     resultado = 0;
-                    interaccion = reset + "Ambos son " + purple + "Piedra" + reset;
+                    interaccion = reset + "Ambos son " + green + "Lagarto" + reset;
                 }
                 colorMaquina = green;
                 break;
@@ -276,19 +295,19 @@ public class GamePPTLS {
                 jugadaMaquina = spock;
                 if (jugada == papel) {
                     resultado = 1;
-                    interaccion = white + "Papel" + reset + " envuelve a " + purple + "Piedra" + reset;
-                } else if (jugada == spock) {
-                    resultado = 1;
+                    interaccion = white + "Papel" + reset + " despide a " + blue + "Spock" + reset;
+                } else if (jugada == piedra) {
+                    resultado = -1;
                     interaccion = blue + "Spock" + reset + " desintegra a " + purple + "Piedra" + reset;
                 } else if (jugada == tijeras) {
                     resultado = -1;
-                    interaccion = purple + "Piedra" + reset + " rompe a " + yellow + "Tijera" + reset;
+                    interaccion = blue + "Spock" + reset + " destroza a " + yellow + "Tijeras" + reset;
                 } else if (jugada == lagarto) {
-                    resultado = -1;
-                    interaccion = purple + "Piedra" + reset + " aplasta a " + green + "Lagarto" + reset;
+                    resultado = 1;
+                    interaccion = green + "Lagarto" + reset + " envenena a " + purple + "Spock" + reset;
                 } else {
                     resultado = 0;
-                    interaccion = reset + "Ambos son " + purple + "Piedra" + reset;
+                    interaccion = reset + "Ambos son " + blue + "Spock" + reset;
                 }
                 colorMaquina = blue;
                 break;
@@ -304,6 +323,8 @@ public class GamePPTLS {
                 System.out.println(green + "¡Victoria! " + reset + "Tenemos que " + colorMaquina + jugadaMaquina + reset + " del ordenador ha sido vencida.");
                 break;
         }
+        System.out.println(interaccion);
         espera();
+        return resultado;
     }
 }
