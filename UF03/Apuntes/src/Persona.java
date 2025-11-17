@@ -21,13 +21,13 @@ public class Persona {
     }
 
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
     public String getDNI() {
-        return DNI;
+        return this.DNI;
     }
     public int getEdad() {
-        return edad;
+        return this.edad;
     }
     public String getApellido() {
         return apellido;
