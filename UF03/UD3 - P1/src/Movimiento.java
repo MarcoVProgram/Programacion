@@ -1,4 +1,4 @@
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Movimiento {
@@ -8,12 +8,12 @@ public class Movimiento {
     private static int contador = 0;
     private final int ID;
     private String fecha;
-    private String tipo;
+    private MyUtils.Transaccion tipo;
     private double cantidad;
 
     //Constructores
-    Movimiento(String tipo, double cantidad) {
-        LocalDate now = LocalDate.now();
+    Movimiento(MyUtils.Transaccion tipo, double cantidad) {
+        LocalDateTime now = LocalDateTime.now();
         this.fecha = now.format(formatter);
         this.tipo = tipo;
         this.cantidad = Math.abs(cantidad);
@@ -31,6 +31,10 @@ public class Movimiento {
     }
 
     public String getTipo() {
+        return this.tipo.name();
+    }
+
+    public MyUtils.Transaccion getTipoTransaccion() {
         return this.tipo;
     }
 
@@ -40,7 +44,7 @@ public class Movimiento {
 
     public String mostrarInfoMovimiento() {
         String infoMovimiento;
-        infoMovimiento = String.format("ID: %d\nFecha: %s\nTipo: %s\nCantidad: ", this.ID, this.fecha, this.tipo, this.cantidad);
+        infoMovimiento = String.format("ID: %d\nFecha: %s\nTipo: %s\nCantidad: %.2f", this.ID, this.fecha, this.tipo.name(), this.cantidad);
         return infoMovimiento;
     }
 }

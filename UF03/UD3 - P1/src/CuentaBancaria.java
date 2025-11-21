@@ -4,6 +4,8 @@ public class CuentaBancaria {
     private String IBAN;
     private String titular;
     private double saldo;
+    private final MyUtils.Transaccion ingreso = MyUtils.Transaccion.INGRESO,
+            retirada = MyUtils.Transaccion.RETIRADA;
 
     //Arrays
     private Movimiento[] registro;
@@ -28,15 +30,15 @@ public class CuentaBancaria {
 
     //Getter y Setter
     public String getIBAN() {
-        return IBAN;
+        return this.IBAN;
     }
 
     public String getTitular() {
-        return titular;
+        return this.titular;
     }
 
     public double getSaldo() {
-        return saldo;
+        return this.saldo;
     }
 
     public boolean hacerTransaccion(Movimiento transaccion) {
@@ -59,21 +61,18 @@ public class CuentaBancaria {
 
     private boolean transaccionRealizada(Movimiento transaccion) {
         boolean resultado = false;
-        switch (transaccion.getTipo()) {
-            case "Ingreso":
+        if (transaccion != null) {
+            if (transaccion.getTipoTransaccion() == ingreso) {
                 this.saldo += transaccion.getCantidad();
                 this.registro[this.numRegistros] = transaccion;
                 this.numRegistros++;
                 resultado = true;
-                break;
-            case "Retirada":
+            } else if (transaccion.getTipoTransaccion() == retirada) {
                 this.saldo -= transaccion.getCantidad();
                 this.registro[this.numRegistros] = transaccion;
                 this.numRegistros++;
                 resultado = true;
-                break;
-            default:
-                break;
+            }
         }
         return resultado;
     }
@@ -88,7 +87,7 @@ public class CuentaBancaria {
     }
 
     public String mostrarHistorial() {
-        String resultado = "No hay ninguna transaccion realizada.";
+        String resultado = "No hay ninguna transaccion realizada";
         if (this.numRegistros > 0) {
             resultado += "";
             for (int i = 0; i < this.numRegistros; i++) {
@@ -100,11 +99,28 @@ public class CuentaBancaria {
         return resultado;
     }
 
-    public String buscarTransaccion(int ID) {
+    public String buscarTransaccionID(int ID) {
         String resultado = "No se ha encontrado esa transaccion";
         for (int i = 0; i < this.numRegistros; i++) {
             if (this.registro[i].getID() == ID) {
                 resultado = this.registro[i].mostrarInfoMovimiento();
+            }
+        }
+        return resultado;
+    }
+
+    public String buscarTodasTransaccionesPorCantidad(double cantidad) {
+        String resultado = "No se ha encontrado esa transaccion";
+        if (this.numRegistros > 0) {
+            for (int i = 0; i < this.numRegistros; i++) {
+                if  (this.registro[i] != null) {
+                    if (this.registro[i].getCantidad() == cantidad) {
+                        if (resultado.equals("No se ha encontrado esa transaccion")) {
+                            resultado = "";
+                        }
+                        resultado += this.registro[i].mostrarInfoMovimiento() + "\n\n";
+                    }
+                }
             }
         }
         return resultado;

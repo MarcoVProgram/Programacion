@@ -51,7 +51,9 @@ public class Banco {
     public String getID() {
         return this.ID;
     }
-
+    public int getNumCuentasBancarias() {
+        return this.numCuentasBancarias;
+    }
     public String[] getColeccionIBAN() {
         return this.coleccionIBAN;
     }
@@ -61,12 +63,12 @@ public class Banco {
 
         //Construccion del Objeto
         if (nuevaCuenta != null) {
-            if (this.listaDeCuentasBancarias.length < this.numCuentasBancarias) {
+            if (this.numCuentasBancarias < this.listaDeCuentasBancarias.length) {
                 exitoso = addCuenta(nuevaCuenta);
             }
             else {
                 ampliarListaDeCuentasBancarias();
-                if (this.listaDeCuentasBancarias.length < this.numCuentasBancarias) {
+                if (this.numCuentasBancarias < this.listaDeCuentasBancarias.length) {
                     exitoso = addCuenta(nuevaCuenta);
                 }
             }
@@ -85,11 +87,14 @@ public class Banco {
 
     private void ampliarListaDeCuentasBancarias() {
         CuentaBancaria[] nuevaLista = new CuentaBancaria[this.listaDeCuentasBancarias.length*2];
-        for (int i = 0; i < listaDeCuentasBancarias.length; i++) {
-            nuevaLista[i] = listaDeCuentasBancarias[i];
+        String[] nuevaColeccionIBAN = new String[this.coleccionIBAN.length*2];
+        for (int i = 0; i < this.listaDeCuentasBancarias.length; i++) {
+            nuevaLista[i] = this.listaDeCuentasBancarias[i];
+            nuevaColeccionIBAN[i] = this.coleccionIBAN[i];
         }
 
         this.listaDeCuentasBancarias = nuevaLista;
+        this.coleccionIBAN =  nuevaColeccionIBAN;
     }
 
     public String mostrarTodasLasCuentas() {
@@ -106,7 +111,7 @@ public class Banco {
     }
 
     public String mostrarTodosLosHistoriales() {
-        String todosLosHistoriales = "";
+        String todosLosHistoriales = "No tienes historial de transacciones";
         if (this.numCuentasBancarias > 0) {
             todosLosHistoriales = "";
             for (int i = 0; i < this.numCuentasBancarias; i++) {
@@ -120,13 +125,27 @@ public class Banco {
     }
 
     public CuentaBancaria obtenerCuentaBancaria(String IBAN) {
-
+        CuentaBancaria resultado = null;
+        if (this.listaDeCuentasBancarias.length > 0) {
+            for (int i = 0; i < this.numCuentasBancarias; i++) {
+                if (this.listaDeCuentasBancarias[i] != null) {
+                    if (this.listaDeCuentasBancarias[i].getIBAN() == IBAN) {
+                        resultado = this.listaDeCuentasBancarias[i];
+                    }
+                }
+            }
+        }
+        return resultado;
     }
 
     public String buscarTodasTransacciones(int ID) {
         String resultado = "No se ha encontrado esa transaccion";
-        for (int i = 0; i < this.numCuentasBancarias; i++) {
-            resultado = this.listaDeCuentasBancarias[i].buscarTransaccion(ID);
+        if (this.numCuentasBancarias > 0) {
+            for (int i = 0; i < this.numCuentasBancarias; i++) {
+                if (this.listaDeCuentasBancarias[i] != null) {
+                    resultado = this.listaDeCuentasBancarias[i].buscarTransaccionID(ID);
+                }
+            }
         }
         return resultado;
     }
