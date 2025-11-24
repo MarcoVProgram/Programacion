@@ -109,7 +109,7 @@ public class DawBank {
     public static String verSaldo(CuentaBancaria cuenta) {
         String resultado = "No se ha encontrado la cuenta Bancaria";
         if (cuenta != null) {
-            resultado = "El saldo de su cuenta " + cuenta.getTitular() + " es: " + cuenta.getSaldo();
+            resultado = String.format("El saldo de su cuenta (%s) es: %.2f",cuenta.getTitular(), cuenta.getSaldo());
         }
         return resultado;
     }
@@ -221,7 +221,7 @@ public class DawBank {
         }
 
         MyUtils.imprimir("Introduce la cantidad de " + tipo.name() + ":");
-        inputNuevaTransaccion = MyUtils.inputRequest("Error, introduce un valor absoluto sin signos y con hasta dos decimales (usando ,)",cantidadForm);
+        inputNuevaTransaccion = MyUtils.inputRequest("Error, introduce un valor absoluto sin signos y con hasta dos decimales (usando , o .)",cantidadForm);
         inputNuevaTransaccion = inputNuevaTransaccion.replace(',','.');
         System.out.println("La cantidad introducida es " + inputNuevaTransaccion);
         cantidad = Double.parseDouble(inputNuevaTransaccion);
