@@ -13,7 +13,7 @@ public class CuentaBancaria {
     private int registrosIniciales = 10;
 
     //Constructor
-    CuentaBancaria(String IBAN, String titular) {
+    public CuentaBancaria(String IBAN, String titular) {
         this.IBAN = IBAN;
         this.titular = titular;
         this.saldo = 0;

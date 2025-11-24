@@ -13,7 +13,7 @@ public class Banco {
     private String[] coleccionIBAN;
 
     //Constructor
-    Banco(String nombre, String codigoPostal, String ID) {
+    public Banco(String nombre, String codigoPostal, String ID) {
         this.nombre = nombre;
         this.codigoPostal = codigoPostal;
         this.ID = ID;
@@ -22,7 +22,7 @@ public class Banco {
 
         this.coleccionIBAN = new String[cuentasIniciales];
     }
-    Banco(String nombre, String codigoPostal) {
+    public Banco(String nombre, String codigoPostal) {
         this.nombre = nombre;
         this.codigoPostal = codigoPostal;
         this.listaDeCuentasBancarias = new CuentaBancaria[cuentasIniciales];

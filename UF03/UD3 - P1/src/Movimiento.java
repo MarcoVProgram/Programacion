@@ -12,7 +12,7 @@ public class Movimiento {
     private double cantidad;
 
     //Constructores
-    Movimiento(MyUtils.Transaccion tipo, double cantidad) {
+    public Movimiento(MyUtils.Transaccion tipo, double cantidad) {
         LocalDateTime now = LocalDateTime.now();
         this.fecha = now.format(formatter);
         this.tipo = tipo;
