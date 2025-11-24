@@ -89,7 +89,7 @@ public class CuentaBancaria {
     public String mostrarHistorial() {
         String resultado = "No hay ninguna transaccion realizada";
         if (this.numRegistros > 0) {
-            resultado += "";
+            resultado = "";
             for (int i = 0; i < this.numRegistros; i++) {
                 if  (this.registro[i] != null) {
                     resultado += registro[i].mostrarInfoMovimiento() + "\n\n";
@@ -99,7 +99,7 @@ public class CuentaBancaria {
         return resultado;
     }
 
-    public String buscarTransaccionID(int ID) {
+    public String buscarTransaccionesPorID(int ID) {
         String resultado = "No se ha encontrado esa transaccion";
         for (int i = 0; i < this.numRegistros; i++) {
             if (this.registro[i].getID() == ID) {

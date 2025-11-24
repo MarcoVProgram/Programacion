@@ -9,14 +9,12 @@ public class DawBank {
         Scanner sc;
         int cuentaActual = 0;
         Banco dawBank = new Banco("dawBank", "39007");
-        boolean exito = dawBank.crearCuentaBancaria(new CuentaBancaria(pedirCuenta()));
-        if  (exito == true) {
-            MyUtils.imprimir("Cuenta creada exitosamente");
-        }
-        else {
-            MyUtils.imprimir("Ha ocurrido un error al crear la cuenta");
-        }
+        registrarNuevaCuenta(dawBank);
+
         String rawInput;
+        String imprimirLista, transaccionBuscada, miSaldo, miHistorial;
+
+        CuentaBancaria cuentaSeleccionada = dawBank.obtenerCuentaBancaria(dawBank.getColeccionIBAN()[cuentaActual]);
         char option;
         String menuPrincipal[] = new String[8];
         menuPrincipal[0] = "Crear Cuenta Bancaria";
@@ -33,50 +31,49 @@ public class DawBank {
         do {
             sc = new Scanner(System.in);
             MyUtils.menuMaker("MENU",menuPrincipal,"Escoje una opcion:");
-            rawInput = MyUtils.inputRequest("Opcion invalida, es, Intentelo de Nuevo:",MenuInputStructure);
+            rawInput = MyUtils.inputRequest("Opcion invalida, es un numero del 1 al 8, Intentelo de Nuevo:",MenuInputStructure);
 
             option = rawInput.charAt(0);
             switch (option) {
                 case '1':
-                    exito = dawBank.crearCuentaBancaria(new CuentaBancaria(pedirCuenta()));
-                    if  (exito == true) {
-                        MyUtils.imprimir("Cuenta creada exitosamente");
-                    }
-                    else {
-                        MyUtils.imprimir("Ha ocurrido un error al crear la cuenta");
-                    }
+                    registrarNuevaCuenta(dawBank);
                     MyUtils.esperar();
                     break;
                 case '2':
-                    MyUtils.imprimir("Lista de Cuentas Bancarias:\nHay " + dawBank.getNumCuentasBancarias() + " cuentas bancarias\n");
-                    MyUtils.imprimir(dawBank.mostrarTodasLasCuentas());
+                    imprimirLista = "Lista de Cuentas Bancarias:\nHay " + dawBank.getNumCuentasBancarias() + " cuentas bancarias\n";
+                    imprimirLista += dawBank.mostrarTodasLasCuentas();
+                    MyUtils.imprimir(imprimirLista);
                     MyUtils.esperar();
                     break;
                 case '3':
                     cuentaActual = seleccionCuentaBancaria(dawBank);
+                    cuentaSeleccionada = dawBank.obtenerCuentaBancaria(dawBank.getColeccionIBAN()[cuentaActual]);
                     MyUtils.esperar();
                     break;
                 case '4':
-                    MyUtils.imprimir(buscarUnaTransaccion(dawBank.obtenerCuentaBancaria(dawBank.getColeccionIBAN()[cuentaActual])));
+                    transaccionBuscada = buscarUnaTransaccion(cuentaSeleccionada);
+                    MyUtils.imprimir(transaccionBuscada);
                     MyUtils.esperar();
                     break;
                 case '5':
-                    nuevaTransaccion(dawBank.obtenerCuentaBancaria(dawBank.getColeccionIBAN()[cuentaActual]));
+                    nuevaTransaccion(cuentaSeleccionada);
                     MyUtils.esperar();
                     break;
                 case '6':
-                    MyUtils.imprimir(verSaldo(dawBank.obtenerCuentaBancaria(dawBank.getColeccionIBAN()[cuentaActual])));
+                    miSaldo = verSaldo(cuentaSeleccionada);
+                    MyUtils.imprimir(miSaldo);
                     MyUtils.esperar();
                     break;
                 case '7':
-                    MyUtils.imprimir(verHistorial(dawBank.obtenerCuentaBancaria(dawBank.getColeccionIBAN()[cuentaActual])));
+                    miHistorial = verHistorial(cuentaSeleccionada);
+                    MyUtils.imprimir(miHistorial);
                     MyUtils.esperar();
                     break;
                 case '8':
                     MyUtils.imprimir("\nSaliendo del Programa... ¡Adios!");
                     break;
                 default:
-                    MyUtils.imprimir("Algo fue mal. Intentelo de nuevo.");
+                    MyUtils.imprimir("Algo fue mal. " + rawInput + " No es una opcion valida. Intentelo de Nuevo.");
                     break;
             }
         } while (option != '8');
@@ -85,9 +82,7 @@ public class DawBank {
     }
 
     //Metodos
-    public static String[] pedirCuenta() {
-        Scanner in = new Scanner(System.in);
-
+    public static void registrarNuevaCuenta(Banco banco) {
         MyUtils.imprimir("Creando CuentaBancaria...");
 
         //Creacion del IBAN
@@ -96,21 +91,25 @@ public class DawBank {
         String IBAN = MyUtils.inputRequest("ISBN mal introducido, usa 2 letras y 22 numeros, intentalo de nuevo:",IBANForm);
 
         //Creacion del Titular
-        Pattern titularForm = Pattern.compile("[A-Z]{1}[a-z]{1,}\s{1}[A-Z]{1}[a-z]{1,}");
+        Pattern titularForm = Pattern.compile("[A-Z][a-z]+ [A-Z][a-z]+");
         System.out.print("Introduce su titular (nombre y apellidos): ");
         String titular = MyUtils.inputRequest("Titular mal introducido. Revisa letras y mayusculas, y asegurate que es solo un nombre y un apellido:", titularForm);
 
         //Devolucion de valores
-        String resultado[] = new String[2];
-        resultado[0] = IBAN;
-        resultado[1] = titular;
 
-        return resultado;
+        CuentaBancaria nuevaCuenta = new CuentaBancaria(IBAN,titular);
+        boolean existe = banco.crearCuentaBancaria(nuevaCuenta);
+        if  (existe == true) {
+            MyUtils.imprimir("Cuenta creada exitosamente");
+        }
+        else {
+            MyUtils.imprimir("Ha ocurrido un error al crear la cuenta");
+        }
     }
     public static String verSaldo(CuentaBancaria cuenta) {
         String resultado = "No se ha encontrado la cuenta Bancaria";
         if (cuenta != null) {
-            resultado = "El saldo de su cuenta " + cuenta.getTitular() + " es: " + cuenta.getSaldo();
+            resultado = String.format("El saldo de su cuenta (%s) es: %.2f",cuenta.getTitular(), cuenta.getSaldo());
         }
         return resultado;
     }
@@ -122,11 +121,11 @@ public class DawBank {
         return resultado;
     }
     public static int seleccionCuentaBancaria(Banco banco) {
-        Scanner in  = new Scanner(System.in);
+        Scanner in;
 
         int IDcuenta = 0;
 
-        String input;
+        String inputSeleccionCuenta;
         String resultado = "Seleccione una de sus Cuentas Bancarias:\n";
         int num = banco.getNumCuentasBancarias();
         for (int i = 0; i < num; i++) {
@@ -143,21 +142,21 @@ public class DawBank {
         Matcher matcherNum;
         do {
             in = new Scanner(System.in);
-            input = in.nextLine();
-            matcherIBAN = IBANForm.matcher(input);
-            matcherNum = numForm.matcher(input);
+            inputSeleccionCuenta = in.nextLine();
+            matcherIBAN = IBANForm.matcher(inputSeleccionCuenta);
+            matcherNum = numForm.matcher(inputSeleccionCuenta);
             if (!matcherIBAN.matches() && !matcherNum.matches()) {
                 MyUtils.imprimir("Input incorrecto, intentelo de nuevo:");
             }
             if (matcherIBAN.matches()) {
                 for (int i = 0; i < num; i++) {
-                    if(banco.obtenerCuentaBancaria(banco.getColeccionIBAN()[i]).getIBAN().equalsIgnoreCase(input)) {
+                    if(banco.obtenerCuentaBancaria(banco.getColeccionIBAN()[i]).getIBAN().equalsIgnoreCase(inputSeleccionCuenta)) {
                         IDcuenta = i;
                     }
                 }
             }
             if (matcherNum.matches()) {
-                IDcuenta = Integer.parseInt(input);
+                IDcuenta = Integer.parseInt(inputSeleccionCuenta);
             }
         } while (!matcherIBAN.matches() && !matcherNum.matches());
 
@@ -170,7 +169,7 @@ public class DawBank {
         Scanner in;
         Pattern IDForm = Pattern.compile("[0-9]+");
         Pattern cantidadForm = Pattern.compile("[0-9]+,[0-9]{2}");
-        String input;
+        String inputBusqueda;
         Matcher matcherID;
         Matcher matcherCantidad;
         String resultado = "No se ha encontrado esa transaccion";
@@ -178,14 +177,14 @@ public class DawBank {
         MyUtils.imprimir("Introduce el ID de una transaccion que desea buscar o todas las transacciones de esa misma cantidad:");
         do {
             in = new Scanner(System.in);
-            input = in.nextLine();
-            matcherID = IDForm.matcher(input);
-            matcherCantidad = cantidadForm.matcher(input);
+            inputBusqueda = in.nextLine();
+            matcherID = IDForm.matcher(inputBusqueda);
+            matcherCantidad = cantidadForm.matcher(inputBusqueda);
             if (matcherID.matches()) {
-                resultado = cuenta.buscarTransaccionID(Integer.parseInt(input));
+                resultado = cuenta.buscarTransaccionesPorID(Integer.parseInt(inputBusqueda));
             }
             if (matcherCantidad.matches()) {
-                resultado = cuenta.buscarTodasTransaccionesPorCantidad(Double.parseDouble(input));
+                resultado = cuenta.buscarTodasTransaccionesPorCantidad(Double.parseDouble(inputBusqueda));
             }
             if (!matcherID.matches() && !matcherCantidad.matches()) {
                 MyUtils.imprimir("Input no valido, intentelo de nuevo:");
@@ -200,7 +199,7 @@ public class DawBank {
         String menuOpciones[] = new String[2];
         menuOpciones[0] = "Ingresar";
         menuOpciones[1] = "Retirar";
-        String input;
+        String inputNuevaTransaccion;
         MyUtils.Transaccion tipo;
         Pattern cantidadForm[] = new Pattern[2];
         cantidadForm[0] = Pattern.compile("[0-9]+,?[0-9]{0,2}");
@@ -209,12 +208,12 @@ public class DawBank {
 
         //InputsM
         MyUtils.menuMaker("Introduce el tipo de transaccion:",menuOpciones,"Introduca una Opcion:");
-        input = MyUtils.inputRequest("Valor no valido, introduzca 1 o 2:",patternTipo);
+        inputNuevaTransaccion = MyUtils.inputRequest("Valor no valido, introduzca 1 o 2:",patternTipo);
 
-        if (input.equalsIgnoreCase("1")) {
+        if (inputNuevaTransaccion.equalsIgnoreCase("1")) {
             tipo = MyUtils.Transaccion.INGRESO;
         }
-        else if (input.equalsIgnoreCase("2")) {
+        else if (inputNuevaTransaccion.equalsIgnoreCase("2")) {
             tipo = MyUtils.Transaccion.RETIRADA;
         }
         else {
@@ -224,22 +223,25 @@ public class DawBank {
         }
 
         MyUtils.imprimir("Introduce la cantidad de " + tipo.name() + ":");
-        input = MyUtils.inputRequest("Error, introduce un valor absoluto sin signos y con hasta dos decimales (usando ,)",cantidadForm);
-        input = input.replace(',','.');
-        System.out.println("El valor introducido es " + input);
-        cantidad = Double.parseDouble(input);
+        inputNuevaTransaccion = MyUtils.inputRequest("Error, introduce un valor absoluto sin signos y con hasta dos decimales (usando , o .)",cantidadForm);
+        inputNuevaTransaccion = inputNuevaTransaccion.replace(',','.');
+        System.out.println("La cantidad introducida es " + inputNuevaTransaccion);
+        cantidad = Double.parseDouble(inputNuevaTransaccion);
 
         //Creacion del nuevo movimiento
         Movimiento miMovimiento = new Movimiento(tipo, cantidad);
-        cuenta.hacerTransaccion(miMovimiento);
-        if (cuenta.getSaldo() < -50) {
-            MyUtils.imprimir("AVISO!!!!!!! SALDO NEGATIVO");
-            MyUtils.esperar();
+
+        if (miMovimiento.getTipoTransaccion() == MyUtils.Transaccion.RETIRADA && cuenta.getSaldo() - miMovimiento.getCantidad()< -50) {
+            MyUtils.imprimir("⚠️ AVISO! ⚠️ LA TRANSACCION NO SE PUDO REALIZAR, SALDO MENOR QUE -50 EUROS");
         }
         else if (cantidad > 3000) {
-            MyUtils.imprimir("AVISO!!!!!!! NOTIFICAR A HACIENDA");
-            MyUtils.esperar();
+            cuenta.hacerTransaccion(miMovimiento);
+            MyUtils.imprimir("Transaccion realizada\n\n" + miMovimiento.mostrarInfoMovimiento());
+            MyUtils.imprimir("⚠️ AVISO! ⚠️ NOTIFICAR A HACIENDA");
         }
-        MyUtils.imprimir("Transaccion realizada correctamente\n\n" + miMovimiento.mostrarInfoMovimiento());
+        else {
+            cuenta.hacerTransaccion(miMovimiento);
+            MyUtils.imprimir("Transaccion realizada correctamente\n\n" + miMovimiento.mostrarInfoMovimiento());
+        }
     }
 }

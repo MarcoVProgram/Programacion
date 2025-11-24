@@ -143,7 +143,7 @@ public class Banco {
         if (this.numCuentasBancarias > 0) {
             for (int i = 0; i < this.numCuentasBancarias; i++) {
                 if (this.listaDeCuentasBancarias[i] != null) {
-                    resultado = this.listaDeCuentasBancarias[i].buscarTransaccionID(ID);
+                    resultado = this.listaDeCuentasBancarias[i].buscarTransaccionesPorID(ID);
                 }
             }
         }
