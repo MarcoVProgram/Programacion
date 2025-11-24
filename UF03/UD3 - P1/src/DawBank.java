@@ -142,6 +142,7 @@ public class DawBank {
         Matcher matcherIBAN;
         Matcher matcherNum;
         do {
+            in = new Scanner(System.in);
             input = in.nextLine();
             matcherIBAN = IBANForm.matcher(input);
             matcherNum = numForm.matcher(input);
@@ -166,7 +167,7 @@ public class DawBank {
         return IDcuenta;
     }
     public static String buscarUnaTransaccion(CuentaBancaria cuenta) {
-        Scanner in  = new Scanner(System.in);
+        Scanner in;
         Pattern IDForm = Pattern.compile("[0-9]+");
         Pattern cantidadForm = Pattern.compile("[0-9]+,[0-9]{2}");
         String input;
@@ -176,6 +177,7 @@ public class DawBank {
 
         MyUtils.imprimir("Introduce el ID de una transaccion que desea buscar o todas las transacciones de esa misma cantidad:");
         do {
+            in = new Scanner(System.in);
             input = in.nextLine();
             matcherID = IDForm.matcher(input);
             matcherCantidad = cantidadForm.matcher(input);
