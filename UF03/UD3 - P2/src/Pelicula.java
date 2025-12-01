@@ -14,7 +14,7 @@ public class Pelicula {
     private LocalDateTime fechaAlquiler;
     private boolean isAlquilada;
     private static int codNumber = 0;
-    private long secondsSinceEpoch;
+    private final long secondsSinceEpoch;
 
     //Constructor
     public Pelicula(String titulo, Genero genero) {

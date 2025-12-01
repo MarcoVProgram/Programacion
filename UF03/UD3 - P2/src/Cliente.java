@@ -12,7 +12,7 @@ public class Cliente {
 
     //Arrays
     private int numInicialPeliculas = 5;
-    Pelicula[] peliculasAlquiladas;
+    private Pelicula[] peliculasAlquiladas;
     private int numPeliculas;
 
     //Constructor
@@ -82,20 +82,15 @@ public class Cliente {
             if (this.numPeliculas >= this.peliculasAlquiladas.length) {
                 ampliarListaDePeliculas();
             }
-            resultado = alquilandoPeliculaSiSePuede(pelicula);
+            this.peliculasAlquiladas[this.numPeliculas] = pelicula;
+            this.numPeliculas++;
+            resultado = true;
         }
 
         return resultado;
     }
 
     //Metodos Privados para crear peliculas
-    private boolean alquilandoPeliculaSiSePuede(Pelicula pelicula) {
-        boolean resultado = false;
-        this.peliculasAlquiladas[this.numPeliculas] = pelicula;
-        this.numPeliculas++;
-        return resultado;
-    }
-
     private void ampliarListaDePeliculas() {
         Pelicula[] nuevaLista = new Pelicula[this.numPeliculas*2];
         for (int i = 0; i < this.numPeliculas; i++) {

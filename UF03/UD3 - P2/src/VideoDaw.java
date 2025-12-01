@@ -9,13 +9,13 @@ public class VideoDaw {
     //Arrays
     private int numPeliculas;
     private int numPeliculasIniciales = 5;
-    Pelicula[] peliculasRegistradas;
+    private Pelicula[] peliculasRegistradas;
     private int numClientes;
     private int numClientesIniciales = 5;
-    Cliente[] clientesRegistrados;
+    private Cliente[] clientesRegistrados;
 
     //Constructor
-    public VideoDaw(String CIF, String direccion, LocalDate fechaAlta) {
+    /*public VideoDaw(String CIF, String direccion, LocalDate fechaAlta) {
         this.CIF = CIF;
         this.direccion = direccion;
         this.fechaAlta = fechaAlta;
@@ -23,7 +23,7 @@ public class VideoDaw {
         this.numClientes = 0;
         peliculasRegistradas = new Pelicula[numPeliculasIniciales];
         clientesRegistrados = new Cliente[numClientesIniciales];
-    }
+    }*/
     public VideoDaw(String CIF, String direccion) {
         this.CIF = CIF;
         this.direccion = direccion;

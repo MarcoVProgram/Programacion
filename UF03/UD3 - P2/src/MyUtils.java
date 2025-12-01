@@ -29,7 +29,7 @@ public class MyUtils {
     public static String inputRequest(String inputMistake, Pattern[] pattern) {
         Scanner in = new Scanner(System.in);
         String input;
-        Matcher matcher[] = new Matcher[pattern.length];
+        Matcher[] matcher = new Matcher[pattern.length];
         boolean valid = true;
         do {
             input = in.nextLine();
