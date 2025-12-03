@@ -46,5 +46,16 @@ public class ColeccionVideoDaw {
         this.registroVideoDaw = nuevaLista;
     }
 
-
+    public String mostrarTodosVideoClub() {
+        String infoTodosVideoDaws = "No hay ningun registro de VideoClubs VideoDaw";
+        if (this.numRegistros > 0) {
+            infoTodosVideoDaws = "";
+            for (int i = 0; i < this.numRegistros; i++) {
+                if (this.registroVideoDaw[i] != null) {
+                    infoTodosVideoDaws += (i+1) + ". " + registroVideoDaw[i].mostrarInfoVideoDaw() + "\n\n";
+                }
+            }
+        }
+        return infoTodosVideoDaws;
+    }
 }
