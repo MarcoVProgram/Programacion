@@ -90,7 +90,7 @@ public class VideoDaw {
         boolean resultado = false;
         int index = -1;
 
-        if (pelicula != null && pelicula.getFechaBaja() != null) {
+        if (pelicula != null && pelicula.getFechaBaja() == null) {
             for  (int i = 0; i < this.numPeliculas; i++) {
                 if (this.peliculasRegistradas[i] == pelicula) {
                     if (this.peliculasRegistradas[i].getCod().equalsIgnoreCase(pelicula.getCod())) {
@@ -182,7 +182,7 @@ public class VideoDaw {
         boolean resultado = false;
         int index = -1;
 
-        if (cliente != null && cliente.getFechaBaja() != null) {
+        if (cliente != null && cliente.getFechaBaja() == null) {
             for  (int i = 0; i < this.numPeliculas; i++) {
                 if (this.clientesRegistrados[i] == cliente) {
                     if (this.clientesRegistrados[i].getDNI().equalsIgnoreCase(cliente.getDNI())) {

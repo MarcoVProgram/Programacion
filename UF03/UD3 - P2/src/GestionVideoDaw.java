@@ -32,7 +32,7 @@ public class GestionVideoDaw {
         //Patrones
         Pattern seleccionform = Pattern.compile("[1-9][0-9]*");
         Pattern generoForm = Pattern.compile("[0-4]");
-        Pattern codForm = Pattern.compile("[1-9][0-9]*");
+        Pattern codForm = Pattern.compile("P-[0-9]{4,}");
         Pattern menuInputPattern = Pattern.compile("[1-9]");
         Pattern nombreForm = Pattern.compile("[A-Z][a-z]+ [A-Z][a-z]+");
         Pattern dniForm = Pattern.compile("[0-9]{8}[A-Za-z]");
@@ -53,7 +53,7 @@ public class GestionVideoDaw {
         do {
             sc = new Scanner(System.in);
             MyUtils.menuMaker("GESTION VIDEO DAW",menuGestionVideoDaw,"Introduce una opcion:");
-            inputMainMenu = MyUtils.inputRequest("Input de Menu no Valido. Introduce un numero del 1 al 8",menuInputPattern);
+            inputMainMenu = MyUtils.inputRequest("Input de Menu no Valido. Introduce un numero del 1 al 9",menuInputPattern);
             option = Integer.parseInt(inputMainMenu);
 
             //Implementacion del Menu Principal con sus funcionalidades
@@ -66,6 +66,7 @@ public class GestionVideoDaw {
                     if (LibreCoders.getNumRegistros() > 1) {
                         MyUtils.imprimir("Existen mas de un VideoClub existence. Por favor, escoja el VideoCLub que desee usar, del 1 al " + LibreCoders.getNumRegistros());
                         MyUtils.imprimir(LibreCoders.mostrarTodosVideoClub());
+                        MyUtils.imprimir("Seleccione un videoclub:");
                         do {
                             seleccionVideClub = MyUtils.inputRequest("Valor introducido no valido. Intenta introducir el indice del VideoClub deseado",seleccionform);
                             if (Integer.parseInt(seleccionVideClub) > LibreCoders.getNumRegistros() || Integer.parseInt(seleccionVideClub) < 1) {
@@ -177,11 +178,11 @@ public class GestionVideoDaw {
                     clienteSelected = videoClubSelected.buscarCliente(dniCliente);
 
                     MyUtils.imprimir("Introduce el codigo de la pelicula que desea alquilar:");
-                    codPelicula = MyUtils.inputRequest("Introduce el codigo de Pelicula apropiado, un numero entero",codForm);
+                    codPelicula = MyUtils.inputRequest("Introduce el codigo de Pelicula apropiado, P-XXXX:",codForm);
                     peliculaSelected = videoClubSelected.buscarPelicula(codPelicula);
 
                     if (videoClubSelected.alquilarPelicula(clienteSelected, peliculaSelected)) {
-                        MyUtils.imprimir("Pelicula " + peliculaSelected.getTitulo() + " alquilado exitosamente por Cliente " + clienteSelected.getNombre());
+                        MyUtils.imprimir("Pelicula " + peliculaSelected.getTitulo() + " alquilada exitosamente por Cliente " + clienteSelected.getNombre());
                     }
                     else {
                         MyUtils.imprimir("No se ha podido alquilar la pelicula, intentalo de nuevo y revisa fallos");
@@ -195,7 +196,7 @@ public class GestionVideoDaw {
                     clienteSelected = videoClubSelected.buscarCliente(dniCliente);
 
                     MyUtils.imprimir("Introduce el codigo de la pelicula que desea devolver:");
-                    codPelicula = MyUtils.inputRequest("Introduce el codigo de Pelicula apropiado, un numero entero",codForm);
+                    codPelicula = MyUtils.inputRequest("Introduce el codigo de Pelicula apropiado, P-XXXX:",codForm);
                     peliculaSelected = videoClubSelected.buscarPelicula(codPelicula);
 
                     MyUtils.imprimir(videoClubSelected.devolverPelicula(clienteSelected, peliculaSelected));
@@ -203,27 +204,39 @@ public class GestionVideoDaw {
                     break;
                 case 7:
                     MyUtils.imprimir("Dando de Baja a un cliente en el VideClub");
-                    MyUtils.imprimir("Introduce el DNI del cliente que desea dar de Baja:");
-                    dniCliente = MyUtils.inputRequest("Introduce el DNI apropiado, 8 numeros y 1 letra",dniForm);
-                    clienteSelected = videoClubSelected.buscarCliente(dniCliente);
-                    if (videoClubSelected.darBajaCliente(clienteSelected)) {
-                        MyUtils.imprimir("Se ha dado de baja al cliente con exito");
+                    MyUtils.imprimir("\nEstos son todos nuestros clientes:");
+                    MyUtils.imprimir(videoClubSelected.mostrarClientesRegistrados());
+                    if (videoClubSelected.getNumClientes() != 0) {
+                        MyUtils.imprimir("Introduce el DNI del cliente que desea dar de Baja:");
+                        dniCliente = MyUtils.inputRequest("Introduce el DNI apropiado, 8 numeros y 1 letra", dniForm);
+                        clienteSelected = videoClubSelected.buscarCliente(dniCliente);
+                        if (videoClubSelected.darBajaCliente(clienteSelected)) {
+                            MyUtils.imprimir("Se ha dado de baja al cliente con exito");
+                        } else {
+                            MyUtils.imprimir("No se ha podido dar de baja a ese cliente, revise que todos los datos esten correctos e intentalo de nuevo");
+                        }
                     }
                     else {
-                        MyUtils.imprimir("No se ha podido dar de baja a ese cliente, revise que todos los datos esten correctos e intentalo de nuevo");
+                        MyUtils.imprimir("No hay nada a eliminar");
                     }
                     MyUtils.esperar();
                     break;
                 case 8:
                     MyUtils.imprimir("Dando de Baja a una pelicula en el VideClub");
-                    MyUtils.imprimir("Introduce el codigo de la pelicula que desea dar de Baja:");
-                    codPelicula = MyUtils.inputRequest("Introduce el codigo de Pelicula apropiado, un numero entero",codForm);
-                    peliculaSelected = videoClubSelected.buscarPelicula(codPelicula);
-                    if (videoClubSelected.darBajaPelicula(peliculaSelected)) {
-                        MyUtils.imprimir("Se ha dado de baja a la pelicula con exito");
+                    MyUtils.imprimir("\nEstos son todas nuestras peliculas:");
+                    MyUtils.imprimir(videoClubSelected.mostrarPeliculasRegistradas());
+                    if (videoClubSelected.getNumPeliculas() != 0) {
+                        MyUtils.imprimir("Introduce el codigo de la pelicula que desea dar de Baja:");
+                        codPelicula = MyUtils.inputRequest("Introduce el codigo de Pelicula apropiado, P-XXXX:", codForm);
+                        peliculaSelected = videoClubSelected.buscarPelicula(codPelicula);
+                        if (videoClubSelected.darBajaPelicula(peliculaSelected)) {
+                            MyUtils.imprimir("Se ha dado de baja a la pelicula con exito");
+                        } else {
+                            MyUtils.imprimir("No se ha podido dar de baja a esa pelicula, revise que todos los datos esten correctos e intentalo de nuevo");
+                        }
                     }
                     else {
-                        MyUtils.imprimir("No se ha podido dar de baja a esa pelicula, revise que todos los datos esten correctos e intentalo de nuevo");
+                        MyUtils.imprimir("No hay nada a eliminar");
                     }
                     MyUtils.esperar();
                     break;
@@ -239,17 +252,18 @@ public class GestionVideoDaw {
     }
 
     //Metodos
-    public static void registroDeVideoDaw(ColeccionVideoDaw LibreCoders) {
+    public static void registroDeVideoDaw(ColeccionVideoDaw coleccion) {
         Scanner in  = new Scanner(System.in);
         String direccion;
         String CIF;
-        Pattern CIFform = Pattern.compile("[a-zA-Z][0-9]{8}");
+        Pattern CIFform = Pattern.compile("[a-zA-Z][0-9]{7}[0-9A-Za-z]");
+        boolean valido = true;
 
         MyUtils.imprimir("Registrando un Nuevo Videoclub");
 
         //CIF
         MyUtils.imprimir("Introduce el CIF (Codigo de Identificacion Fiscal):");
-        CIF = MyUtils.inputRequest("El dato introducido no es un CIF valido. Usa una letra y 8 numeros:",CIFform);
+        CIF = MyUtils.inputRequest("El dato introducido no es un CIF valido. Usa una letra, 7 numeros y un caracter alfanumerico (letra o numero):",CIFform);
 
 
         //Direccion
@@ -257,8 +271,16 @@ public class GestionVideoDaw {
         direccion = in.nextLine(); //Direccion no tiene estructura especifica
 
         //Creacion del CLub
-        VideoDaw nuevoVideoClub = new VideoDaw(CIF,direccion);
-        LibreCoders.addVideoClub(nuevoVideoClub);
-        MyUtils.imprimir("Video Club registrado");
+
+        for (int i = 0; i < coleccion.getNumRegistros(); i++) {
+            CIF.equalsIgnoreCase(coleccion.getRegistroVideoDaw()[i].getCIF());
+            MyUtils.imprimir("VideoClub ya existe, abortando creacion");
+            valido = false;
+        }
+        if (valido) {
+            VideoDaw nuevoVideoClub = new VideoDaw(CIF,direccion);
+            coleccion.addVideoClub(nuevoVideoClub);
+            MyUtils.imprimir("Video Club registrado");
+        }
     }
 }
