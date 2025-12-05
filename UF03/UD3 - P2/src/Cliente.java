@@ -22,7 +22,8 @@ public class Cliente {
         this.nombre = nombre;
         this.direccion = direccion;
         this.fechaNacimiento = fechaNacimiento;
-        this.numSocio = String.format("S-%04d", ++codNumber);
+        this.codNumber++;
+        this.numSocio = String.format("S-%04d", codNumber);
         this.numPeliculas = 0;
         this.peliculasAlquiladas = new Pelicula[numInicialPeliculas];
     }

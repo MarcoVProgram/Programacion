@@ -167,11 +167,11 @@ public class VideoDaw {
             //Epoch fecha es (3600 * 24 * 365,25* 18) (18 anios) - 1 dia (86400)
             mayorEdad = true;
         }*/
-        if ((cliente.getFechaNacimiento().getYear() - LocalDate.now().getYear()) < 18) {
+        if (Math.abs(LocalDate.now().getYear() - cliente.getFechaNacimiento().getYear()) > 18) {
             mayorEdad = true;
         }
-        if ((cliente.getFechaNacimiento().getYear() - LocalDate.now().getYear()) == 18) {
-            if ((cliente.getFechaNacimiento().getDayOfYear() - LocalDate.now().getDayOfYear()) >= 0) {
+        if (Math.abs(LocalDate.now().getYear() - cliente.getFechaNacimiento().getYear()) == 18) {
+            if (Math.abs(LocalDate.now().getDayOfYear() - cliente.getFechaNacimiento().getDayOfYear()) >= 0) {
                 mayorEdad = true;
             }
         }
@@ -262,9 +262,9 @@ public class VideoDaw {
         if (pelicula != null && cliente != null && pelicula.isAlquilada()) {
             if (cliente.alquiloEstaPelicula(pelicula) && pelicula.getDniAlquilando().equalsIgnoreCase(cliente.getDNI())) {
                 pelicula.setAlquilada(false);
-                pelicula.setDniAlquilando("NULL");
+                pelicula.setDniAlquilando("Sin Datos");
                 resultado = "Pelicula " + pelicula.getTitulo() + " devuelta con Exito de Cliente " + cliente.getNombre();
-                if ((pelicula.getSecondsSinceEpoch() - LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)) > 172800) {
+                if (Math.abs(pelicula.getSecondsSinceEpoch() - LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)) > 172800) {
                     resultado += "\n==============================================================";
                     resultado += "\nADVERTENCIA - PELICULA DEVUELTA CON MAS DE 48 HORAS DE RETRASO";
                     resultado += "\n==============================================================";

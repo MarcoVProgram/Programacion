@@ -1,8 +1,5 @@
-import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Year;
-import java.time.chrono.ChronoLocalDate;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -52,8 +49,8 @@ public class GestionVideoDaw {
         menuGestionVideoDaw[8] = "Salir (terminar programa)";
         do {
             sc = new Scanner(System.in);
-            MyUtils.menuMaker("GESTION VIDEO DAW",menuGestionVideoDaw,"Introduce una opcion:");
-            inputMainMenu = MyUtils.inputRequest("Input de Menu no Valido. Introduce un numero del 1 al 9",menuInputPattern);
+            MyUtils.creacionMenu("GESTION VIDEO DAW",menuGestionVideoDaw,"Introduce una opcion:");
+            inputMainMenu = MyUtils.pedirDato("Input de Menu no Valido. Introduce un numero del 1 al 9",menuInputPattern);
             option = Integer.parseInt(inputMainMenu);
 
             //Implementacion del Menu Principal con sus funcionalidades
@@ -68,7 +65,7 @@ public class GestionVideoDaw {
                         MyUtils.imprimir(LibreCoders.mostrarTodosVideoClub());
                         MyUtils.imprimir("Seleccione un videoclub:");
                         do {
-                            seleccionVideClub = MyUtils.inputRequest("Valor introducido no valido. Intenta introducir el indice del VideoClub deseado",seleccionform);
+                            seleccionVideClub = MyUtils.pedirDato("Valor introducido no valido. Intenta introducir el indice del VideoClub deseado",seleccionform);
                             if (Integer.parseInt(seleccionVideClub) > LibreCoders.getNumRegistros() || Integer.parseInt(seleccionVideClub) < 1) {
                                 MyUtils.imprimir("Has escogido un numero fuera del rango, intenta introducir el indice del VideoClub");
                             }
@@ -93,7 +90,7 @@ public class GestionVideoDaw {
                         MyUtils.imprimir(genero.ordinal() + " " + genero.name());
                     }
                     MyUtils.imprimir("Introduce el Indice:");
-                    generoPelicula = MyUtils.inputRequest("Seleccione un indice valido (numero a la izquierda):",generoForm);
+                    generoPelicula = MyUtils.pedirDato("Seleccione un indice valido (numero a la izquierda):",generoForm);
                     for (Genero genero : Genero.values()) {
                         if (genero.ordinal() == Integer.parseInt(generoPelicula)) {
                             generoSeleccion = genero;
@@ -112,15 +109,15 @@ public class GestionVideoDaw {
                 case 4:
                     MyUtils.imprimir("Registrando un nuevo cliente en el VideClub");
                     MyUtils.imprimir("Introduce el DNI del cliente:");
-                    dniCliente = MyUtils.inputRequest("Introduce el DNI apropiado, 8 numeros y 1 letra",dniForm);
+                    dniCliente = MyUtils.pedirDato("Introduce el DNI apropiado, 8 numeros y 1 letra",dniForm);
                     MyUtils.imprimir("Introduce el nombre del cliente:");
-                    nombreCliente = MyUtils.inputRequest("Introduce el nombre del cliente con una mayuscula y minusculas, nombre y un apellido",nombreForm);
+                    nombreCliente = MyUtils.pedirDato("Introduce el nombre del cliente con una mayuscula y minusculas, nombre y un apellido",nombreForm);
                     MyUtils.imprimir("Introduce la Direccion del cliente");
                     direccionCliente = sc.nextLine();
                     MyUtils.imprimir("Introduce la fecha de nacimiento del cliente:");
                     MyUtils.imprimir("Anio (year) de nacimiento:");
                     do {
-                        fechaNAnio = MyUtils.inputRequest("Anio introducida no valido, introduce uno de 4 digitos:",anioForm);
+                        fechaNAnio = MyUtils.pedirDato("Anio introducida no valido, introduce uno de 4 digitos:",anioForm);
                         if (Integer.parseInt(fechaNAnio) < 1909 || Integer.parseInt(fechaNAnio) > 2200) {
                             MyUtils.imprimir("Rango de anio no Valido, ha de ser al menos 1909 pero tambien mayor de edad, intentelo de nuevo:");
                         }
@@ -128,7 +125,7 @@ public class GestionVideoDaw {
 
                     MyUtils.imprimir("Mes (month) de nacimiento:");
                     do {
-                        fechaNMes = MyUtils.inputRequest("Mes introducido no valido, introduce uno de 2 digitos:",mesForm);
+                        fechaNMes = MyUtils.pedirDato("Mes introducido no valido, introduce uno de 2 digitos:",mesForm);
                         if (Integer.parseInt(fechaNMes) < 1 || Integer.parseInt(fechaNMes) > 12) {
                             MyUtils.imprimir("Rango de mes no Valido, tiene que ser del 1 al 12, intentelo de nuevo:");
                         }
@@ -136,7 +133,7 @@ public class GestionVideoDaw {
 
                     MyUtils.imprimir("Dia (day) de nacimiento:");
                     do {
-                        fechaNDia = MyUtils.inputRequest("Dia introducido no valido, introduce uno de 2 digitos:",diaForm);
+                        fechaNDia = MyUtils.pedirDato("Dia introducido no valido, introduce uno de 2 digitos:",diaForm);
                         switch (Integer.parseInt(fechaNMes)) {
                             case 1,3,5,7,8,10,12:
                                 diaValido = Integer.parseInt(fechaNDia) < 1 || Integer.parseInt(fechaNDia) > 31;
@@ -174,11 +171,11 @@ public class GestionVideoDaw {
                 case 5:
                     MyUtils.imprimir("Alquilando Pelicula en el VideoClub");
                     MyUtils.imprimir("Introduce el DNI del cliente que desea alquilar:");
-                    dniCliente = MyUtils.inputRequest("Introduce el DNI apropiado, 8 numeros y 1 letra",dniForm);
+                    dniCliente = MyUtils.pedirDato("Introduce el DNI apropiado, 8 numeros y 1 letra",dniForm);
                     clienteSelected = videoClubSelected.buscarCliente(dniCliente);
 
                     MyUtils.imprimir("Introduce el codigo de la pelicula que desea alquilar:");
-                    codPelicula = MyUtils.inputRequest("Introduce el codigo de Pelicula apropiado, P-XXXX:",codForm);
+                    codPelicula = MyUtils.pedirDato("Introduce el codigo de Pelicula apropiado, P-XXXX:",codForm);
                     peliculaSelected = videoClubSelected.buscarPelicula(codPelicula);
 
                     if (videoClubSelected.alquilarPelicula(clienteSelected, peliculaSelected)) {
@@ -192,11 +189,11 @@ public class GestionVideoDaw {
                 case 6:
                     MyUtils.imprimir("Devolviendo Pelicula en el VideoClub");
                     MyUtils.imprimir("Introduce el DNI del cliente que desea devolver:");
-                    dniCliente = MyUtils.inputRequest("Introduce el DNI apropiado, 8 numeros y 1 letra",dniForm);
+                    dniCliente = MyUtils.pedirDato("Introduce el DNI apropiado, 8 numeros y 1 letra",dniForm);
                     clienteSelected = videoClubSelected.buscarCliente(dniCliente);
 
                     MyUtils.imprimir("Introduce el codigo de la pelicula que desea devolver:");
-                    codPelicula = MyUtils.inputRequest("Introduce el codigo de Pelicula apropiado, P-XXXX:",codForm);
+                    codPelicula = MyUtils.pedirDato("Introduce el codigo de Pelicula apropiado, P-XXXX:",codForm);
                     peliculaSelected = videoClubSelected.buscarPelicula(codPelicula);
 
                     MyUtils.imprimir(videoClubSelected.devolverPelicula(clienteSelected, peliculaSelected));
@@ -208,7 +205,7 @@ public class GestionVideoDaw {
                     MyUtils.imprimir(videoClubSelected.mostrarClientesRegistrados());
                     if (videoClubSelected.getNumClientes() != 0) {
                         MyUtils.imprimir("Introduce el DNI del cliente que desea dar de Baja:");
-                        dniCliente = MyUtils.inputRequest("Introduce el DNI apropiado, 8 numeros y 1 letra", dniForm);
+                        dniCliente = MyUtils.pedirDato("Introduce el DNI apropiado, 8 numeros y 1 letra", dniForm);
                         clienteSelected = videoClubSelected.buscarCliente(dniCliente);
                         if (videoClubSelected.darBajaCliente(clienteSelected)) {
                             MyUtils.imprimir("Se ha dado de baja al cliente con exito");
@@ -227,7 +224,7 @@ public class GestionVideoDaw {
                     MyUtils.imprimir(videoClubSelected.mostrarPeliculasRegistradas());
                     if (videoClubSelected.getNumPeliculas() != 0) {
                         MyUtils.imprimir("Introduce el codigo de la pelicula que desea dar de Baja:");
-                        codPelicula = MyUtils.inputRequest("Introduce el codigo de Pelicula apropiado, P-XXXX:", codForm);
+                        codPelicula = MyUtils.pedirDato("Introduce el codigo de Pelicula apropiado, P-XXXX:", codForm);
                         peliculaSelected = videoClubSelected.buscarPelicula(codPelicula);
                         if (videoClubSelected.darBajaPelicula(peliculaSelected)) {
                             MyUtils.imprimir("Se ha dado de baja a la pelicula con exito");
@@ -263,7 +260,7 @@ public class GestionVideoDaw {
 
         //CIF
         MyUtils.imprimir("Introduce el CIF (Codigo de Identificacion Fiscal):");
-        CIF = MyUtils.inputRequest("El dato introducido no es un CIF valido. Usa una letra, 7 numeros y un caracter alfanumerico (letra o numero):",CIFform);
+        CIF = MyUtils.pedirDato("El dato introducido no es un CIF valido. Usa una letra, 7 numeros y un caracter alfanumerico (letra o numero):",CIFform);
 
 
         //Direccion

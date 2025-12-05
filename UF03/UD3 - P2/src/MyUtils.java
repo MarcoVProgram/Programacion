@@ -18,7 +18,7 @@ public class MyUtils {
         in.nextLine();
     }
 
-    public static void menuMaker(String title, String[] options, String inputRequest) {
+    public static void creacionMenu(String title, String[] options, String inputRequest) {
         String resultado = "\n"+ title + "\n";
         for (int i = 0; i < options.length; i++) {
             resultado += i+1 + ". " + options[i] + "\n";
@@ -28,7 +28,7 @@ public class MyUtils {
     }
 
     //Esta solo se usa para multiples patrones
-    public static String inputRequest(String inputMistake, Pattern[] pattern) {
+    public static String pedirDato(String inputMistake, Pattern[] pattern) {
         Scanner in = new Scanner(System.in);
         String input;
         Matcher[] matcher = new Matcher[pattern.length];
@@ -50,7 +50,7 @@ public class MyUtils {
     }
 
     //Esta solo se usa para un unico patron
-    public static String inputRequest(String inputMistake, Pattern pattern) {
+    public static String pedirDato(String inputMistake, Pattern pattern) {
         Scanner in = new Scanner(System.in);
         String input;
         Matcher matcher;

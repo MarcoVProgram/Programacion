@@ -19,11 +19,12 @@ public class Pelicula {
     public Pelicula(String titulo, Genero genero) {
         this.titulo = titulo;
         this.genero = genero;
-        this.cod = String.format("P-%04d", ++codNumber);
+        this.codNumber++;
+        this.cod = String.format("P-%04d", codNumber);
         this.secondsSinceEpoch = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
         this.fechaRegistro = LocalDate.from(LocalDateTime.ofEpochSecond(secondsSinceEpoch, 0, ZoneOffset.UTC));
         this.isAlquilada = false;
-        this.dniAlquilando = "NULL";
+        this.dniAlquilando = "Sin Datos";
     }
 
     //Getter
