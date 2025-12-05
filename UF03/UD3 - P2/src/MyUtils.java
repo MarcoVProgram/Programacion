@@ -12,7 +12,9 @@ public class MyUtils {
 
     public static void esperar() {
         Scanner in = new Scanner(System.in);
+        imprimir("=========================================");
         imprimir("Seleccione cualquier tecla para continuar");
+        imprimir("=========================================");
         in.nextLine();
     }
 

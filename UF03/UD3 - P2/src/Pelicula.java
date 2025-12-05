@@ -1,8 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 
 public class Pelicula {
     //Variables Privadas
@@ -13,6 +11,7 @@ public class Pelicula {
     private LocalDate fechaBaja;
     private LocalDateTime fechaAlquiler;
     private boolean isAlquilada;
+    private String dniAlquilando;
     private static int codNumber = 0;
     private final long secondsSinceEpoch;
 
@@ -24,6 +23,7 @@ public class Pelicula {
         this.secondsSinceEpoch = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
         this.fechaRegistro = LocalDate.from(LocalDateTime.ofEpochSecond(secondsSinceEpoch, 0, ZoneOffset.UTC));
         this.isAlquilada = false;
+        this.dniAlquilando = "NULL";
     }
 
     //Getter
@@ -58,6 +58,10 @@ public class Pelicula {
     public boolean isAlquilada() {
         return this.isAlquilada;
     }
+
+    public String getDniAlquilando() {
+        return this.dniAlquilando;
+    }
     
     //Setter
     public void setFechaBaja(LocalDate fechaBaja) {
@@ -70,6 +74,10 @@ public class Pelicula {
 
     public void setAlquilada(boolean alquilada) {
         this.isAlquilada = alquilada;
+    }
+
+    public void setDniAlquilando(String dniAlquilando) {
+        this.dniAlquilando = dniAlquilando;
     }
 
     //Metodos

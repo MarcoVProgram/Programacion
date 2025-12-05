@@ -1,4 +1,7 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 public class VideoDaw {
     //Variables privadas
@@ -110,7 +113,7 @@ public class VideoDaw {
         int index = -1;
         for (int i = 0; i < this.numPeliculas; i++) {
             if (this.peliculasRegistradas[i].getCod().equalsIgnoreCase(codPelicula)) {
-                index = -1;
+                index = i;
                 break;
             }
         }
@@ -128,7 +131,7 @@ public class VideoDaw {
             if (this.numClientes >= this.clientesRegistrados.length) {
                 ampliarListaDeClientes();
             }
-            if (ComprobarSiClienteExisteRepetido(cliente) == 0) {
+            if (comprobarSiClienteExisteRepetido(cliente) == 0 && clienteMayorEdad(cliente)) {
                 this.clientesRegistrados[this.numClientes] = cliente;
                 this.numClientes++;
                 resultado = true;
@@ -148,7 +151,7 @@ public class VideoDaw {
         this.clientesRegistrados = nuevaLista;
     }
 
-    private int ComprobarSiClienteExisteRepetido(Cliente cliente) {
+    private int comprobarSiClienteExisteRepetido(Cliente cliente) {
         int repeticiones = 0;
         for (int i = 0; i < this.numClientes; i++) {
             if (cliente.getDNI().equals(this.clientesRegistrados[i].getDNI())) {
@@ -156,6 +159,23 @@ public class VideoDaw {
             }
         }
         return repeticiones;
+    }
+
+    private boolean clienteMayorEdad(Cliente cliente) {
+        boolean mayorEdad = false;
+        /*if ((cliente.getFechaNacimiento().atStartOfDay(ZoneId.systemDefault()).toEpochSecond() - LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)) > 567950400) {
+            //Epoch fecha es (3600 * 24 * 365,25* 18) (18 anios) - 1 dia (86400)
+            mayorEdad = true;
+        }*/
+        if ((cliente.getFechaNacimiento().getYear() - LocalDate.now().getYear()) < 18) {
+            mayorEdad = true;
+        }
+        if ((cliente.getFechaNacimiento().getYear() - LocalDate.now().getYear()) == 18) {
+            if ((cliente.getFechaNacimiento().getDayOfYear() - LocalDate.now().getDayOfYear()) >= 0) {
+                mayorEdad = true;
+            }
+        }
+        return mayorEdad;
     }
 
     public boolean darBajaCliente(Cliente cliente) {
@@ -185,7 +205,7 @@ public class VideoDaw {
         int index = -1;
         for (int i = 0; i < this.numClientes; i++) {
             if (this.clientesRegistrados[i].getDNI().equalsIgnoreCase(DNI)) {
-                index = -1;
+                index = i;
                 break;
             }
         }
@@ -216,13 +236,42 @@ public class VideoDaw {
             for (int i = 0; i < this.numClientes; i++) {
                 if (this.clientesRegistrados[i] != null) {
                     infoTodosClientes += clientesRegistrados[i].mostrarInfoCliente() + "\n\n";
-                    if (ComprobarSiClienteExisteRepetido(this.clientesRegistrados[i]) > 1) {
+                    if (comprobarSiClienteExisteRepetido(this.clientesRegistrados[i]) > 1) {
                         infoTodosClientes += "ADVERTENCIA - CLIENTE EXISTE REPETIDO";
                     }
                 }
             }
         }
         return infoTodosClientes;
+    }
+
+    //Alquilar
+    public boolean alquilarPelicula(Cliente cliente, Pelicula pelicula) {
+        boolean resultado = false;
+        if (pelicula != null && cliente != null && !pelicula.isAlquilada() && pelicula.getFechaBaja() == null && cliente.getFechaBaja() == null) {
+            cliente.alquilarUnaPelicula(pelicula);
+            pelicula.setAlquilada(true);
+            pelicula.setFechaAlquiler(LocalDateTime.now());
+            pelicula.setDniAlquilando(cliente.getDNI());
+            resultado = true;
+        }
+        return resultado;
+    }
+    public String devolverPelicula(Cliente cliente, Pelicula pelicula) {
+        String resultado = "No se puede devolver la Pelicula";
+        if (pelicula != null && cliente != null && pelicula.isAlquilada()) {
+            if (cliente.alquiloEstaPelicula(pelicula) && pelicula.getDniAlquilando().equalsIgnoreCase(cliente.getDNI())) {
+                pelicula.setAlquilada(false);
+                pelicula.setDniAlquilando("NULL");
+                resultado = "Pelicula " + pelicula.getTitulo() + " devuelta con Exito de Cliente " + cliente.getNombre();
+                if ((pelicula.getSecondsSinceEpoch() - LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)) > 172800) {
+                    resultado += "\n==============================================================";
+                    resultado += "\nADVERTENCIA - PELICULA DEVUELTA CON MAS DE 48 HORAS DE RETRASO";
+                    resultado += "\n==============================================================";
+                }
+            }
+        }
+        return resultado;
     }
 
     //Mostrar info VideoClub

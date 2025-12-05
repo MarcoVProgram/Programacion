@@ -75,7 +75,7 @@ public class Cliente {
     }
 
     //Metodo para alquilar peliculas
-    public boolean alquilarPelicula(Pelicula pelicula) {
+    public boolean alquilarUnaPelicula(Pelicula pelicula) {
         boolean resultado = false;
 
         if (pelicula != null) {
@@ -100,8 +100,20 @@ public class Cliente {
         this.peliculasAlquiladas = nuevaLista;
     }
 
+    public boolean alquiloEstaPelicula(Pelicula pelicula) {
+        boolean resultado = false;
+        for (int i = 0; i < this.numPeliculas; i++) {
+            if (this.peliculasAlquiladas[i].getCod().equalsIgnoreCase(pelicula.getCod())) {
+                resultado = true;
+                break;
+            }
+        }
+
+        return resultado;
+    }
+
     //Metodo de ver todas las peliculas
-    public String mostrarPeliculasAlquiladas() {
+    public String mostrarPeliculasQueFueronAlquiladas() {
         String infoTodasPeliculas = "No hay ningun registro de peliculas alquiladas";
         if (this.numPeliculas > 0) {
             infoTodasPeliculas = "";
