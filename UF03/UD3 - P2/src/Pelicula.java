@@ -12,7 +12,7 @@ public class Pelicula {
     private LocalDateTime fechaAlquiler;
     private boolean isAlquilada;
     private String dniAlquilando;
-    private static int codNumber = 0;
+    private static int codNumber = 0; //Contador para crear codigos
     private final long secondsSinceEpoch;
 
     //Constructor
@@ -21,7 +21,7 @@ public class Pelicula {
         this.genero = genero;
         this.codNumber++;
         this.cod = String.format("P-%04d", codNumber);
-        this.secondsSinceEpoch = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+        this.secondsSinceEpoch = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC); //Obtencion directa de Epoch
         this.fechaRegistro = LocalDate.from(LocalDateTime.ofEpochSecond(secondsSinceEpoch, 0, ZoneOffset.UTC));
         this.isAlquilada = false;
         this.dniAlquilando = "Sin Datos";
@@ -84,13 +84,18 @@ public class Pelicula {
     //Metodos
     public String mostrarInfoPelicula() {
         String infoPelicula;
+
+        //Formato Fecha si existen
         String formattedRegistro = MyUtils.formatDate("dd/MM/yyyy", this.fechaRegistro);
         String formattedBaja = MyUtils.formatDate("dd/MM/yyyy", this.fechaBaja);
         String formattedAlquiler = MyUtils.formatDate("dd/MM/yyyy HH:mm:ss", this.fechaAlquiler);
+
+        //String final
         infoPelicula = String.format("Codigo: %S\nTitulo: %s\nGenero: %s\nFecha de Registro: %s\nFecha de Baja: %s\nUltima Vez Alquilada: %s\n" +
                         "Esta Alquilada: %b",
                 this.cod, this.titulo, this.genero.name(),
                 formattedRegistro, formattedBaja, formattedAlquiler, this.isAlquilada);
+
         return infoPelicula;
     }
 }

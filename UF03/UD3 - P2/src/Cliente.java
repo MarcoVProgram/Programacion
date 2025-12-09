@@ -8,7 +8,7 @@ public class Cliente {
     private String direccion;
     private LocalDate fechaNacimiento;
     private LocalDate fechaBaja;
-    private static int codNumber = 0;
+    private static int codNumber = 0; //Contador para crear codigos
 
     //Arrays
     private int numInicialPeliculas = 5;
@@ -68,21 +68,29 @@ public class Cliente {
     //Metodo para mostrar cliente
     public String mostrarInfoCliente() {
         String infoCliente;
+
+        //Creacion de Fechas si existen
         String fomattedNacimiento = MyUtils.formatDate("dd/MM/yyyy", this.fechaNacimiento);
         String formattedBaja = MyUtils.formatDate("dd/MM/yyyy HH:mm:ss", this.fechaBaja);
+
+        //String Final
         infoCliente = String.format("DNI: %S\nNombre: %s\nNumero de Socio: %S\nDireccion: %s\nFecha de Nacimiento: %s\nFecha de dada de Baja: %s",
                 this.DNI, this.nombre, this.numSocio, this.numSocio, fomattedNacimiento, formattedBaja);
+
         return infoCliente;
     }
 
     //Metodo para alquilar peliculas
-    public boolean alquilarUnaPelicula(Pelicula pelicula) {
+    public boolean alquilerPeliculaHistorial(Pelicula pelicula) {
         boolean resultado = false;
 
         if (pelicula != null) {
+            //Ampliar Lista si lleno
             if (this.numPeliculas >= this.peliculasAlquiladas.length) {
                 ampliarListaDePeliculas();
             }
+
+            //Hacer Registro
             this.peliculasAlquiladas[this.numPeliculas] = pelicula;
             this.numPeliculas++;
             resultado = true;
@@ -94,6 +102,7 @@ public class Cliente {
     //Metodos Privados para crear peliculas
     private void ampliarListaDePeliculas() {
         Pelicula[] nuevaLista = new Pelicula[this.numPeliculas*2];
+
         for (int i = 0; i < this.numPeliculas; i++) {
             nuevaLista[i] = this.peliculasAlquiladas[i];
         }
@@ -101,8 +110,10 @@ public class Cliente {
         this.peliculasAlquiladas = nuevaLista;
     }
 
+    //Comprobacion de que Pelicula hubiese sido Alquilada
     public boolean alquiloEstaPelicula(Pelicula pelicula) {
         boolean resultado = false;
+
         for (int i = 0; i < this.numPeliculas; i++) {
             if (this.peliculasAlquiladas[i].getCod().equalsIgnoreCase(pelicula.getCod())) {
                 resultado = true;
@@ -113,48 +124,17 @@ public class Cliente {
         return resultado;
     }
 
-    //Metodo de ver todas las peliculas
-    public String mostrarPeliculasQueFueronAlquiladas() {
+    //Metodo de ver historial de peliculas (Desuso / Funcional)
+    /*public String mostrarPeliculasQueFueronAlquiladas() {
         String infoTodasPeliculas = "No hay ningun registro de peliculas alquiladas";
         if (this.numPeliculas > 0) {
             infoTodasPeliculas = "";
             for (int i = 0; i < this.numPeliculas; i++) {
                 if (this.peliculasAlquiladas[i] != null) {
-                    infoTodasPeliculas += peliculasAlquiladas[i].mostrarInfoPelicula() + "\n\n";
+                    infoTodasPeliculas += "\n" + peliculasAlquiladas[i].mostrarInfoPelicula() + "\n";
                 }
             }
         }
         return infoTodasPeliculas;
-    }
-
-    //Metodo para devolver peliculas (no en uso)
-    /*private boolean devolverPelicula(Pelicula pelicula) {
-        boolean resultado = false;
-        int index = -1;
-
-        if (pelicula != null && pelicula.isAlquilada()) {
-            for  (int i = 0; i < this.numPeliculas; i++) {
-                if (this.peliculasAlquiladas[i] == pelicula) {
-                    if (this.peliculasAlquiladas[i].getCod().equalsIgnoreCase(pelicula.getCod())) {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-            if (index != -1) {
-                this.peliculasAlquiladas[index] = null;
-                //Opcion 1, mover solo el ultimo
-//                this.peliculasAlquiladas[index] = this.peliculasAlquiladas[this.numPeliculas-1];
-//                this.peliculasAlquiladas[this.numPeliculas-1] = null;
-                this.numPeliculas--;
-                resultado = true;
-                //Opcion 2, recolocar el array
-                for (int i = index; i < this.peliculasAlquiladas.length-1; i++) {
-                    this.peliculasAlquiladas[i] = this.peliculasAlquiladas[i+1];
-                }
-                this.peliculasAlquiladas[this.peliculasAlquiladas.length-1] = null;
-            }
-        }
-        return resultado;
     }*/
 }

@@ -6,10 +6,12 @@ import java.util.regex.Pattern;
 
 public class MyUtils {
 
+    //Imprimir en la Consola
     public static void imprimir(String text) {
         System.out.println(text);
     }
 
+    //Pausa en el Programa a traves de consola
     public static void esperar() {
         Scanner in = new Scanner(System.in);
         imprimir("=========================================");
@@ -18,21 +20,26 @@ public class MyUtils {
         in.nextLine();
     }
 
+    //Creacion Menu a traves de String
     public static void creacionMenu(String title, String[] options, String inputRequest) {
         String resultado = "\n"+ title + "\n";
+
         for (int i = 0; i < options.length; i++) {
             resultado += i+1 + ". " + options[i] + "\n";
         }
+
         resultado += "\n" + inputRequest;
+
         imprimir(resultado);
     }
 
-    //Esta solo se usa para multiples patrones
+    //Pedir Dato por Patron, esta solo se usa para multiples patrones validos
     public static String pedirDato(String inputMistake, Pattern[] pattern) {
         Scanner in = new Scanner(System.in);
         String input;
         Matcher[] matcher = new Matcher[pattern.length];
         boolean valid = true;
+
         do {
             input = in.nextLine();
             if (!valid) {
@@ -46,15 +53,17 @@ public class MyUtils {
                 }
             }
         } while (!valid);
+
         return input;
     }
 
-    //Esta solo se usa para un unico patron
+    //Pedir dato por un Patron, esta solo se usa para un unico patron
     public static String pedirDato(String inputMistake, Pattern pattern) {
         Scanner in = new Scanner(System.in);
         String input;
         Matcher matcher;
         boolean valid = false;
+
         do {
             input = in.nextLine();
             matcher = pattern.matcher(input);
@@ -65,15 +74,20 @@ public class MyUtils {
                 imprimir(inputMistake);
             }
         } while (!valid);
+
         return input;
     }
 
     //Metodo para poner fechas en patrones deseadoso
     public static String formatDate(String pattern, Object fecha) {
         String formattedResult = "N/A";
+
+        //Comprobar fecha existe
         if (fecha != null) {
+            //Confirmar el Objeto es Temporal
             formattedResult = DateTimeFormatter.ofPattern(pattern).format((TemporalAccessor) fecha);
         }
+
         return formattedResult;
     }
 }
