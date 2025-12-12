@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="630411a6-92df-4b60-b408-fed8a425879a" name="Changes" comment="">
+    <list default="true" id="6b57a664-b3fd-4d00-8aeb-291b5a1403e5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../UD3 - P3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UD3 - P3/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../UD3 - P3A1/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../UD3 - P3A1/.idea/vcs.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -9,19 +13,28 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 8
+  &quot;associatedIndex&quot;: 1
 }</component>
-  <component name="ProjectId" id="36dxx4JJzUpDTJGyRODrNJgBOwX" />
+  <component name="ProjectId" id="36jcGY1s4V6beAWeKpBjJ2ZqgxD" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -29,8 +42,12 @@
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/daw1/Documents/Repositorios - Marco/Programacion/UF03/UD3 - P3/UD3 - P3/src/Main.java&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/daw1/Documents/Repositorios - Marco/Programacion/UF03/UD3 - P3/KonohaTech/src/Main.java&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -46,13 +63,13 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="630411a6-92df-4b60-b408-fed8a425879a" name="Changes" comment="" />
-      <created>1765350494431</created>
+      <changelist id="6b57a664-b3fd-4d00-8aeb-291b5a1403e5" name="Changes" comment="" />
+      <created>1765523328413</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1765350494431</updated>
-      <workItem from="1765350495717" duration="97000" />
-      <workItem from="1765523711905" duration="2000" />
+      <updated>1765523328413</updated>
+      <workItem from="1765523329775" duration="17191000" />
+      <workItem from="1765540830057" duration="26000" />
     </task>
     <servers />
   </component>
