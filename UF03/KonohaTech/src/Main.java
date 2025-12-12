@@ -687,8 +687,6 @@ public class Main {
     }
 
     private static void mostrarInfoTodosEquipos(Aldea aldea) {
-        MisUtilidades.imprimir("Introduce el Codigo del Equipo:");
-
         MisUtilidades.imprimir("Estos son todos los equipos:");
         MisUtilidades.imprimir(aldea.mostrarEquiposRegistrados());
     }
