@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6b57a664-b3fd-4d00-8aeb-291b5a1403e5" name="Changes" comment="" />
+    <list default="true" id="6b57a664-b3fd-4d00-8aeb-291b5a1403e5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../KonohaTech/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../KonohaTech/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../UD3 - P4A1/src/UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../UD3 - P4A1/src/UI.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,6 +71,7 @@
       <workItem from="1765523329775" duration="17191000" />
       <workItem from="1765540830057" duration="26000" />
       <workItem from="1765782285992" duration="15000" />
+      <workItem from="1766041225559" duration="13000" />
     </task>
     <servers />
   </component>
