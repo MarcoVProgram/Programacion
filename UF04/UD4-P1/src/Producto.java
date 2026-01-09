@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Producto {
+public class Producto implements Comparable {
 
     //Atributos
     String nombre;
@@ -30,11 +30,14 @@ public class Producto {
     }
 
     //ToString
+
+
     @Override
     public String toString() {
-        return "Producto:" +
-                "\nNombre: " + this.nombre +
-                "\nCantidad: " + this.cantidad;
+        return "Producto {" +
+                " nombre = '" + nombre + '\'' +
+                ", cantidad = " + cantidad +
+                " }";
     }
 
     //HashCode & equals
@@ -47,5 +50,14 @@ public class Producto {
     @Override
     public int hashCode() {
         return Objects.hash(nombre);
+    }
+
+    //Compare to
+    @Override
+    public int compareTo(Object o) {
+        if (o != null && o instanceof Producto) {
+            return nombre.toLowerCase().compareTo(((Producto) o).nombre.toLowerCase());
+        }
+        return 1;
     }
 }
