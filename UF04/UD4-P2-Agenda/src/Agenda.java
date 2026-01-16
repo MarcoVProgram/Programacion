@@ -3,10 +3,12 @@ import java.util.LinkedList;
 public class Agenda {
 
     //Atributos
-    private LinkedList<Contacto> contactos = new LinkedList<>();
+    private LinkedList<Contacto> contactos;
 
     //Constructor
-    public Agenda() {}
+    public Agenda() {
+        contactos = new LinkedList<>();
+    }
 
     //Metodos
     public boolean anadeContacto(Contacto contacto) {

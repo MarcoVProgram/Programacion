@@ -1,8 +1,8 @@
 public class Coche {
 
     //Atributos Privados
-    String color;
-    String marca;
+    private String color;
+    private String marca;
 
     //Constructor
     public Coche(String color, String marca) {
@@ -23,7 +23,11 @@ public class Coche {
         return marca;
     }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
+    //ToString
+    @Override
+    public String toString() {
+        return "{ Color='" + color + '\'' +
+                ", Marca='" + marca + '\'' +
+                " }";
     }
 }
