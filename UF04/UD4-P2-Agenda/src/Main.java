@@ -113,7 +113,7 @@ public class Main {
             nombre = in.nextLine();
             matcherNombre = PATRONNOMBRE.matcher(nombre);
             if (!matcherNombre.matches()) {
-                System.out.println("El nombre del contacto no es valido, usa solo letras y pon la primera em mayusculas:");
+                System.out.print("El nombre del contacto no es valido, usa solo letras y pon la primera em mayusculas: ");
             }
         }  while (!matcherNombre.matches());
 
@@ -123,7 +123,7 @@ public class Main {
             telefono = in.nextLine();
             matcherTelefono = PATRONTELEFONO.matcher(telefono);
             if (!matcherTelefono.matches()) {
-                System.out.println("El numero de telefono no es valido. Escribe un numero de 9 digitos que empiece por 6,7 o 9");
+                System.out.print("El numero de telefono no es valido. Escribe un numero de 9 digitos que empiece por 6,7 o 9: ");
             }
         }  while (!matcherTelefono.matches());
 
@@ -162,7 +162,7 @@ public class Main {
             nombre = in.nextLine();
             matcherNombre = PATRONNOMBRE.matcher(nombre);
             if (!matcherNombre.matches()) {
-                System.out.println("El nombre del contacto no es valido, usa solo letras y pon la primera em mayusculas:");
+                System.out.print("El nombre del contacto no es valido, usa solo letras y pon la primera em mayusculas: ");
             }
         }  while (!matcherNombre.matches());
 
@@ -190,7 +190,7 @@ public class Main {
             nombre = in.nextLine();
             matcherNombre = PATRONNOMBRE.matcher(nombre);
             if (!matcherNombre.matches()) {
-                System.out.println("El nombre del contacto no es valido, usa solo letras y pon la primera em mayusculas:");
+                System.out.print("El nombre del contacto no es valido, usa solo letras y pon la primera em mayusculas: ");
             }
         }  while (!matcherNombre.matches());
 

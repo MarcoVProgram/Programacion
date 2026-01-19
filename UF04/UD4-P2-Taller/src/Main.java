@@ -32,7 +32,7 @@ public class Main {
                 inputMenu = sc.nextLine();
                 matcherMenu = PATRONMENU.matcher(inputMenu);
                 if (!matcherMenu.matches()) {
-                    System.out.println("Opcion invalida, intenta usar un numero del 1 al 3:");
+                    System.out.print("Opcion invalida, intenta usar un numero del 1 al 3: ");
                 }
             } while (!matcherMenu.matches());
             option = inputMenu.charAt(0);
@@ -114,7 +114,7 @@ public class Main {
         //Revision
         if (taller.elementoExiste(matricula)) {
             System.out.println("El coche ya existe, desea reescribirlo? Escribe S (si) o cualquier otra tecla (no)");
-            confirmar = in.nextLine().charAt(0);
+            confirmar = in.nextLine().toUpperCase().charAt(0);
 
             if (confirmar != 'S') {
                 System.out.println("Abortando adicion del coche");
@@ -154,9 +154,9 @@ public class Main {
     }
 
     public static void salir(Taller taller) {
-        System.out.println("Saliendo de la taller");
-        System.out.println(taller.visualizaMatriculas()+"\n");
-        System.out.println(taller.visualizaCoches()+"\n");
-        System.out.println(taller.visualizaTaller()+"\n");
+        System.out.println("Saliendo de la taller:");
+        System.out.println("\n1. Matriculas\n" + taller.visualizaMatriculas());
+        System.out.println("\n2. Inventario\n" + taller.visualizaCoches());
+        System.out.println("\n3. Coches y Caracteristicas\n" + taller.visualizaTaller());
     }
 }
