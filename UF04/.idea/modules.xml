@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Apuntes/Apuntes.iml" filepath="$PROJECT_DIR$/Apuntes/Apuntes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UD4 - TESTARRAY/UD4 - TESTARRAY.iml" filepath="$PROJECT_DIR$/UD4 - TESTARRAY/UD4 - TESTARRAY.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UD4-P1/UD4-P1.iml" filepath="$PROJECT_DIR$/UD4-P1/UD4-P1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UD4-P2-Agenda/UD4-P2-Agenda.iml" filepath="$PROJECT_DIR$/UD4-P2-Agenda/UD4-P2-Agenda.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UD4-P2-Taller/UD4-P2-Taller.iml" filepath="$PROJECT_DIR$/UD4-P2-Taller/UD4-P2-Taller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/UF04.iml" filepath="$PROJECT_DIR$/.idea/UF04.iml" />
+    </modules>
+  </component>
+</project>

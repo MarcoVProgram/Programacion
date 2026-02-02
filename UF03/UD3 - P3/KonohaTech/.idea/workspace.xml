@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b57a664-b3fd-4d00-8aeb-291b5a1403e5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../KonohaTech/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../KonohaTech/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../UD3 - P4A1/src/UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../UD3 - P4A1/src/UI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../UF04/UD4-P2/.idea/workspace.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +71,7 @@
       <workItem from="1765540830057" duration="26000" />
       <workItem from="1765782285992" duration="15000" />
       <workItem from="1766041225559" duration="13000" />
+      <workItem from="1769674423509" duration="25000" />
     </task>
     <servers />
   </component>
