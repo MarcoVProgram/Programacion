@@ -1,0 +1,7 @@
+Hola Bienvenido!
+La dirección de este archivo es: Resources\pelicula2.txt
+
+Lista de Peliculas:
+La Comunidad del Anillo
+Las dos Torres
+El Retorno del Rey

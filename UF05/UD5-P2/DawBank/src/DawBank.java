@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.concurrent.StructureViolationException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -117,7 +118,7 @@ public class DawBank {
                 MyUtils.imprimir(e.getMessage());
                 MyUtils.imprimir("Usa 2 letras y 22 numeros, intentalo de Nuevo.");
             }
-        } while (!IBAN.matches(String.valueOf(IBAN_FORM)));
+        } while (!IBAN_FORM.matcher(IBAN).matches());
 
         //Creacion del Titular
         titular = crearTitular(banco);
@@ -151,7 +152,7 @@ public class DawBank {
                 DNI = "";
                 MyUtils.imprimir("DNI mal introducido. Asegurate de que sean 8 numeros y 1 letra");
             }
-        } while (!DNI.matches(String.valueOf(DNI_FORM)));
+        } while (!DNI_FORM.matcher(DNI).matches());
 
         titular = banco.clienteExiste(DNI);
 
@@ -170,7 +171,7 @@ public class DawBank {
                     nombre = "";
                     MyUtils.imprimir("Usa un nombre y un apellido con correctas mayusculas y minusculas");
                 }
-            } while (!nombre.matches(String.valueOf(NOMBRE_USER_FORM)));
+            } while (!NOMBRE_USER_FORM.matcher(nombre).matches());
 
             fechaNacimiento = MyUtils.pedirFecha();
 
@@ -183,7 +184,7 @@ public class DawBank {
                     telefono = "";
                     MyUtils.imprimir("El telefono son 9 numeros en total y deben empezar en 6,7 o 9");
                 }
-            } while (!telefono.matches(String.valueOf(TELEFONO_FORM)));
+            } while (!TELEFONO_FORM.matcher(telefono).matches());
 
             do {
                 try {
@@ -195,7 +196,7 @@ public class DawBank {
                     MyUtils.imprimir("Usa letras, numeros o caracteres como '-', '_' o '.', un simbolo @," +
                             "despues una direccion de solo letras, un . y un dominio que sea de 2 a 4 letras");
                 }
-            } while (!email.matches(String.valueOf(EMAIL_FORM)));
+            } while (!EMAIL_FORM.matcher(email).matches());
 
             MyUtils.imprimirSinSalto("\nIntroduce la direccion del titular: ");
             direccion = in.nextLine();
@@ -225,17 +226,27 @@ public class DawBank {
         Scanner in;
 
         int IDcuenta = 0;
+        boolean encontrada = false;
 
         String inputSeleccionCuenta;
         String resultado = "Seleccione una de sus Cuentas Bancarias:\n";
         int num = banco.getNumCuentasBancarias();
+        StringBuilder colNums  = new StringBuilder("");
+
         for (int i = 0; i < num; i++) {
             resultado += i + ". " + banco.obtenerCuentaBancaria(banco.getColeccionIBAN()[i]).getTitular().getNombre() +
                     " (" + banco.obtenerCuentaBancaria(banco.getColeccionIBAN()[i]).getIBAN() + ")\n";
         }
         MyUtils.imprimir(resultado);
 
-        Pattern numForm = Pattern.compile("[0-num]");
+        for (int i = 0; i < num; i++) {
+            colNums.append(i);
+            if (i<num-1) {
+                colNums.append("|");
+            }
+        }
+
+        Pattern numForm = Pattern.compile("(" + colNums + ")");
         Matcher matcherIBAN;
         Matcher matcherNum;
         do {
@@ -251,7 +262,11 @@ public class DawBank {
                 for (int i = 0; i < num; i++) {
                     if(banco.obtenerCuentaBancaria(banco.getColeccionIBAN()[i]).getIBAN().equalsIgnoreCase(inputSeleccionCuenta)) {
                         IDcuenta = i;
+                        encontrada = true;
                     }
+                }
+                if (!encontrada) {
+                    MyUtils.imprimir("\nIBAN NO EXISTENTE, seleccionando cuenta por defecto\n");
                 }
             }
             if (matcherNum.matches()) {
@@ -283,7 +298,7 @@ public class DawBank {
                 if (matcherID.matches()) {
                     resultado = cuenta.buscarTransaccionesPorID(Integer.parseInt(inputBusqueda));
                 }
-                if (matcherCantidad.matches()) {
+                if (matcherCantidad.matches() && resultado.equals("No se ha encontrado esa transaccion")) {
                     resultado = cuenta.buscarTodasTransaccionesPorCantidad(Double.parseDouble(inputBusqueda.replaceAll(",", ".")));
                 }
                 if (!matcherID.matches() && !matcherCantidad.matches()) {
@@ -294,6 +309,12 @@ public class DawBank {
                 matcherID = IDForm.matcher(inputBusqueda);
                 matcherCantidad = cantidadForm.matcher(inputBusqueda);
                 MyUtils.imprimir("Ha habido un error al intentar leer el numero, intentalo de nuevo");
+            } catch (Exception e) {
+                inputBusqueda = "";
+                matcherID = IDForm.matcher(inputBusqueda);
+                matcherCantidad = cantidadForm.matcher(inputBusqueda);
+                MyUtils.imprimir("Ha habido un error inesperado");
+                MyUtils.imprimir(e.getMessage());
             }
         } while (!matcherID.matches() && !matcherCantidad.matches());
 
@@ -321,7 +342,7 @@ public class DawBank {
                 inputNuevaTransaccion = "";
                 MyUtils.imprimir("Valor no valido, introduzca 1 o 2");
             }
-        } while (!inputNuevaTransaccion.matches(String.valueOf(patternTipo)));
+        } while (!patternTipo.matcher(inputNuevaTransaccion).matches());
 
         if (inputNuevaTransaccion.equalsIgnoreCase("1")) {
             tipo = Transaccion.INGRESO;
