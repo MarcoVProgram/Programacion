@@ -52,6 +52,12 @@ public class Libro implements Serializable {
         return DateTimeFormatter.ofPattern(fechaFormato).format(this.fechaPublicacion);
     }
 
+    //Metodo 5
+    //@return LocalDate del objeto
+    public LocalDate getRawFechaPublicacion() {
+        return this.fechaPublicacion;
+    }
+
     //ToString
     //@return String con todos los parametros importantes
     @Override

@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -13,10 +12,6 @@ public class Main extends MyUtils {
         //Coleccion de Libros
         LinkedHashMap<String, Libro> biblioteca = new LinkedHashMap<>();
 
-        //Placeholders
-        Libro libro;
-        String ISBN;
-
         //Objeto Scanner
         Scanner input = new Scanner(System.in);
 
@@ -28,23 +23,23 @@ public class Main extends MyUtils {
 
         //Ficheros
         //Rutas
-        final String path = ".\\resources\\";
+        final String path = ".\\src\\resources\\";
         final String fileName = "libreria.dat";
 
         //Variables
-        File libreriaFile = null;
+        File libraryFile = null;
 
 
         //Seleccion del archivo
         try {
 
-            libreriaFile = new File(path + fileName);
+            libraryFile = new File(path + fileName);
 
             //Verdadero y creado si no hay archivo, falso si hay archivo
-            if (libreriaFile.createNewFile()) {
-                print("Creando el archivo almacen: " + fileName);
+            if (libraryFile.createNewFile()) {
+                print("Creando el archivo libreria.dat: " + fileName);
             } else {
-                print("El archivo ya existe, hay datos que cargar");
+                print("El archivo libreria.dat existe, hay datos que cargar");
             }
 
             //Errores
@@ -52,6 +47,49 @@ public class Main extends MyUtils {
 
             //Fallo si ruta no se encuentra u otro problema con el archivo
             print("Error al crear el archivo (libreria.dat): " + e.getMessage());
+        }
+
+        //Lectura de Fichero
+        //Instanciamiento de lectura
+        boolean eof = false;
+        try (FileInputStream fileReader = new FileInputStream(libraryFile);
+             ObjectInputStream bufferedReader = new ObjectInputStream(fileReader)) {
+
+            //Loop hasta complecion
+            while (eof == false) {
+
+                //Lectura
+                Libro temp = (Libro) bufferedReader.readObject();
+                biblioteca.put(temp.getISBN(), temp);
+                print("Leido Libro con ISBN: " + temp.getISBN());
+
+            }
+
+            //Errores
+        } catch (EOFException e) {
+
+            //Fin del Archivo
+            print("Se han leido todos los datos");
+            eof = true;
+
+        } catch (IOException e) {
+
+            //Fallo al intentar leer el archivo
+            print("No se pudo usar el documento");
+            print(e.getMessage());
+            return; //Programa se acaba
+
+        } catch (InputMismatchException e) {
+
+            //Fallo al intentar insertar un dato
+            print("Uno de los datos no se pudo leer");
+            print(e.getMessage());
+
+        } catch (Exception e) {
+
+            //Captura de Fallos imprevistos
+            print("Algo fue mal");
+            print(e.getMessage());
         }
 
         //Datos Menu
@@ -92,7 +130,7 @@ public class Main extends MyUtils {
             //Seleccion del Input
             switch (choice) {
 
-                //Caso 1 - Crear Producto
+                //Caso 1 - Crear Libro y registrarlo en la Biblioteca
                 case '1':
 
                     print("\nCreando un nuevo libro:");
@@ -102,7 +140,7 @@ public class Main extends MyUtils {
                     pause();
                     break;
 
-                //Caso 2 - Mostrar Productos Existentes
+                //Caso 2 - Mostrar libros existentes
                 case '2':
 
                     //Seleccion Metodo de Busqueda
@@ -111,49 +149,35 @@ public class Main extends MyUtils {
                     pause();
                     break;
 
-                //Caso 3 - Eliminar Producto por Codigo
+                //Caso 3 - Eliminar libros por ISBN
                 case '3':
 
-                    print("\nEliminando producto por codigo:");
-
-                    cod = requestCodigo();
-                    libro = biblioteca.remove(cod);
-
-                    if (libro == null) {
-                        print("\nProducto no existe");
-                    }
-                    else {
-                        print("\nProducto eliminado es:");
-                        print(libro.toString());
-                        print("Se ha eliminado exitosamente");
-                    }
+                    print("\nEliminando libro por ISBN:");
 
                     //Datos no guardados
-                    saved = false;
+                    saved = borrarLibro(biblioteca, saved);
+
                     pause();
                     break;
 
                 //Case 4 - Guardar Libros en el Fichero
                 case '4':
 
-                    print("\nComenzando actualizacion del archivo almacen.dat:");
+                    print("\nComenzando actualizacion del archivo libreria.dat:");
 
                     //Edicion del Archivo
-                    try (FileWriter fileWriter = new FileWriter(almacenFile, false);
-                        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+                    try (FileOutputStream fileWriter = new FileOutputStream(libraryFile, false);
+                        ObjectOutputStream bufferedWriter = new ObjectOutputStream(fileWriter)) {
 
-                        for (String key : biblioteca.keySet()) {
-                            bufferedWriter.write(key + "," + biblioteca.get(key).getNombre()
-                                    + "," + biblioteca.get(key).getCantidad() + "," + biblioteca.get(key).getPrecio());
-                            bufferedWriter.newLine();
-                            print("Producto ha sido almacenado: " + key);
+                        for  (Libro libro : biblioteca.values()) {
+                            bufferedWriter.writeObject(libro);
                         }
 
                         //Errores
                     } catch (IOException e) {
 
                         //Fallo al editar el Archivo
-                        print("Error al editar el archivo almacen: " + e.getMessage());
+                        print("Error al editar el archivo libreria.dat: " + e.getMessage());
                     }
 
                     //Datos guardados
@@ -168,7 +192,7 @@ public class Main extends MyUtils {
                     input = new Scanner(System.in);
                     //Confirmacion si hay datos no Guardados
                     if (!saved) {
-                        print("Hay cambios sin guardar, desea salir?");
+                        print("Hay cambios SIN guardar, desea SALIR SIN GUARDAR?");
                         printHere("Escribe (YES) si deseas salir: ");
 
                         //Literal "YES" para salir con datos sin guardar
@@ -188,7 +212,7 @@ public class Main extends MyUtils {
 
                 //Case e - Si saltaron errores
                 case 'e':
-                    print("\nEl input que has insertado no es un numero entre 1 y 7");
+                    print("\nEl input que has insertado no es un numero entre 1 y 5");
                     pause();
                     break;
 
@@ -200,14 +224,14 @@ public class Main extends MyUtils {
             }
         }
         //Fin del Do-While
-        while (choice != '7');
+        while (choice != '5');
 
         input.close();
     }
 
-    //Metodo 1
+    //Metodo 2
     //@return String ISBN, loop hasta que se consiga
-    public static String requestISBN() {
+    private static String requestISBN() {
 
         final Pattern PATTERN_ISBN = Pattern.compile("[0-9]{13}");
 
@@ -219,7 +243,7 @@ public class Main extends MyUtils {
             try {
 
                 printHere("\nIntroduce el ISBN del libro: ");
-                ISBN = inputRequest(PATTERN_ISBN);
+                ISBN = inputRequest(PATTERN_ISBN).toUpperCase();
                 success = true;
 
                 //Errores
@@ -227,17 +251,18 @@ public class Main extends MyUtils {
 
                 //El Input no es correcto
                 print(e.getMessage());
-                print("El ISBN de un libro consiste en 2 letras y 22 numeros, Intentalo de Nuevo");
+                print("El ISBN de un libro consiste en 13 numeros, Intentalo de Nuevo");
             }
         } while (!success);
 
         return ISBN;
     }
 
-    //Metodo
+    //Metodo 3
     //@param biblioteca donde se tiene coleccion de ISBNs
-    //@return boolean si se deben guardar cambios o no, dependiendo de como se encontraba previamente
-    public static boolean createLibro(LinkedHashMap<String, Libro> biblioteca, boolean status) {
+    //@param boolean estado actual de si los archivos estan guardados
+    //@return boolean si se deben guardar cambios o no, dependiendo de como se encontraba previamente, tras crear libro
+    private static boolean createLibro(Map<String, Libro> biblioteca, boolean status) {
 
         String ISBN, titulo, autor;
         LocalDate fechaPublicacion;
@@ -279,12 +304,12 @@ public class Main extends MyUtils {
 
         biblioteca.put(ISBN, new Libro(ISBN, titulo, autor, fechaPublicacion));
 
-        return true;
+        return false;
     }
 
-    //Metodo 3
+    //Metodo 4
     //@param Biblioteca con los libros a mostrar
-    private static void mostrarLibros(LinkedHashMap<String, Libro> biblioteca) {
+    private static void mostrarLibros(Map<String, Libro> biblioteca) {
 
         if (biblioteca.isEmpty()) {
             print("\nLa biblioteca esta vacia, no hay libros que buscar");
@@ -298,20 +323,83 @@ public class Main extends MyUtils {
         modes[1] = "Titulo";
         modes[2] = "Autor";
         modes[3] = "Fecha";
-        String request = "Seleccione una opcion (ISBN por defecto):";
+        String request = "Seleccione una opcion (ISBN por defecto): ";
 
         menuMaker(title,modes,request);
 
         Scanner in = new Scanner(System.in);
         char opt = in.nextLine().charAt(0);
 
-        LinkedHashMap<String, Libro> sorted;
+        //Logica de Ordenamiento
+        //Creacion de una coleccion LinkedList para ordenar LinkedHashMap
+        List<Libro> sorted = new LinkedList<>(biblioteca.values());
+        String orderBy;
 
-        //Ordenacion
         switch (opt) {
+
+            //Case 1 - ISBN -> Por defecto (default)
+
+            //Case 2 - Titulo
             case '2':
-                sorted = biblioteca.entrySet().stream().sorted( e -> e.getValue().getTitulo()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+                //Ordenacion
+                Collections.sort(sorted, new ComparadorLibroTitulo());
+                orderBy = "Titulo";
+                break;
+
+            //Case 3 - Autor
+            case '3':
+
+                //Ordenacion
+                Collections.sort(sorted, new ComparadorLibroAutor());
+                orderBy = "Autor";
+                break;
+
+            //Case 4 - Fecha
+            case '4':
+
+                //Ordenacion
+                Collections.sort(sorted, new ComparadorLibroPublicacion());
+                orderBy = "Fecha";
+                break;
+
+            //Default -> Case 1 - ISBN
+            default:
+
+                //Ordenacion
+                Collections.sort(sorted, new ComparadorLibroISBN());
+                orderBy = "ISBN";
                 break;
         }
+
+        //Imprimir
+        print("\nMostrando todos los Libros (Ordenados por " + orderBy + "):\n");
+        for  (Libro libro : sorted) {
+            print(libro.toString());
+        }
+    }
+
+    //Metodo 5
+    //@param biblioteca donde se tiene coleccion de ISBNs
+    //@param boolean estado actual de si los archivos estan guardados
+    //@return boolean si se deben guardar cambios o no, dependiendo de como se encontraba previamente, tras borrar libro
+    private static boolean borrarLibro(Map<String,Libro> biblioteca, boolean status) {
+
+        if (biblioteca.isEmpty()) {
+            print("No tienes libros a eliminar");
+            return status;
+        }
+
+        String ISBN = requestISBN();
+
+        if (!biblioteca.containsKey(ISBN)) {
+            print("El Libro que buscas no esta en la coleccion");
+            return status;
+        }
+
+        biblioteca.remove(ISBN);
+        print("Libro eliminado exitosamente");
+
+        return false;
     }
 }

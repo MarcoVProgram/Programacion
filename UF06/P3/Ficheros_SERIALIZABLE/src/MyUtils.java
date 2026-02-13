@@ -274,7 +274,7 @@ public class MyUtils {
                 fechaYear = "0";
                 print("Introduce un numero de 4 digitos");
             }
-        } while (Integer.parseInt(fechaYear) < 1800);
+        } while (Integer.parseInt(fechaYear) < 1000);
 
         //Insercion Mes
         do {
