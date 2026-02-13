@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 //Extension de MyUtils por variables de comodidad
-public class Main extends MyUtils {
+public class Main {
 
     //Constantes
     private static final Pattern PATTERNCOD = Pattern.compile("P-[0-9]{4,}");
@@ -29,7 +29,7 @@ public class Main extends MyUtils {
         Scanner input;
 
         //Mensaje Inicio Programa
-        print("Bienvenido al programa del Almacen!");
+        MyUtils.print("Bienvenido al programa del Almacen!");
 
 
         //Ficheros
@@ -48,16 +48,16 @@ public class Main extends MyUtils {
 
             //Verdadero y creado si no hay archivo, falso si hay archivo
             if (almacenFile.createNewFile()) {
-                print("Creando el archivo almacen: " + fileName);
+                MyUtils.print("Creando el archivo almacen: " + fileName);
             } else {
-                print("El archivo ya existe, hay datos que cargar");
+                MyUtils.print("El archivo ya existe, hay datos que cargar");
             }
 
             //Errores
         } catch (IOException e) {
 
             //Fallo si ruta no se encuentra u otro problema con el archivo
-            print("Error al crear el archivo almacen: " + e.getMessage());
+            MyUtils.print("Error al crear el archivo almacen: " + e.getMessage());
         }
 
         //Lectura del Archivo
@@ -76,7 +76,7 @@ public class Main extends MyUtils {
 
                 //Construccion producto e insercion en coleccion
                 storage.put(codigo, new Producto(codigo, nombre, cantidad, precio));
-                print("Producto ha sido almacenado: " + codigo);
+                MyUtils.print("Producto ha sido almacenado: " + codigo);
             }
 
             //Errores
@@ -84,26 +84,26 @@ public class Main extends MyUtils {
 
             //Llegar al Fin del Archivo
             eof = true;
-            print("Se ha leido todo el fichero");
+            MyUtils.print("Se ha leido todo el fichero");
 
         } catch (IOException e) {
 
             //Fallo al intentar leer el archivo
-            print("No se pudo usar el documento");
-            print(e.getMessage());
+            MyUtils.print("No se pudo usar el documento");
+            MyUtils.print(e.getMessage());
             return; //Programa se acaba
 
         } catch (InputMismatchException e) {
 
             //Fallo al intentar insertar un dato
-            print("Uno de los datos no se pudo leer");
-            print(e.getMessage());
+            MyUtils.print("Uno de los datos no se pudo leer");
+            MyUtils.print(e.getMessage());
 
         } catch (Exception e) {
 
             //Captura de Fallos imprevistos
-            print("Algo fue mal");
-            print(e.getMessage());
+            MyUtils.print("Algo fue mal");
+            MyUtils.print(e.getMessage());
         }
 
         //Datos Menu
@@ -130,13 +130,13 @@ public class Main extends MyUtils {
             //Scanner lectura por si se necesita
             input = new Scanner(System.in);
             //Display del Menu
-            menuMaker(title,options,inputPetition);
+            MyUtils.menuMaker(title,options,inputPetition);
 
             //Lectura del input
             try {
 
                 //Seleccion del primer caracter como input
-                selected = inputRequest(menu_options).charAt(0);
+                selected = MyUtils.inputRequest(menu_options).charAt(0);
 
                 //Errores
             } catch (InputIncorrectoException e) {
@@ -151,60 +151,60 @@ public class Main extends MyUtils {
                 //Caso 1 - Crear Producto
                 case '1':
 
-                    print("\nCreando un nuevo producto:");
+                    MyUtils.print("\nCreando un nuevo producto:");
 
                     product = createProduct();
                     product = storage.put(product.getCodigo(), product);
-                    print("\nProducto creado exitosamente");
+                    MyUtils.print("\nProducto creado exitosamente");
 
                     //Producto no es null si reemplaza a un producto
                     if (product != null) {
-                        print("\nEl siguiente producto ha sido sobreescrito:");
-                        print(product.toString());
+                        MyUtils.print("\nEl siguiente producto ha sido sobreescrito:");
+                        MyUtils.print(product.toString());
                     }
 
                     //Datos no guardados
                     allSaved = false;
-                    pause();
+                    MyUtils.pause();
                     break;
 
                 //Caso 2 - Mostrar Productos Existentes
                 case '2':
 
-                    print("\nMostrando todos los productos:\n");
+                    MyUtils.print("\nMostrando todos los productos:\n");
 
                     if (!storage.isEmpty()) {
                         for (Producto p : storage.values()) {
-                            print(p.toString());
+                            MyUtils.print(p.toString());
                         }
                     }
                     else {
-                        print("Almacen esta vacio");
+                        MyUtils.print("Almacen esta vacio");
                     }
 
-                    pause();
+                    MyUtils.pause();
                     break;
 
                 //Caso 3 - Eliminar Producto por Codigo
                 case '3':
 
-                    print("\nEliminando producto por codigo:");
+                    MyUtils.print("\nEliminando producto por codigo:");
 
                     cod = requestCodigo();
                     product = storage.remove(cod);
 
                     if (product == null) {
-                        print("\nProducto no existe");
+                        MyUtils.print("\nProducto no existe");
                     }
                     else {
-                        print("\nProducto eliminado es:");
-                        print(product.toString());
-                        print("Se ha eliminado exitosamente");
+                        MyUtils.print("\nProducto eliminado es:");
+                        MyUtils.print(product.toString());
+                        MyUtils.print("Se ha eliminado exitosamente");
                     }
 
                     //Datos no guardados
                     allSaved = false;
-                    pause();
+                    MyUtils.pause();
                     break;
 
                 //Case 4 - Restaurar Ultimo cambio del Inventario
@@ -212,56 +212,56 @@ public class Main extends MyUtils {
 
                     //Buscando si existe algun producto en placeholder
                     if (product == null) {
-                        print("\nNo hay cambios que restaurar");
+                        MyUtils.print("\nNo hay cambios que restaurar");
                     } else {
-                        print("\nIntentando restaurar el producto:");
-                        print(product.toString());
+                        MyUtils.print("\nIntentando restaurar el producto:");
+                        MyUtils.print(product.toString());
 
                         //Producto es null si no reemplaza a otro producto
                         product = storage.put(product.getCodigo(), product);
-                        print("\nProducto se ha insertado de nuevo de forma exitosa");
+                        MyUtils.print("\nProducto se ha insertado de nuevo de forma exitosa");
 
                         if (product != null) {
-                            print("\nEl siguiente producto ha sobreescrito:");
-                            print(product.toString());
+                            MyUtils.print("\nEl siguiente producto ha sobreescrito:");
+                            MyUtils.print(product.toString());
                         }
                     }
 
                     //Datos no guardados
                     allSaved = false;
-                    pause();
+                    MyUtils.pause();
                     break;
 
                 //Case 5 - Modificar Cantidad de un Producto
                 case '5':
 
-                    print("\nModificando productos en el almacen:");
+                    MyUtils.print("\nModificando productos en el almacen:");
                     cod = requestCodigo();
 
                     if (storage.containsKey(cod)) {
-                        print("Se ha encontrado en el almacen, el producto: " + storage.get(cod).getNombre() +
+                        MyUtils.print("Se ha encontrado en el almacen, el producto: " + storage.get(cod).getNombre() +
                                 " con una cantidad: " + storage.get(cod).getCantidad());
 
-                        print("\nIntroduce ahora la nueva cantidad");
+                        MyUtils.print("\nIntroduce ahora la nueva cantidad");
                         amt = requestCantidad();
 
                         storage.get(cod).setCantidad(amt);
-                        print("\nSe ha actualizado la cantidad correctamente");
-                        print(storage.get(cod).toString());
+                        MyUtils.print("\nSe ha actualizado la cantidad correctamente");
+                        MyUtils.print(storage.get(cod).toString());
                     }
                     else {
-                        print("No existe este codigo en el almacen");
+                        MyUtils.print("No existe este codigo en el almacen");
                     }
 
                     //Datos no guardados
                     allSaved = false;
-                    pause();
+                    MyUtils.pause();
                     break;
 
                 //Case 6 - Guardar Productos en el Fichero
                 case '6':
 
-                    print("\nComenzando actualizacion del archivo almacen.dat:");
+                    MyUtils.print("\nComenzando actualizacion del archivo almacen.dat:");
 
                     //Edicion del Archivo
                     try (FileOutputStream fileWriter = new FileOutputStream(almacenFile, false);
@@ -272,19 +272,19 @@ public class Main extends MyUtils {
                             bufferedWriter.writeUTF(storage.get(key).getNombre());
                             bufferedWriter.writeInt(storage.get(key).getCantidad());
                             bufferedWriter.writeDouble(storage.get(key).getPrecio());
-                            print("Producto ha sido almacenado: " + key);
+                            MyUtils.print("Producto ha sido almacenado: " + key);
                         }
 
                         //Errores
                     } catch (IOException e) {
 
                         //Fallo al editar el Archivo
-                        print("Error al editar el archivo almacen: " + e.getMessage());
+                        MyUtils.print("Error al editar el archivo almacen: " + e.getMessage());
                     }
 
                     //Datos guardados
                     allSaved = true;
-                    pause();
+                    MyUtils.pause();
                     break;
 
                 //Case 7 - Salir
@@ -292,34 +292,34 @@ public class Main extends MyUtils {
 
                     //Confirmacion si hay datos no Guardados
                     if (!allSaved) {
-                        print("Hay cambios sin guardar, desea salir?");
-                        printHere("Escribe (YES) si deseas salir: ");
+                        MyUtils.print("Hay cambios sin guardar, desea salir?");
+                        MyUtils.printHere("Escribe (YES) si deseas salir: ");
 
                         //Literal "YES" para salir con datos sin guardar
                         if (input.nextLine().equals("YES")) {
-                            print("\nSaliendo del programa...");
+                            MyUtils.print("\nSaliendo del programa...");
                         }
                         else {
-                            print("Abortando...");
+                            MyUtils.print("Abortando...");
                             //Seleccion variable para no terminar Do-While
                             selected = 'e';
                         }
                     }
                     else {
-                        print("\nSaliendo del programa...");
+                        MyUtils.print("\nSaliendo del programa...");
                     }
                     break;
 
                 //Case e - Si saltaron errores
                 case 'e':
-                    print("\nEl input que has insertado no es un numero entre 1 y 7");
-                    pause();
+                    MyUtils.print("\nEl input que has insertado no es un numero entre 1 y 7");
+                    MyUtils.pause();
                     break;
 
                 //Case default - valor no accessible para control
                 default:
-                    print("Ooops! No tendrias que estar aqui, input introducido (" + selected + "), notifica a un desarrollador");
-                    pause();
+                    MyUtils.print("Ooops! No tendrias que estar aqui, input introducido (" + selected + "), notifica a un desarrollador");
+                    MyUtils.pause();
                     break;
             }
         }
@@ -342,16 +342,16 @@ public class Main extends MyUtils {
         do {
             try {
 
-                printHere("\nIntroduce el codigo del producto: ");
-                codigo = inputRequest(PATTERNCOD);
+                MyUtils.printHere("\nIntroduce el codigo del producto: ");
+                codigo = MyUtils.inputRequest(PATTERNCOD);
                 success = true;
 
                 //Errores
             } catch (InputIncorrectoException e) {
 
                 //El Input no es correcto
-                print(e.getMessage());
-                print("El codigo del producto tiene que ser 'P-XXXX' donde XXXX son 4 numeros o mas, Intentalo de Nuevo");
+                MyUtils.print(e.getMessage());
+                MyUtils.print("El codigo del producto tiene que ser 'P-XXXX' donde XXXX son 4 numeros o mas, Intentalo de Nuevo");
             }
         } while (!success);
 
@@ -372,15 +372,15 @@ public class Main extends MyUtils {
         do {
             try {
 
-                printHere("\nIntroduce la cantidad del producto: ");
+                MyUtils.printHere("\nIntroduce la cantidad del producto: ");
                 cantidad = in.nextInt();
                 success = true;
             } catch (InputMismatchException e) {
 
                 //El Input no es correcto
-                print("Cantidad introducida no es valida, intentalo de nuevo");
+                MyUtils.print("Cantidad introducida no es valida, intentalo de nuevo");
                 in.nextLine();//Se necesita para evitar un bucle infinito de error
-                print("Limpiando consola");
+                MyUtils.print("Limpiando consola");
             }
         } while (!success);
 
@@ -408,11 +408,11 @@ public class Main extends MyUtils {
         //Nombre
         do {
 
-            printHere("\nIntroduce el nombre del producto: ");
+            MyUtils.printHere("\nIntroduce el nombre del producto: ");
             nombre = in.nextLine().replaceAll(",", "");
 
             if (nombre.isEmpty()) {
-                print("No introduzcas un nombre vacio");
+                MyUtils.print("No introduzcas un nombre vacio");
             }
         } while (nombre.isEmpty());
 
@@ -425,7 +425,7 @@ public class Main extends MyUtils {
 
             try {
 
-                printHere("\nIntroduce el precio del producto de hasta 2 decimales: ");
+                MyUtils.printHere("\nIntroduce el precio del producto de hasta 2 decimales: ");
                 precio = in.nextDouble();
                 precio = Math.round(precio * 100.0) / 100.0;
                 success = true;
@@ -434,9 +434,9 @@ public class Main extends MyUtils {
             } catch (InputMismatchException e) {
 
                 //El Input no es correcto
-                print("Precio introducido no es valido, intentalo de nuevo");
+                MyUtils.print("Precio introducido no es valido, intentalo de nuevo");
                 in.nextLine();//Se necesita para evitar un bucle infinito de error
-                print("Limpiando consola");
+                MyUtils.print("Limpiando consola");
             }
         } while (!success);
 
