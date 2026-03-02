@@ -1,13 +1,22 @@
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class GestionVideoDaw {
+
+    //Patrones
+    private static final Pattern codForm = Pattern.compile("P-[0-9]{4,}");
+    private static final Pattern menuInputPattern = Pattern.compile("[1-9]");
+    private static final Pattern nombreForm = Pattern.compile("[A-Z][a-z]+ [A-Z a-z]+");
+    private static final Pattern dniForm = Pattern.compile("[0-9]{8}[A-Za-z]");
+
     public static void main(String[] args) {
 
         //Comienzo de codigo
-        ColeccionVideoDaw LibreCoders = new ColeccionVideoDaw();
+        LinkedList<VideoDaw> registroVideoClubs = new LinkedList<>();
 
         //Holders de Objetos
         VideoDaw videoClubSelected;
@@ -16,8 +25,8 @@ public class GestionVideoDaw {
         LocalDate dt;
 
         //Creacion VideoClub inicial
-        registroDeVideoDaw(LibreCoders);
-        videoClubSelected = LibreCoders.getRegistroVideoDaw()[0];
+        registroDeVideoDaw(registroVideoClubs);
+        videoClubSelected = registroVideoClubs.getRegistroVideoDaw()[0];
         Scanner sc;
 
         //Input variables
@@ -33,14 +42,6 @@ public class GestionVideoDaw {
 
         //Patrones
         Pattern seleccionform = Pattern.compile("[1-9][0-9]*");
-        Pattern generoForm = Pattern.compile("[0-4]");
-        Pattern codForm = Pattern.compile("P-[0-9]{4,}");
-        Pattern menuInputPattern = Pattern.compile("[1-9]");
-        Pattern nombreForm = Pattern.compile("[A-Z][a-z]+ [A-Z][a-z]+");
-        Pattern dniForm = Pattern.compile("[0-9]{8}[A-Za-z]");
-        Pattern anioForm = Pattern.compile("[0-9]{4}");
-        Pattern mesForm = Pattern.compile("[0-9]{2}");
-        Pattern diaForm = Pattern.compile("[0-9]{2}");
 
         //Menu
         String[] menuGestionVideoDaw = new String[9];
@@ -55,43 +56,46 @@ public class GestionVideoDaw {
         menuGestionVideoDaw[8] = "Salir (terminar programa)";
 
         do {
+
             sc = new Scanner(System.in);
 
             //Display Menu Principal
             MyUtils.menuMaker("GESTION VIDEO DAW",menuGestionVideoDaw,"Introduce una opcion:");
-            inputMainMenu = MyUtils.inputRequestLoop("Input de Menu no Valido. Introduce un numero del 1 al 9",menuInputPattern);
-            option = Integer.parseInt(inputMainMenu);
+            inputMainMenu = MyUtils.inputRequestLoop(menuInputPattern, "Input de Menu no Valido. Introduce un numero del 1 al 9");
+            option = inputMainMenu.charAt(0);
 
             //Implementacion del Menu Principal con sus funcionalidades
             switch (option) {
-                case 1:
+
+                case '1':
+
                     //Creacion de nuevo VideoClub
-                    registroDeVideoDaw(LibreCoders);
-                    //Fin Creacion de nuevo VideClub
+                    registroDeVideoDaw(registroVideoClubs);
                     break;
-                case 2:
+
+                case '2':
                     //Seleccion de VideoClub
 
                     //Comprobacion de que haya mas de 1 VideoClub
-                    if (LibreCoders.getNumRegistros() > 1) {
+                    if (registroVideoClubs.getNumRegistros() > 1) {
                         //Muestra de los VideoClubs existentes
-                        MyUtils.print("Existen mas de un VideoClub existence. Por favor, escoja el VideoCLub que desee usar, del 1 al " + LibreCoders.getNumRegistros());
-                        MyUtils.print(LibreCoders.mostrarTodosVideoClub());
+                        MyUtils.print("Existen mas de un VideoClub existence. Por favor, escoja el VideoCLub que desee usar, del 1 al " + registroVideoClubs.getNumRegistros());
+                        MyUtils.print(registroVideoClubs.mostrarTodosVideoClub());
 
                         //Seleccion del VideoClub
                         MyUtils.print("Seleccione un videoclub:");
                         do {
                             seleccionVideClub = MyUtils.inputRequestLoop("Valor introducido no valido. Intenta introducir el indice del VideoClub deseado",seleccionform);
 
-                            if (Integer.parseInt(seleccionVideClub) > LibreCoders.getNumRegistros() || Integer.parseInt(seleccionVideClub) < 1) {
+                            if (Integer.parseInt(seleccionVideClub) > registroVideoClubs.getNumRegistros() || Integer.parseInt(seleccionVideClub) < 1) {
                                 MyUtils.print("Has escogido un numero fuera del rango, intenta introducir el indice del VideoClub");
                             }
                             else {
                                 MyUtils.print("VideoClub seleccionado");
-                                videoClubSelected = LibreCoders.getRegistroVideoDaw()[Integer.parseInt(seleccionVideClub) - 1];
+                                videoClubSelected = registroVideoClubs.getRegistroVideoDaw()[Integer.parseInt(seleccionVideClub) - 1];
                             }
 
-                        } while (Integer.parseInt(seleccionVideClub) > LibreCoders.getNumRegistros() || Integer.parseInt(seleccionVideClub) < 1);
+                        } while (Integer.parseInt(seleccionVideClub) > registroVideoClubs.getNumRegistros() || Integer.parseInt(seleccionVideClub) < 1);
                     }
 
                     //Si no hay dos o mas VideoClubs a escoger.
@@ -100,11 +104,11 @@ public class GestionVideoDaw {
                     }
 
                     //Se muestra informacion al final del VideoClub activo
-                    MyUtils.print(videoClubSelected.mostrarInfoVideoDaw());
+                    MyUtils.print(videoClubSelected.toString());
                     MyUtils.pause();
                     //Fin Seleccion VideoClub
                     break;
-                case 3:
+                case '3':
                     //Inicio Registro de Nueva Pelicula en el VideoClub
                     MyUtils.print("Registrando una nueva pelicula en el VideClub");
 
@@ -143,7 +147,7 @@ public class GestionVideoDaw {
                     MyUtils.pause();
                     //Fin de Registro de Pelicula
                     break;
-                case 4:
+                case '4':
                     //Inicio Registro de Nuevo Cliente en el VideoClub
                     MyUtils.print("Registrando un nuevo cliente en el VideClub");
 
@@ -227,7 +231,7 @@ public class GestionVideoDaw {
                     MyUtils.pause();
                     //Fin de Registrar Cliente
                     break;
-                case 5:
+                case '5':
                     //Inicio Alquiler de Pelicula
                     MyUtils.print("Alquilando Pelicula en el VideoClub");
 
@@ -243,10 +247,10 @@ public class GestionVideoDaw {
                     codPelicula = MyUtils.inputRequestLoop("Introduce el codigo de Pelicula apropiado, P-XXXX:",codForm);
 
                     //Busqueda de Pelicula
-                    peliculaSelected = videoClubSelected.buscarPelicula(codPelicula);
+                    peliculaSelected = videoClubSelected.buscarArticulo(codPelicula);
 
                     //Si se consigue hacer la alquilacion de forma exitosa
-                    alquilacionExito = videoClubSelected.alquilarPelicula(clienteSelected, peliculaSelected);
+                    alquilacionExito = videoClubSelected.alquilarArticulo(clienteSelected, peliculaSelected);
                     if (alquilacionExito) {
                         //Si la operacion salio bien
                         MyUtils.print("Pelicula " + peliculaSelected.getTitulo() + " alquilada exitosamente por Cliente " + clienteSelected.getNombre());
@@ -258,7 +262,7 @@ public class GestionVideoDaw {
                     MyUtils.pause();
                     //Fin de Alquiler
                     break;
-                case 6:
+                case '6':
                     //Inicio devolucion de Pelicula
                     MyUtils.print("Devolviendo Pelicula en el VideoClub");
 
@@ -274,7 +278,7 @@ public class GestionVideoDaw {
                     codPelicula = MyUtils.inputRequestLoop("Introduce el codigo de Pelicula apropiado, P-XXXX:",codForm);
 
                     //Busqueda de Pelicula
-                    peliculaSelected = videoClubSelected.buscarPelicula(codPelicula);
+                    peliculaSelected = videoClubSelected.buscarArticulo(codPelicula);
 
                     //Intento de devolver pelicula, imprimiendo si es un error o si fue exitoso, y advirtiendo si hubo mas de 48 horas
                     devolucion = videoClubSelected.devolverPelicula(clienteSelected, peliculaSelected);
@@ -282,7 +286,7 @@ public class GestionVideoDaw {
                     MyUtils.pause();
                     //Fin de devolucion de Pelicula
                     break;
-                case 7:
+                case '7':
                     //Inicio dar Baja a Cliente
                     MyUtils.print("Dando de Baja a un cliente en el VideClub");
 
@@ -317,7 +321,7 @@ public class GestionVideoDaw {
                     MyUtils.pause();
                     //Fin dada Baja Cliente
                     break;
-                case 8:
+                case '8':
                     //Inicio dada de Baja a Pelicula
                     MyUtils.print("Dando de Baja a una pelicula en el VideClub");
 
@@ -332,7 +336,7 @@ public class GestionVideoDaw {
                         codPelicula = MyUtils.inputRequestLoop("Introduce el codigo de Pelicula apropiado, P-XXXX:", codForm);
 
                         //Busqueda de Pelicula
-                        peliculaSelected = videoClubSelected.buscarPelicula(codPelicula);
+                        peliculaSelected = videoClubSelected.buscarArticulo(codPelicula);
 
                         //Intento de Dar de Baja Pelicula
                         bajaPeliculaExito = videoClubSelected.darBajaPelicula(peliculaSelected);
@@ -351,7 +355,7 @@ public class GestionVideoDaw {
                     MyUtils.pause();
                     //Fin de Baja de Pelicula
                     break;
-                case 9:
+                case '9':
                     //Salirse de la Aplicacion
                     MyUtils.print("Saliendo del Programa");
                     break;
@@ -361,11 +365,12 @@ public class GestionVideoDaw {
                     MyUtils.pause();
                     break;
             }
-        } while (option != 9); //Loop sale cuando se Sale de la Aplicacion
+        } while (option != '9'); //Loop sale cuando se Sale de la Aplicacion
     }
 
     //Metodos
-    public static void registroDeVideoDaw(ColeccionVideoDaw coleccion) {
+    public static void registroDeVideoDaw(List coleccion) {
+
         //Declaracion de Variables
         Scanner in  = new Scanner(System.in);
         String direccion;

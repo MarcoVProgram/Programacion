@@ -1,14 +1,14 @@
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Pelicula extends Articulo implements Serializable {
-    private static final long serialVersionUID = 1467871391905134582L;
+public class VideoJuego extends Articulo implements Serializable {
+    private static final long serialVersionUID = -3397271303225845263L;
 
     //Variables Privadas
     private GeneroPeli genero;
 
     //Constructor
-    public Pelicula(String titulo, GeneroPeli genero) {
+    public VideoJuego(String titulo, GeneroPeli genero) {
         super(titulo);
         this.genero = genero;
     }
@@ -24,7 +24,7 @@ public class Pelicula extends Articulo implements Serializable {
         String info;
 
         //String final
-        info = String.format("Pelicula -> [ " + super.toString() + "\tGenero: %S ]", this.getGenero());
+        info = String.format( "VideoJuego --> [ " + super.toString() + "\tGenero: %S ]", this.getGenero());
 
         return info;
     }
@@ -33,8 +33,8 @@ public class Pelicula extends Articulo implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Pelicula pelicula = (Pelicula) o;
-        return Objects.equals(this.cod, pelicula.cod);
+        VideoJuego videojuego = (VideoJuego) o;
+        return Objects.equals(this.cod, videojuego.cod);
     }
 
     @Override

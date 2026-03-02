@@ -1,43 +1,30 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.LinkedList;
 
 public class VideoDaw {
+
     //Variables privadas
     private String CIF;
     private String direccion;
     private LocalDate fechaAlta;
 
     //Arrays
-    private int numPeliculas;
-    private int numPeliculasIniciales = 5;
-    private Pelicula[] peliculasRegistradas;
-    private int numClientes;
-    private int numClientesIniciales = 5;
-    private Cliente[] clientesRegistrados;
+    private LinkedList<Articulo> articulosRegistrados;
+    private LinkedList<Cliente> clientesRegistrados;
 
     //Constructor
-    /*public VideoDaw(String CIF, String direccion, LocalDate fechaAlta) {
-        this.CIF = CIF;
-        this.direccion = direccion;
-        this.fechaAlta = fechaAlta;
-        this.numPeliculas = 0;
-        this.numClientes = 0;
-        peliculasRegistradas = new Pelicula[numPeliculasIniciales];
-        clientesRegistrados = new Cliente[numClientesIniciales];
-    }*/
     public VideoDaw(String CIF, String direccion) {
         this.CIF = CIF;
         this.direccion = direccion;
         this.fechaAlta = LocalDate.now();
-        this.numPeliculas = 0;
-        this.numClientes = 0;
-        this.peliculasRegistradas = new Pelicula[numPeliculasIniciales];
-        this.clientesRegistrados = new Cliente[numClientesIniciales];
+
+        this.articulosRegistrados = new LinkedList<>();
+        this.clientesRegistrados = new LinkedList<>();
     }
 
     //Getter
-
     public String getCIF() {
         return this.CIF;
     }
@@ -50,156 +37,95 @@ public class VideoDaw {
         return this.fechaAlta;
     }
 
-    public int getNumPeliculas() {
-        return this.numPeliculas;
-    }
-
-    public int getNumClientes() {
-        return this.numClientes;
-    }
 
     //Setters no hay
 
     //Metodo para registrar peliculas
-    public boolean registrarPelicula(Pelicula pelicula) {
-        boolean resultado = false;
+    public boolean registrarArticulo(Articulo articulo) {
 
-        //Si pelicula existe
-        if (pelicula != null) {
-            //Ampliar lista si llena
-            if (this.numPeliculas >= this.peliculasRegistradas.length) {
-                ampliarListaDePeliculas();
-            }
+        if (articulo != null) {
 
-            //Sumar Pelicula al registro
-            this.peliculasRegistradas[this.numPeliculas] = pelicula;
-            this.numPeliculas++;
-            resultado = true;
+            this.articulosRegistrados.add(articulo);
+            return true;
         }
 
-        return resultado;
+        return false;
     }
 
-    //Metodos Privados para crear y devolver peliculas
-    private void ampliarListaDePeliculas() {
-        Pelicula[] nuevaLista = new Pelicula[this.numPeliculas *2];
-
-        for (int i = 0; i < this.numPeliculas; i++) {
-            nuevaLista[i] = this.peliculasRegistradas[i];
-        }
-
-        this.peliculasRegistradas = nuevaLista;
-    }
-
-
-    public boolean darBajaPelicula(Pelicula pelicula) {
+    //Metodo actualizar fecha baja de articulo ahora
+    public boolean darBajaArticulo(Articulo articulo) {
         boolean resultado = false;
-        int index = -1;
+        int index;
 
-        //Solo si pelicula existe y no esta dada de baja
-        if (pelicula != null && pelicula.getFechaBaja() == null) {
+        if (!this.articulosRegistrados.isEmpty() && articulo != null && articulo.getFechaBaja() == null) {
 
-            //Comprobacion Seguridad que este en la lista
-            for  (int i = 0; i < this.numPeliculas; i++) {
-                if (this.peliculasRegistradas[i] == pelicula) {
-                    //Comprobacion final, por precaucion
-                    if (this.peliculasRegistradas[i].getCod().equalsIgnoreCase(pelicula.getCod())) {
-                        index = i;
-                        break;
-                    }
-                }
-            }
+            index = this.articulosRegistrados.indexOf(articulo);//Devuelve -1 si no se encuentra
 
-            //Solo cuando estemos seguros se da de baja
             if (index != -1) {
-                this.peliculasRegistradas[index].setFechaBaja(LocalDate.now());
+                this.articulosRegistrados.get(index).setFechaBaja(LocalDate.now());
                 resultado = true;
             }
         }
+
         return resultado;
     }
 
-    //Buscar Pelicula
-    public Pelicula buscarPelicula(String codPelicula) {
-        Pelicula pelicula = null;
-        int index = -1;
+    //Metodo Buscar Articulo
+    public Articulo buscarArticulo(String codArticulo) {
+        Articulo articulo = null;
 
-        //Buscando peliculas a traves de Codigo de Pelicula
-        for (int i = 0; i < this.numPeliculas; i++) {
-            if (this.peliculasRegistradas[i].getCod().equalsIgnoreCase(codPelicula)) {
-                index = i;
-                break;
+        if (!this.articulosRegistrados.isEmpty()) {
+
+            for (Articulo a : this.articulosRegistrados) {
+                if (a.getCod().equalsIgnoreCase(codArticulo)) {
+
+                    articulo = a;
+                }
             }
         }
 
-        //Solo si se encontro la pelicula
-        if (index != -1) {
-            pelicula = this.peliculasRegistradas[index];
+        return articulo;
+    }
+
+    //Metodo Articulo Existe
+    public boolean articuloExiste(String codArticulo) {
+        boolean existe = false;
+
+        if (!this.articulosRegistrados.isEmpty()) {
+
+            for (Articulo a : this.articulosRegistrados) {
+                if (a.getCod().equalsIgnoreCase(codArticulo)) {
+
+                    existe = true;
+                }
+            }
         }
 
-        return pelicula;
+        return existe;
     }
 
     //Metodo para registrar o dar baja a cliente
     public boolean registrarCliente(Cliente cliente) {
-        boolean resultado = false;
 
-        //Se comprueba que exista
-        if (cliente != null) {
-            //Amplar lista si llena
-            if (this.numClientes >= this.clientesRegistrados.length) {
-                ampliarListaDeClientes();
-            }
-            //Comprobacion que no se repita mismo usuario por DNI y que sea de edad correcta
-            if (comprobarSiClienteExisteRepetido(cliente) == 0 && clienteMayorEdad(cliente)) {
-                //Regostro del Cliente a la lista
-                this.clientesRegistrados[this.numClientes] = cliente;
-                this.numClientes++;
-                resultado = true;
-            }
+        if (cliente != null && clienteMayorEdad(cliente)) {
+
+            this.clientesRegistrados.add(cliente);
+            return true;
         }
 
-        return resultado;
+        return false;
     }
 
-    //Metodos Privados para crear clientes
-    private void ampliarListaDeClientes() {
-        Cliente[] nuevaLista = new Cliente[this.numClientes *2];
-
-        for (int i = 0; i < this.numClientes; i++) {
-            nuevaLista[i] = this.clientesRegistrados[i];
-        }
-
-        this.clientesRegistrados = nuevaLista;
-    }
-
-    //Cuantas veces se repite un cliente, por si es mas de una saberlo por cualquier motivo
-    private int comprobarSiClienteExisteRepetido(Cliente cliente) {
-        int repeticiones = 0;
-
-        for (int i = 0; i < this.numClientes; i++) {
-            //Comprbacion a traves de DNI
-            if (cliente.getDNI().equals(this.clientesRegistrados[i].getDNI())) {
-                repeticiones++;
-            }
-        }
-
-        return repeticiones;
-    }
-
+    //Metodo comprobacion mayor de edad
     private boolean clienteMayorEdad(Cliente cliente) {
         boolean mayorEdad = false;
-        /*if (Math.abs(cliente.getFechaNacimiento().atStartOfDay(ZoneId.systemDefault()).toEpochSecond() - LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)) > 567950400) {
-            //Epoch fecha es (3600 * 24 * 365,25* 18) (18 anios) - 1 dia (86400)
-            mayorEdad = true;
-        }*/
 
-        //Comprobacion si son mayores de 18
+        //Caso mayores de 18
         if (Math.abs(LocalDate.now().getYear() - cliente.getFechaNacimiento().getYear()) > 18) {
             mayorEdad = true;
         }
 
-        //Si estan en el umbral de edad, se comprueba con dia y mes
+        //Metodo comprobacion del Dia
         if (Math.abs(LocalDate.now().getYear() - cliente.getFechaNacimiento().getYear()) == 18) {
             if (Math.abs(LocalDate.now().getDayOfYear() - cliente.getFechaNacimiento().getDayOfYear()) >= 0) {
                 mayorEdad = true;
@@ -209,26 +135,17 @@ public class VideoDaw {
         return mayorEdad;
     }
 
+    //Metodo actualizar decha de baja del Cliente
     public boolean darBajaCliente(Cliente cliente) {
         boolean resultado = false;
-        int index = -1;
+        int index;
 
-        //Comprobacion que existe y no se haya dado de baja antes
-        if (cliente != null && cliente.getFechaBaja() == null) {
-            for  (int i = 0; i < this.numPeliculas; i++) {
-                //Comprobacion Seguridad que este en nuestra lista
-                if (this.clientesRegistrados[i] == cliente) {
-                    //Comprobacion final, por precaucion
-                    if (this.clientesRegistrados[i].getDNI().equalsIgnoreCase(cliente.getDNI())) {
-                        index = i;
-                        break;
-                    }
-                }
-            }
+        if (!this.clientesRegistrados.isEmpty() && cliente != null && cliente.getFechaBaja() == null) {
 
-            //Solo cuando estemos seguros se da de baja
+            index = this.articulosRegistrados.indexOf(cliente);//Devuelve -1 si no se encuentra
+
             if (index != -1) {
-                this.clientesRegistrados[index].setFechaBaja(LocalDate.now());
+                this.articulosRegistrados.get(index).setFechaBaja(LocalDate.now());
                 resultado = true;
             }
         }
@@ -236,105 +153,139 @@ public class VideoDaw {
         return resultado;
     }
 
-    //Buscar Cliente
+    //Metodo Buscar Cliente
     public Cliente buscarCliente(String DNI) {
         Cliente cliente = null;
-        int index = -1;
 
-        //Busqueda por DNI, se puede cambiar por Cod socio
-        for (int i = 0; i < this.numClientes; i++) {
-            if (this.clientesRegistrados[i].getDNI().equalsIgnoreCase(DNI)) {
-                index = i;
-                break;
+        if (!this.clientesRegistrados.isEmpty()) {
+
+            for (Cliente c : this.clientesRegistrados) {
+                if (c.getDNI().equalsIgnoreCase(DNI)) {
+
+                    cliente = c;
+                }
             }
-        }
-
-        //Si se ha encontrado a Cliente
-        if (index != -1) {
-            cliente = this.clientesRegistrados[index];
         }
 
         return cliente;
     }
 
-    //Mostrar registrados
-    public String mostrarPeliculasRegistradas() {
-        String infoTodasPeliculas = "No hay ningun registro de peliculas";
+    //Metodo Verificar si Cliente existe
+    public boolean clienteExiste(String DNI) {
+        boolean existe = false;
 
-        //Accion solo si hay Peliculas Registradas
-        if (this.numPeliculas > 0) {
-            infoTodasPeliculas = "";
+        if (!this.clientesRegistrados.isEmpty()) {
 
-            for (int i = 0; i < this.numPeliculas; i++) {
-                //Se imprimen solo las que existan, por seguridad
-                if (this.peliculasRegistradas[i] != null) {
-                    infoTodasPeliculas += "\n" + peliculasRegistradas[i].mostrarInfoPelicula() + "\n";
+            for (Cliente c : this.clientesRegistrados) {
+                if (c.getDNI().equalsIgnoreCase(DNI) && c.getFechaBaja() == null) {
+
+                    existe = true;
                 }
             }
         }
 
-        return infoTodasPeliculas;
+        return existe;
     }
 
+
+    //Metodos Mostrar registrados
+
+    //Version articulos
+    public String mostrarArticulosRegistrados() {
+        String infoArti = "No hay ningun registro de articulos";
+
+        if (!this.articulosRegistrados.isEmpty()) {
+            infoArti = "";
+
+            for (Articulo a : this.articulosRegistrados) {
+
+                infoArti += a.toString() + "\n";
+            }
+        }
+
+        return infoArti;
+    }
+
+    //Version articulos tipo especificado
+    public String mostrarArticulosRegistrados(String simpleCLassName) {
+        String infoClase = "No hay ningun registro de " + simpleCLassName;
+
+        if (!this.articulosRegistrados.isEmpty()) {
+            infoClase = "";
+
+            for (Articulo a : this.articulosRegistrados) {
+
+                if (a.getClass().getSimpleName().equalsIgnoreCase(simpleCLassName)) {
+                    infoClase += a.toString() + "\n";
+                }
+            }
+
+            if (infoClase.equals("")) {
+                infoClase = "No hay ningun registro de " + simpleCLassName;
+            }
+        }
+
+        return infoClase;
+    }
+
+    //Version clientes
     public String mostrarClientesRegistrados() {
-        String infoTodosClientes = "No hay ningun registro de clientes";
+        String infoCliente = "No hay ningun registro de clientes";
 
-        //Accion solo si hay Clientes Registrados
-        if (this.numClientes > 0) {
-            infoTodosClientes = "";
+        if (!this.clientesRegistrados.isEmpty()) {
+            infoCliente = "";
 
-            for (int i = 0; i < this.numClientes; i++) {
-                //Seguridad que Cliente exista
-                if (this.clientesRegistrados[i] != null) {
-                    infoTodosClientes += "\n" + clientesRegistrados[i].toString() + "\n";
+            for (Cliente c : this.clientesRegistrados) {
 
-                    //Codigo de Advertencia si alguna vez existe un Cliente Repetido
-                    if (comprobarSiClienteExisteRepetido(this.clientesRegistrados[i]) > 1) {
-                        infoTodosClientes += "ADVERTENCIA - CLIENTE EXISTE REPETIDO";
-                    }
-                }
+                infoCliente += c.toString() + "\n";
             }
         }
 
-        return infoTodosClientes;
+        return infoCliente;
     }
 
-    //Alquilar la Pelicula por Cliente
-    public boolean alquilarPelicula(Cliente cliente, Pelicula pelicula) {
+    //Alquilar Articulo por Cliente
+    public boolean alquilarArticulo(Cliente cliente, Articulo articulo) {
         boolean resultado = false;
 
-        //Comprbacion Pelicula y Cliente existan, que pelicula no este alquilada, y que no esten de Baja
-        if (pelicula != null && cliente != null && !pelicula.isAlquilada() && pelicula.getFechaBaja() == null && cliente.getFechaBaja() == null) {
-            //Alquilacion de la Pelicula
-            cliente.alquilarArticulo(pelicula);
-            pelicula.setAlquilada(true);
-            pelicula.setFechaAlquiler(LocalDateTime.now());
-            pelicula.setDniAlquilando(cliente.getDNI());
+        //Comprobacion no null, no estar alquilado, no estar de bajam y pertenecer al videoclub
+        if (articulo != null && cliente != null && !articulo.isAlquilada()
+                && articulo.getFechaBaja() == null && cliente.getFechaBaja() == null
+                && this.articulosRegistrados.contains(articulo) && this.clientesRegistrados.contains(cliente)) {
+
+            cliente.alquilarArticulo(articulo);
+            articulo.setAlquilada(true);//Despues de alquilarArticulo, o hay problemas
             resultado = true;
         }
 
         return resultado;
     }
 
-    //Devolver la Pelicula de Cliente
-    public String devolverPelicula(Cliente cliente, Pelicula pelicula) {
-        //Mensaje si falla
-        String resultado = "No se puede devolver la Pelicula";
+    //Devolver Articulo de Cliente
+    public String devolverPelicula(Cliente cliente, Articulo articulo) {
+        String resultado = "No se puede devolver el Articulo";
+        String tipo = articulo.getClass().getSimpleName();
 
         //Comprobacion que este alquilada y que existen los datos introducidos
-        if (pelicula != null && cliente != null && pelicula.isAlquilada()) {
-            //Comprobacion que este cliente particular alquilo la Pelicula
-            if (cliente.alquiloEstaPelicula(pelicula) && pelicula.getDniAlquilando().equalsIgnoreCase(cliente.getDNI())) {
-                //Devolucion de la Pelicula
-                pelicula.setAlquilada(false);
-                pelicula.setDniAlquilando("Sin Datos");
-                resultado = "Pelicula " + pelicula.getTitulo() + " devuelta con Exito de Cliente " + cliente.getNombre();
+        if (articulo != null && cliente != null && !articulo.isAlquilada()
+                && this.articulosRegistrados.contains(articulo) && this.clientesRegistrados.contains(cliente)) {
+
+            if (cliente.getArticulosPendientes().contains(articulo)) {
+
+                cliente.devolverArticulo(articulo);
+                articulo.setAlquilada(false);
+
+                resultado = tipo + articulo.getTitulo() + " devuelta con exito de Cliente " + cliente.getNombre();
 
                 //Comprobacion de que este en el tiempo correcto, aviso si se pasa de 48 horas
-                if (Math.abs(pelicula.getSecondsSinceEpoch() - LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)) > 172800) {
-                    resultado += "\n==============================================================";
-                    resultado += "\nADVERTENCIA - PELICULA DEVUELTA CON MAS DE 48 HORAS DE RETRASO";
-                    resultado += "\n==============================================================";
+                Long retraso = Math.abs(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) - articulo.getUltimaFechaAlquiler().toEpochSecond(ZoneOffset.UTC));
+
+                //172800 segundos = 48 horas
+                if (retraso > 172800) {
+
+                    resultado +=    "\n==============================================================" +
+                                    "\nADVERTENCIA - ARTICULO DEVUELTA CON MAS DE 48 HORAS DE RETRASO" +
+                                    "\n==============================================================" ;
                 }
             }
         }
@@ -342,8 +293,10 @@ public class VideoDaw {
         return resultado;
     }
 
+    //Metodo ToString
     //Mostrar info VideoClub
-    public String mostrarInfoVideoDaw() {
+    @Override
+    public String toString() {
         String infoVideoDaw;
 
         //Fecha si existe
@@ -351,7 +304,7 @@ public class VideoDaw {
 
         //String final
         infoVideoDaw = String.format("CIF: %S\nDireccion: %s\nFecha de Alta: %s\nNumero de Peliculas: %d\nNumero de Clientes: %d",
-                this.CIF, this.direccion, formattedDate, this.numPeliculas, this.numClientes);
+                this.CIF, this.direccion, formattedDate, this.articulosRegistrados.size(), this.clientesRegistrados.size());
 
         return infoVideoDaw;
     }

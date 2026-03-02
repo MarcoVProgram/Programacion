@@ -90,22 +90,10 @@ public abstract class Articulo {
         String formattedAlquiler = MyUtils.formatDate("dd/MM/yyyy HH:mm:ss", this.ultimaFechaAlquiler);
 
         //String final
-        info = String.format("[ Codigo: %S\tTitulo: %s\tFecha de Registro: %s\tFecha de Baja: %s\tUltima Vez Alquilada: %s\t" +
-                        "Esta Alquilada: %b",
+        info = String.format("Codigo: %S\tTitulo: %s\tFecha de Registro: %s\tFecha de Baja: %s\tUltima Vez Alquilada: %s" +
+                        "\tEsta Alquilada: %b",
                 this.cod, this.titulo, formattedRegistro, formattedBaja, formattedAlquiler, this.isAlquilada);
 
         return info;
-    }
-
-    //Equals
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Articulo articulo)) return false;
-        return Objects.equals(cod, articulo.cod);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(cod);
     }
 }
