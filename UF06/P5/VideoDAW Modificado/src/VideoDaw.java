@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.LinkedList;
+import java.util.List;
 
 public class VideoDaw {
 
@@ -11,8 +12,8 @@ public class VideoDaw {
     private LocalDate fechaAlta;
 
     //Arrays
-    private LinkedList<Articulo> articulosRegistrados;
-    private LinkedList<Cliente> clientesRegistrados;
+    private List<Articulo> articulosRegistrados;
+    private List<Cliente> clientesRegistrados;
 
     //Constructor
     public VideoDaw(String CIF, String direccion) {
@@ -262,7 +263,7 @@ public class VideoDaw {
     }
 
     //Devolver Articulo de Cliente
-    public String devolverPelicula(Cliente cliente, Articulo articulo) {
+    public String devolverArticulo(Cliente cliente, Articulo articulo) {
         String resultado = "No se puede devolver el Articulo";
         String tipo = articulo.getClass().getSimpleName();
 
