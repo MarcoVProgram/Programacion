@@ -1,11 +1,13 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.LinkedList;
 import java.util.List;
 
-public class VideoDaw {
+public class VideoDaw implements Serializable {
 
+    private static final long serialVersionUID = 6995874545231776936L;
     //Variables privadas
     private String CIF;
     private String direccion;
@@ -44,7 +46,6 @@ public class VideoDaw {
     //Metodo para registrar peliculas
     public boolean registrarArticulo(Articulo articulo) {
         boolean registrable = false;
-        boolean isRegistrado = false;
 
         if (articulo != null && !articuloExiste(articulo.getCod())) {
 

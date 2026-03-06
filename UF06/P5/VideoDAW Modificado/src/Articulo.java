@@ -1,11 +1,12 @@
 //Dependencias
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 //Clase Abstracta
-public abstract class Articulo {
+public abstract class Articulo implements Serializable {
 
+    private static final long serialVersionUID = 6846255428542505065L;
     //Variables Privadas
     protected String cod;
     protected String titulo;
@@ -90,8 +91,8 @@ public abstract class Articulo {
         String formattedAlquiler = MyUtils.formatDate("dd/MM/yyyy HH:mm:ss", this.ultimaFechaAlquiler);
 
         //String final
-        info = String.format("Codigo: %S\tTitulo: %s\tFecha de Registro: %s\tFecha de Baja: %s\tUltima Vez Alquilada: %s" +
-                        "\tEsta Alquilada: %b",
+        info = String.format("Codigo: %S\t|\tTitulo: %s\t|\tFecha de Registro: %s\t|\tFecha de Baja: %s\t|\tUltima Vez Alquilada: %s" +
+                        "\t|\tEsta Alquilada: %b",
                 this.cod, this.titulo, formattedRegistro, formattedBaja, formattedAlquiler, this.isAlquilada);
 
         return info;

@@ -1,8 +1,11 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public abstract class Persona {
+public abstract class Persona implements Serializable {
 
+
+    private static final long serialVersionUID = 8581136391764624619L;
     //Private variables
     protected String DNI;
     protected String nombre;
@@ -53,7 +56,7 @@ public abstract class Persona {
         String fomattedNacimiento = MyUtils.formatDate("dd/MM/yyyy", this.fechaNacimiento);
 
         //String Final
-        info = String.format("DNI: %S\tNombre: %s\tDireccion: %s\tFecha de Nacimiento: %s",
+        info = String.format("DNI: %S\t|\tNombre: %s\t|\tDireccion: %s\t|\tFecha de Nacimiento: %s",
                 this.DNI, this.nombre, this.direccion, fomattedNacimiento);
 
         return info;

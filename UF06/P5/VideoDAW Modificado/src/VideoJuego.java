@@ -24,7 +24,7 @@ public class VideoJuego extends Articulo implements Serializable {
         String info;
 
         //String final
-        info = String.format( "VideoJuego --> [ " + super.toString() + "\tGenero: %S ]", this.getGenero());
+        info = String.format( "VideoJuego --> [ " + super.toString() + "\t|\tGenero: %S ]", this.getGenero());
 
         return info;
     }

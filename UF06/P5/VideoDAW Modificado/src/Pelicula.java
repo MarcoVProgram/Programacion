@@ -24,7 +24,7 @@ public class Pelicula extends Articulo implements Serializable {
         String info;
 
         //String final
-        info = String.format("Pelicula -> [ " + super.toString() + "\tGenero: %S ]", this.getGenero());
+        info = String.format("Pelicula -> [ " + super.toString() + "\t|\tGenero: %S ]", this.getGenero());
 
         return info;
     }

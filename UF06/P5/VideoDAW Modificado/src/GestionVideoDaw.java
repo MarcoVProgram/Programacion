@@ -11,7 +11,7 @@ public class GestionVideoDaw {
     private static final Pattern menuInputPattern = Pattern.compile("[1-9]");
     private static final Pattern nombreForm = Pattern.compile("[A-Z][a-z]+ [A-Z a-z]+");
     private static final Pattern dniForm = Pattern.compile("[0-9]{8}[A-Za-z]");
-    private static final Pattern notNull = Pattern.compile("[^\s]");
+    private static final Pattern notNull = Pattern.compile("^.+");
     private static final Pattern seleccionform = Pattern.compile("[1-9][0-9]*");
 
     public static void main(String[] args) {
@@ -61,6 +61,7 @@ public class GestionVideoDaw {
 
         } catch (IOException e) {
             MyUtils.print("Ha habido un Error en el I/O de " +  fileConfig);
+            MyUtils.print(e.getMessage());
         }
 
         boolean eof = false;
@@ -96,7 +97,10 @@ public class GestionVideoDaw {
             }
 
         } catch (IOException e) {
+
             MyUtils.print("Ha habido un Error en el I/O de " +  fileData);
+            MyUtils.print(e.getMessage());
+
         } catch (ClassNotFoundException e) {
             MyUtils.print("Ha habido un Error en la lectura del archivo");
         }
@@ -135,8 +139,8 @@ public class GestionVideoDaw {
         do {
 
             //Display Menu Principal
-            MyUtils.menuMaker("GESTION VIDEO DAW", menuGestionVideoDaw, "Introduce una opcion:");
-            inputMainMenu = MyUtils.inputRequestLoop(menuInputPattern, "Input de Menu no Valido. Introduce un numero del 1 al 9");
+            MyUtils.menuMaker("GESTION VIDEO DAW", menuGestionVideoDaw, "Introduce una opcion: ");
+            inputMainMenu = MyUtils.inputRequestLoop(menuInputPattern, "Input de Menu no Valido. Introduce un numero del 1 al 9:");
             option = inputMainMenu.charAt(0);
 
             //Implementacion del Menu Principal con sus funcionalidades
@@ -254,7 +258,7 @@ public class GestionVideoDaw {
                             "Direccion no valida, no dejes este campo en blanco");;
 
                     //Insercion de la fecha de Nacimiento
-                    MyUtils.print("Introduce la fecha de nacimiento del cliente:\n");
+                    MyUtils.print("Introduce la fecha de nacimiento del cliente:");
                     LocalDate dt = MyUtils.requestBirthday();
 
 
@@ -532,14 +536,14 @@ public class GestionVideoDaw {
 
             for (int i = 0; i < GeneroPeli.values().length; i++) {
 
-                MyUtils.print((i + 1) + GeneroPeli.values()[i].name());
+                MyUtils.print((i + 1) + ". " + GeneroPeli.values()[i].name());
             }
 
         } else if (generoArticulo.equals("2")) {
 
             for (int i = 0; i < GeneroVideoJuego.values().length; i++) {
 
-                MyUtils.print((i + 1) + "." + GeneroVideoJuego.values()[i].name());
+                MyUtils.print((i + 1) + ". " + GeneroVideoJuego.values()[i].name());
             }
 
         } else {

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Cliente extends Persona implements Serializable {
-    private static final long serialVersionUID = 146639047836650119L;
+    private static final long serialVersionUID = -4310468795650616251L;
 
     //Variables Privadas
     private String numSocio;
@@ -74,7 +74,7 @@ public class Cliente extends Persona implements Serializable {
         String formattedBaja = MyUtils.formatDate("dd/MM/yyyy HH:mm:ss", this.fechaBaja);
 
         //String Final
-        info = String.format("Cliente --> [ Numero de Socio: %S\t" + super.toString() + "\tCantidad total de Articulos Alquilados: %d ]",
+        info = String.format("Cliente --> [ Numero de Socio: %S\t|\t" + super.toString() + "\t|\tFecha de Baja: %s\t|\tCantidad total de Articulos Alquilados: %d ]",
                 this.numSocio, formattedBaja, historialAlquilacion.size());
 
         return info;
