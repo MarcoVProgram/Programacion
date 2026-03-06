@@ -43,14 +43,16 @@ public class VideoDaw {
 
     //Metodo para registrar peliculas
     public boolean registrarArticulo(Articulo articulo) {
+        boolean registrable = false;
+        boolean isRegistrado = false;
 
-        if (articulo != null) {
+        if (articulo != null && !articuloExiste(articulo.getCod())) {
 
             this.articulosRegistrados.add(articulo);
-            return true;
+            registrable = true;
         }
 
-        return false;
+        return registrable;
     }
 
     //Metodo actualizar fecha baja de articulo ahora
@@ -108,7 +110,7 @@ public class VideoDaw {
     //Metodo para registrar o dar baja a cliente
     public boolean registrarCliente(Cliente cliente) {
 
-        if (cliente != null && clienteMayorEdad(cliente)) {
+        if (cliente != null && clienteMayorEdad(cliente) && !clienteExiste(cliente.getDNI())) {
 
             this.clientesRegistrados.add(cliente);
             return true;

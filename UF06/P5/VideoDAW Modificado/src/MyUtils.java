@@ -152,8 +152,8 @@ public class MyUtils {
                 printHere("\nAnio (year) de nacimiento: ");
                 fechaYear = inputRequest(patronYear);
 
-                if (Integer.parseInt(fechaYear) < 1800) {
-                    print("Rango de anio no Valido, ha de ser al menos del 1800, intentelo de nuevo:");
+                if (Integer.parseInt(fechaYear) < 1900) {
+                    print("Rango de anio no Valido, ha de ser al menos del 1900, intentelo de nuevo:");
                 }
 
                 //Errores
@@ -162,9 +162,9 @@ public class MyUtils {
                 //Si no coincide con el patron
                 print(e.getMessage());
                 fechaYear = "0";
-                print("Introduce un numero de 4 digitos que al menos sea de 1800 hacia delante");
+                print("Introduce un numero de 4 digitos que al menos sea de 1900 hacia delante");
             }
-        } while (Integer.parseInt(fechaYear) < 1800);
+        } while (Integer.parseInt(fechaYear) < 1900);
 
         //Insercion Mes
         do {

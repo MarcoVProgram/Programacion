@@ -2,13 +2,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class VideoJuego extends Articulo implements Serializable {
-    private static final long serialVersionUID = -3397271303225845263L;
+    private static final long serialVersionUID = 6591866930818108302L;
 
     //Variables Privadas
-    private GeneroPeli genero;
+    private GeneroVideoJuego genero;
 
     //Constructor
-    public VideoJuego(String titulo, GeneroPeli genero) {
+    public VideoJuego(String titulo, GeneroVideoJuego genero) {
         super(titulo);
         this.genero = genero;
     }
