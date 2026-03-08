@@ -51,11 +51,11 @@ public class Cliente extends Persona implements Serializable {
     }
 
     public List<Articulo> getHistorialAlquilacion() {
-        return this.historialAlquilacion;
+        return (List<Articulo>) this.historialAlquilacion.clone();
     }
 
     public List<Articulo> getArticulosPendientes() {
-        return this.articulosPendientes;
+        return (List<Articulo>) this.articulosPendientes.clone();
     }
 
     //Setter
@@ -96,7 +96,7 @@ public class Cliente extends Persona implements Serializable {
     //Metodo para devolver articulos
     public boolean devolverArticulo(Articulo a) {
 
-        if (a != null && this.getArticulosPendientes().contains(a)) {
+        if (a != null && this.articulosPendientes.contains(a)) {
 
             return this.articulosPendientes.remove(a);
         }

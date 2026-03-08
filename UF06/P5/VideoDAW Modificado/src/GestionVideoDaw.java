@@ -166,7 +166,7 @@ public class GestionVideoDaw {
                         //Muestra de los VideoClubs existentes
                         MyUtils.print("\nExisten mas de un VideoClub existence. Por favor, escoja el VideoCLub que desee usar, del 1 al " + coleccionVideoClubs.size());
                         for (int i = 0; i < coleccionVideoClubs.size(); i++) {
-                            MyUtils.print(i + 1 + coleccionVideoClubs.get(i).getCIF() + " | " + coleccionVideoClubs.get(i).getDireccion());
+                            MyUtils.print(i + 1 + ". " + coleccionVideoClubs.get(i).getCIF() + " | " + coleccionVideoClubs.get(i).getDireccion());
                         }
 
                         //Seleccion del VideoClub
@@ -351,6 +351,10 @@ public class GestionVideoDaw {
 
                     //Busqueda de Articulo
                     Articulo articuloDevolvido = miVideoClub.buscarArticulo(codDevolvido);
+                    if (articuloDevolvido == null) {
+                        MyUtils.print("No se ha podido encontrar al Articulo");
+                        continue;
+                    }
 
                     MyUtils.print("\nEstos son los datos de la devolucion:");
                     MyUtils.print(clienteDevolviendo.toString());
@@ -401,6 +405,12 @@ public class GestionVideoDaw {
                             MyUtils.print("\nHistorial de todos sus Articulos Alquilados:");
                             MyUtils.print(clienteBaja.mostrarHistorialArticulosAlquilados());
 
+                            if (clienteBaja.getArticulosPendientes().size() != 0) {
+                                MyUtils.print("\n===============================================\n" +
+                                                "AVISO - SE HA DADO BAJA A UN ARTICULO ALQUILADO\n" +
+                                                "===============================================\n");
+                            }
+
                         } else {
 
                             //Si no se pudo
@@ -448,6 +458,12 @@ public class GestionVideoDaw {
 
                             MyUtils.print("\nEsta es su informacion:");
                             MyUtils.print(articuloBaja.toString());
+
+                            if (articuloBaja.isAlquilada()) {
+                                MyUtils.print("\n================================================================\n" +
+                                                "AVISO - SE HA DADO BAJA A UN CLIENTE CON DEVOLUCIONES PENDIENTES\n" +
+                                                "================================================================\n");
+                            }
 
                         } else {
 

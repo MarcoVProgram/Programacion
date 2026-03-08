@@ -262,11 +262,12 @@ public class VideoDaw implements Serializable {
     //Devolver Articulo de Cliente
     public String devolverArticulo(Cliente cliente, Articulo articulo) {
         String resultado = "No se puede devolver el Articulo";
-        String tipo = articulo.getClass().getSimpleName();
 
         //Comprobacion que este alquilada y que existen los datos introducidos
         if (articulo != null && cliente != null && articulo.isAlquilada()
                 && this.articulosRegistrados.contains(articulo) && this.clientesRegistrados.contains(cliente)) {
+
+            String tipo = articulo.getClass().getSimpleName();
 
             if (cliente.getArticulosPendientes().contains(articulo)) {
 
