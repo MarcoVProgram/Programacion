@@ -1,13 +1,14 @@
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.ZoneOffset;
 import java.util.LinkedList;
 import java.util.List;
 
 public class VideoDaw implements Serializable {
 
-    private static final long serialVersionUID = 6995874545231776936L;
+    private static final long serialVersionUID = -6173850164554653075L;
     //Variables privadas
     private String CIF;
     private String direccion;
@@ -81,9 +82,10 @@ public class VideoDaw implements Serializable {
         if (!this.articulosRegistrados.isEmpty()) {
 
             for (Articulo a : this.articulosRegistrados) {
-                if (a.getCod().equalsIgnoreCase(codArticulo)) {
+                if (a.getCod().equalsIgnoreCase(codArticulo) && a.getFechaBaja() == null) {
 
                     articulo = a;
+                    break;
                 }
             }
         }
@@ -98,7 +100,7 @@ public class VideoDaw implements Serializable {
         if (!this.articulosRegistrados.isEmpty()) {
 
             for (Articulo a : this.articulosRegistrados) {
-                if (a.getCod().equalsIgnoreCase(codArticulo)) {
+                if (a.getCod().equalsIgnoreCase(codArticulo) && a.getFechaBaja() == null) {
 
                     existe = true;
                 }
@@ -124,17 +126,7 @@ public class VideoDaw implements Serializable {
     private boolean clienteMayorEdad(Cliente cliente) {
         boolean mayorEdad = false;
 
-        //Caso mayores de 18
-        if (Math.abs(LocalDate.now().getYear() - cliente.getFechaNacimiento().getYear()) > 18) {
-            mayorEdad = true;
-        }
-
-        //Metodo comprobacion del Dia
-        if (Math.abs(LocalDate.now().getYear() - cliente.getFechaNacimiento().getYear()) == 18) {
-            if (Math.abs(LocalDate.now().getDayOfYear() - cliente.getFechaNacimiento().getDayOfYear()) >= 0) {
-                mayorEdad = true;
-            }
-        }
+        mayorEdad = Period.between(cliente.getFechaNacimiento(), LocalDate.now()).getYears() >= 18;
 
         return mayorEdad;
     }
@@ -146,10 +138,10 @@ public class VideoDaw implements Serializable {
 
         if (!this.clientesRegistrados.isEmpty() && cliente != null && cliente.getFechaBaja() == null) {
 
-            index = this.articulosRegistrados.indexOf(cliente);//Devuelve -1 si no se encuentra
+            index = this.clientesRegistrados.indexOf(cliente);//Devuelve -1 si no se encuentra
 
             if (index != -1) {
-                this.articulosRegistrados.get(index).setFechaBaja(LocalDate.now());
+                this.clientesRegistrados.get(index).setFechaBaja(LocalDate.now());
                 resultado = true;
             }
         }
@@ -164,9 +156,10 @@ public class VideoDaw implements Serializable {
         if (!this.clientesRegistrados.isEmpty()) {
 
             for (Cliente c : this.clientesRegistrados) {
-                if (c.getDNI().equalsIgnoreCase(DNI)) {
+                if (c.getDNI().equalsIgnoreCase(DNI) && c.getFechaBaja() == null) {
 
                     cliente = c;
+                    break;
                 }
             }
         }
@@ -211,21 +204,21 @@ public class VideoDaw implements Serializable {
     }
 
     //Version articulos tipo especificado
-    public String mostrarArticulosRegistrados(String simpleCLassName) {
-        String infoClase = "No hay ningun registro de " + simpleCLassName;
+    public String mostrarArticulosRegistrados(String simpleClassName) {
+        String infoClase = "No hay ningun registro de " + simpleClassName;
 
         if (!this.articulosRegistrados.isEmpty()) {
             infoClase = "";
 
             for (Articulo a : this.articulosRegistrados) {
 
-                if (a.getClass().getSimpleName().equalsIgnoreCase(simpleCLassName)) {
+                if (a.getClass().getSimpleName().equalsIgnoreCase(simpleClassName)) {
                     infoClase += a.toString() + "\n";
                 }
             }
 
             if (infoClase.equals("")) {
-                infoClase = "No hay ningun registro de " + simpleCLassName;
+                infoClase = "No hay ningun registro de " + simpleClassName;
             }
         }
 
@@ -259,6 +252,7 @@ public class VideoDaw implements Serializable {
 
             cliente.alquilarArticulo(articulo);
             articulo.setAlquilada(true);//Despues de alquilarArticulo, o hay problemas
+            articulo.setUltimaFechaAlquiler(LocalDateTime.now());
             resultado = true;
         }
 
@@ -271,7 +265,7 @@ public class VideoDaw implements Serializable {
         String tipo = articulo.getClass().getSimpleName();
 
         //Comprobacion que este alquilada y que existen los datos introducidos
-        if (articulo != null && cliente != null && !articulo.isAlquilada()
+        if (articulo != null && cliente != null && articulo.isAlquilada()
                 && this.articulosRegistrados.contains(articulo) && this.clientesRegistrados.contains(cliente)) {
 
             if (cliente.getArticulosPendientes().contains(articulo)) {
@@ -279,7 +273,7 @@ public class VideoDaw implements Serializable {
                 cliente.devolverArticulo(articulo);
                 articulo.setAlquilada(false);
 
-                resultado = tipo + articulo.getTitulo() + " devuelta con exito de Cliente " + cliente.getNombre();
+                resultado = tipo + " " + articulo.getTitulo() + " devuelta con exito de Cliente " + cliente.getNombre();
 
                 //Comprobacion de que este en el tiempo correcto, aviso si se pasa de 48 horas
                 Long retraso = Math.abs(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) - articulo.getUltimaFechaAlquiler().toEpochSecond(ZoneOffset.UTC));
@@ -288,9 +282,33 @@ public class VideoDaw implements Serializable {
                 if (retraso > 172800) {
 
                     resultado +=    "\n==============================================================" +
-                                    "\nADVERTENCIA - ARTICULO DEVUELTA CON MAS DE 48 HORAS DE RETRASO" +
+                                    "\nADVERTENCIA - ARTICULO DEVUELTO CON MAS DE 48 HORAS DE RETRASO" +
                                     "\n==============================================================" ;
                 }
+            }
+        }
+
+        return resultado;
+    }
+
+    public int numeroArticulosEnVideoClub() {
+        int resultado = 0;
+
+        for (Articulo a : this.articulosRegistrados) {
+            if (a.getFechaBaja() == null) {
+                resultado++;
+            }
+        }
+
+        return resultado;
+    }
+
+    public int numeroClientesEnVideoClub() {
+        int resultado = 0;
+
+        for (Cliente c : this.clientesRegistrados) {
+            if (c.getFechaBaja() == null) {
+                resultado++;
             }
         }
 
@@ -307,8 +325,8 @@ public class VideoDaw implements Serializable {
         String formattedDate = MyUtils.formatDate("dd/MM/yyyy", this.fechaAlta);
 
         //String final
-        infoVideoDaw = String.format("CIF: %S\nDireccion: %s\nFecha de Alta: %s\nNumero de Peliculas: %d\nNumero de Clientes: %d",
-                this.CIF, this.direccion, formattedDate, this.articulosRegistrados.size(), this.clientesRegistrados.size());
+        infoVideoDaw = String.format("CIF: %S\nDireccion: %s\nFecha de Alta: %s\nNumero de Articulos Totales Registrados: %d\nNumero de Clientes Totales Registrados: %d",
+                this.CIF, this.direccion, formattedDate, this.numeroArticulosEnVideoClub(), this.numeroClientesEnVideoClub());
 
         return infoVideoDaw;
     }

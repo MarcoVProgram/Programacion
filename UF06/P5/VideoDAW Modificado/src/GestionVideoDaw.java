@@ -1,5 +1,6 @@
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -31,7 +32,7 @@ public class GestionVideoDaw {
             DataInputStream dis = new DataInputStream(fis)) {
 
             //Lectura del valor
-            boolean actualizarConfig = Articulo.configCodGeneration(dis.readInt());
+            boolean actualizarConfig = Articulo.configCodGeneration(dis.readInt()) && Cliente.configCodGeneration(dis.readInt());
 
             if (actualizarConfig) {
                 MyUtils.print("Se la logrado cargar la configuracion");
@@ -122,19 +123,19 @@ public class GestionVideoDaw {
         //Input variables
         String inputMainMenu;
         char option;
-        boolean allChangesSaved = true;
 
         //Menu
         String[] menuGestionVideoDaw = new String[9];
-        menuGestionVideoDaw[0] = "Crear y registrar VideoClub en la franquicia";
+        menuGestionVideoDaw[0] = "Crear y Registrar VideoClub en la franquicia";
         menuGestionVideoDaw[1] = "Seleccionar VideoClub en la franquicia";
-        menuGestionVideoDaw[2] = "Registrar articulo en videoclub";
-        menuGestionVideoDaw[3] = "Crear y registrar cliente en videoclub";
+        menuGestionVideoDaw[2] = "Registrar Articulo en VideoClub";
+        menuGestionVideoDaw[3] = "Crear y Registrar Cliente en VideoClub";
         menuGestionVideoDaw[4] = "Alquilar";
         menuGestionVideoDaw[5] = "Devolver";
-        menuGestionVideoDaw[6] = "Dar de baja cliente";
-        menuGestionVideoDaw[7] = "Dar de baja articulo";
+        menuGestionVideoDaw[6] = "Dar de Baja Cliente";
+        menuGestionVideoDaw[7] = "Dar de Baja Articulo";
         menuGestionVideoDaw[8] = "Guardar y Salir";
+
 
         do {
 
@@ -226,7 +227,6 @@ public class GestionVideoDaw {
                         //Si funciona
                         MyUtils.print("Registrando pelicula exitosamente");
                         MyUtils.print(nuevoArticulo.toString());
-                        allChangesSaved = false;
                     }
                     else {
 
@@ -261,7 +261,6 @@ public class GestionVideoDaw {
                     MyUtils.print("Introduce la fecha de nacimiento del cliente:");
                     LocalDate dt = MyUtils.requestBirthday();
 
-
                     //Creacion del Cliente
                     nuevoCliente = new Cliente(dniCliente,nombreCliente,direccionCliente,dt);
 
@@ -272,7 +271,6 @@ public class GestionVideoDaw {
                         //Si ha funcionado
                         MyUtils.print("Registrando cliente exitosamente");
                         MyUtils.print(nuevoCliente.toString());
-                        allChangesSaved = false;
                     }
 
                     else {
@@ -316,7 +314,6 @@ public class GestionVideoDaw {
 
                         //Si la operacion salio bien
                         MyUtils.print("Articulo " + articuloSelected.getTitulo() + " alquilada exitosamente por Cliente " + clienteAlquilando.getNombre());
-                        allChangesSaved = false;
                     }
                     else {
 
@@ -345,6 +342,9 @@ public class GestionVideoDaw {
                         continue;
                     }
 
+                    MyUtils.print("\nEsta es la lista de los articulos pendientes de devolver para cliente " +  clienteDevolviendo.getNombre() + ":");
+                    MyUtils.print(clienteDevolviendo.mostrarArticulosAlquilados());
+
                     //Insercion del Codigo de Articulo
                     String codDevolvido = getStringConPatron("Introduce el codigo del articulo que se desea devolver: ", codForm,
                             "Introduce el codigo de Articulo apropiado, con formato tal que P-XXXX:");
@@ -352,10 +352,13 @@ public class GestionVideoDaw {
                     //Busqueda de Articulo
                     Articulo articuloDevolvido = miVideoClub.buscarArticulo(codDevolvido);
 
+                    MyUtils.print("\nEstos son los datos de la devolucion:");
+                    MyUtils.print(clienteDevolviendo.toString());
+                    MyUtils.print(articuloDevolvido.toString());
+
                     //Intento de devolver pelicula, imprimiendo si es un error o si fue exitoso, y advirtiendo si hubo mas de 48 horas
                     String devolucion = miVideoClub.devolverArticulo(clienteDevolviendo, articuloDevolvido);
                     if (!devolucion.equals("No se puede devolver el Articulo")) {
-                        allChangesSaved = false;
                     }
 
                     MyUtils.print(devolucion);
@@ -391,7 +394,13 @@ public class GestionVideoDaw {
 
                             //Si se da de Baja exitosamente
                             MyUtils.print("Se ha dado de baja al cliente con exito");
-                            allChangesSaved = false;
+
+                            MyUtils.print("\nEsta es su informacion:");
+                            MyUtils.print(clienteBaja.toString());
+
+                            MyUtils.print("\nHistorial de todos sus Articulos Alquilados:");
+                            MyUtils.print(clienteBaja.mostrarHistorialArticulosAlquilados());
+
                         } else {
 
                             //Si no se pudo
@@ -436,6 +445,10 @@ public class GestionVideoDaw {
 
                             //Si es exitoso
                             MyUtils.print("Se ha dado de baja a la articulo con exito");
+
+                            MyUtils.print("\nEsta es su informacion:");
+                            MyUtils.print(articuloBaja.toString());
+
                         } else {
 
                             //Si hay problemas
@@ -459,6 +472,7 @@ public class GestionVideoDaw {
                         DataOutputStream dos = new DataOutputStream(fos)) {
 
                         dos.writeInt(Articulo.getConfigCod());
+                        dos.writeInt(Cliente.getConfigCod());
 
                     } catch (IOException e) {
                         MyUtils.print("Error: " + e.getMessage());

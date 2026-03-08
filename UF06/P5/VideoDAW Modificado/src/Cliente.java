@@ -24,7 +24,7 @@ public class Cliente extends Persona implements Serializable {
 
         this.historialAlquilacion = new LinkedList<>();
         this.articulosPendientes = new LinkedList<>();
-        this.numSocio = String.format("P-%04d", ++codNumber);
+        this.numSocio = String.format("S-%04d", ++codNumber);
     }
 
     //Configuracion del generador de codigos
@@ -71,11 +71,11 @@ public class Cliente extends Persona implements Serializable {
         String info;
 
         //Creacion de Fechas si existen
-        String formattedBaja = MyUtils.formatDate("dd/MM/yyyy HH:mm:ss", this.fechaBaja);
+        String formattedBaja = MyUtils.formatDate("dd/MM/yyyy", this.fechaBaja);
 
         //String Final
-        info = String.format("Cliente --> [ Numero de Socio: %S\t|\t" + super.toString() + "\t|\tFecha de Baja: %s\t|\tCantidad total de Articulos Alquilados: %d ]",
-                this.numSocio, formattedBaja, historialAlquilacion.size());
+        info = String.format("Cliente --> [ Numero de Socio: %S\t|\t" + super.toString() + "\t|\tFecha de Baja: %s\t|\tCantidad total de Articulos Alquilados: %d\t|\tArticulos Alquilados Actualmente: %d ]",
+                this.numSocio, formattedBaja, historialAlquilacion.size(), articulosPendientes.size());
 
         return info;
     }
