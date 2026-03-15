@@ -1,6 +1,5 @@
 import java.io.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -476,6 +475,7 @@ public class GestionVideoDaw {
                         MyUtils.print("No hay nada a eliminar");
                     }
                     MyUtils.pause();
+
                     //Fin de Baja de Articulo
                     break;
 
@@ -587,22 +587,7 @@ public class GestionVideoDaw {
 
             //Case 1 - Pelicula
             case "1":
-                do {
-                    try {
-
-                        MyUtils.printHere("Introduce el Indice del Genero: ");
-                        generoArticulo = MyUtils.inputRequest(seleccionform);
-
-                        if (Integer.parseInt(generoArticulo) > GeneroPeli.values().length || Integer.parseInt(generoArticulo) < 1) {
-                            MyUtils.print("Valor fuera de rango, intentalo de nuevo");
-                        }
-
-                    } catch (InputIncorrectoException e) {
-
-                        generoArticulo = "-1";
-                        MyUtils.print("Opcion no valido, el valor no es una opcion");
-                    }
-                } while (Integer.parseInt(generoArticulo) > GeneroPeli.values().length || Integer.parseInt(generoArticulo) < 1);
+                generoArticulo = pedirGenero(GeneroPeli.values().length);
 
                 GeneroPeli generoPeli = GeneroPeli.values()[Integer.parseInt(generoArticulo) - 1];
 
@@ -614,22 +599,7 @@ public class GestionVideoDaw {
 
             //Case 2 - VideoJuego
             case "2":
-                do {
-                    try {
-
-                        MyUtils.printHere("Introduce el Indice del Genero: ");
-                        generoArticulo = MyUtils.inputRequest(seleccionform);
-
-                        if (Integer.parseInt(generoArticulo) > GeneroVideoJuego.values().length || Integer.parseInt(generoArticulo) < 1) {
-                            MyUtils.print("Valor fuera de rango, intentalo de nuevo");
-                        }
-
-                    } catch (InputIncorrectoException e) {
-
-                        generoArticulo = "-1";
-                        MyUtils.print("Opcion no valido, el valor no es una opcion");
-                    }
-                } while (Integer.parseInt(generoArticulo) > GeneroVideoJuego.values().length || Integer.parseInt(generoArticulo) < 1);
+                generoArticulo = pedirGenero(GeneroVideoJuego.values().length);
 
                 GeneroVideoJuego generoVideoJuego  = GeneroVideoJuego.values()[Integer.parseInt(generoArticulo) - 1];
 
@@ -641,6 +611,27 @@ public class GestionVideoDaw {
         }
 
         return nuevoArticulo;
+    }
+
+    private static String pedirGenero(int length) {
+        String generoArticulo;
+        do {
+            try {
+
+                MyUtils.printHere("Introduce el Indice del Genero: ");
+                generoArticulo = MyUtils.inputRequest(seleccionform);
+
+                if (Integer.parseInt(generoArticulo) > length || Integer.parseInt(generoArticulo) < 1) {
+                    MyUtils.print("Valor fuera de rango, intentalo de nuevo");
+                }
+
+            } catch (InputIncorrectoException e) {
+
+                generoArticulo = "-1";
+                MyUtils.print("Opcion no valido, el valor no es una opcion");
+            }
+        } while (Integer.parseInt(generoArticulo) > length || Integer.parseInt(generoArticulo) < 1);
+        return generoArticulo;
     }
 
     public static void registroDeVideoDaw(List<VideoDaw> coleccion) {
