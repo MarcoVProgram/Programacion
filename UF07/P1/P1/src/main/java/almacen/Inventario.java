@@ -2,9 +2,7 @@ package almacen;
 
 import almacen.exceptions.InputIncorrectoException;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -140,6 +138,7 @@ public class Inventario {
                 //CASE 6 - Eliminar Producto por Referencia
                 case '6':
 
+                    verListaProds(productos);
                     MyUtils.print("\nBorrando Producto por Referencia");
 
                     String refBorrar = pedirReferenciaProd();
@@ -148,6 +147,7 @@ public class Inventario {
 
                     if (exitoBorrar == 1) {
                         MyUtils.print("Producto borrado con exito");
+                        productos.remove(refBorrar);
                     } else {
                         MyUtils.print("Producto no existe o no se pudo borrar, abortando");
                     }
@@ -182,35 +182,59 @@ public class Inventario {
                     final String path = ".\\src\\main\\resources\\";
                     final String sqlFile = "sqlExportInserts.sql";
 
+                    boolean save = MyUtils.confirm("Deseas crear/actualizar sqlExportInserts.sql?" +
+                            "\nAVISO - puede que el archivo no sea 100% seguro, utilizalo unicamente para crear datos a exportar en texto plano" +
+                            "\nQuieres continuar de todos modos? ");
+
+                    if (save) {
+                        MyUtils.print("\nEditando Archivo");
+                        try (FileWriter fw = new FileWriter(path + sqlFile, false);
+                             BufferedWriter bw = new BufferedWriter(fw)) {
+
+
+                            Iterator<Tipo> itTipos = tipos.getListaTipos().iterator();
+
+                            while (itTipos.hasNext()) {
+                                Tipo t = (Tipo) itTipos.next();
+                                String insert = "INSERT INTO tipos VALUE (" + t.getIdTipo() + ", '" + t.getTipoNombre() + "');";
+                                bw.write(insert);
+                                bw.newLine();
+                            }
+
+                            Iterator<Producto> itProd = productos.values().iterator();
+                            bw.newLine();
+
+                            while (itProd.hasNext()) {
+                                Producto p = (Producto) itProd.next();
+                                String insert = "INSERT INTO productos VALUE (" + p.getId() + ", '" + p.getReferencia() + "', '" + p.getNombre() + "', '" +
+                                        p.getDescripcion().replace("'", "''").replace("\\","\\\\") +
+                                        "', " + p.getTipo() + ", " + p.getCantidad() + ", " + p.getPrecio() + ", " +
+                                        p.getDescuento() + ", " + p.getIVA() + ", " + p.isAplicandoDto() + ");";
+                                bw.write(insert);
+                                bw.newLine();
+                            }
+
+                        } catch (FileNotFoundException e) {
+
+                            try {
+                                File file = new File(path + sqlFile);
+
+                                if (file.createNewFile()) {
+                                    MyUtils.print("Archivo creado con exito");
+                                }
+
+                            } catch (IOException e1) {
+                                MyUtils.print("Error al crear el archivo");
+                            }
+                        }
+                        catch (IOException e) {
+
+                            MyUtils.print("Error en el I/O: " + e.getMessage());
+                        }
+                    }
+
                     MyUtils.print("\nSaliendo del Programa");
 
-                    try (FileWriter fw = new FileWriter(path + sqlFile, false);
-                        BufferedWriter bw = new BufferedWriter(fw)) {
-
-
-                        Iterator<Tipo> itTipos = tipos.getListaTipos().iterator();
-
-                        while (itTipos.hasNext()) {
-                            Tipo t = (Tipo) itTipos.next();
-                            bw.write("INSERT INTO tipos VALUE (" + t.getIdTipo() + ", '" + t.getTipoNombre() + "');");
-                            bw.newLine();
-                        }
-
-                        Iterator<Producto> itProd = productos.values().iterator();
-                        bw.newLine();
-
-                        while (itProd.hasNext()) {
-                            Producto p = (Producto) itProd.next();
-                            bw.write("INSERT INTO productos VALUE (" + p.getId() + ", '" + p.getReferencia() +  "', '" + p.getNombre() + "', '" +
-                                    p.getDescripcion() + "', " + p.getTipo() + ", " + p.getCantidad() + ", " +  p.getPrecio() + ", " +
-                                    p.getDescuento() + ", " + p.getIVA() + ", " + p.isAplicandoDto() + ");");
-                            bw.newLine();
-                        }
-
-                    } catch (IOException e) {
-
-                        MyUtils.print("Error en el I/O: " + e.getMessage());
-                    }
                     break;
 
                 //CASE ERROR
@@ -271,7 +295,7 @@ public class Inventario {
 
         for (String tipoString : todosLosTipos) {
 
-            lista = tipoString + "\n";
+            lista += tipoString + "\n";
         }
 
         return lista;

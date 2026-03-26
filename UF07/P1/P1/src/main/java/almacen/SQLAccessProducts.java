@@ -9,7 +9,7 @@ public class SQLAccessProducts {
     public static List<Tipo> obtenerTipos() {
         List<Tipo> tipos = new LinkedList<>();
 
-        String sql = "SELECT * FROM tipos;";
+        String sql = "SELECT * FROM tipos ORDER BY id ASC;";
 
         try (Connection connection = SQLDataManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);) {
@@ -220,23 +220,23 @@ public class SQLAccessProducts {
     public static int insertarProducto(Producto producto) {
         int id = -1;
 
-        String insert = "INSERT INTO productos VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String insert = "INSERT INTO productos (referencia, nombre, descripcion, idTipo, cantidad, precio, descuento, IVA, aplicarDto)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         String consult = "SELECT p.id FROM productos p WHERE p.referencia = ?;";
 
         try (Connection connection = SQLDataManager.getConnection();
             PreparedStatement statementInsert = connection.prepareStatement(insert);
             PreparedStatement statementConsult = connection.prepareStatement(consult)) {
 
-            statementInsert.setInt(1, -1);
-            statementInsert.setString(2, producto.getReferencia());
-            statementInsert.setString(3, producto.getNombre());
-            statementInsert.setNString(4, producto.getDescripcion());
-            statementInsert.setInt(5, producto.getTipo());
-            statementInsert.setInt(6, producto.getCantidad());
-            statementInsert.setDouble(7, producto.getPrecio());
-            statementInsert.setInt(8, producto.getDescuento());
-            statementInsert.setInt(9, producto.getIVA());
-            statementInsert.setBoolean(10, producto.isAplicandoDto());
+            statementInsert.setString(1, producto.getReferencia());
+            statementInsert.setString(2, producto.getNombre());
+            statementInsert.setNString(3, producto.getDescripcion());
+            statementInsert.setInt(4, producto.getTipo());
+            statementInsert.setInt(5, producto.getCantidad());
+            statementInsert.setDouble(6, producto.getPrecio());
+            statementInsert.setInt(7, producto.getDescuento());
+            statementInsert.setInt(8, producto.getIVA());
+            statementInsert.setBoolean(9, producto.isAplicandoDto());
 
             statementInsert.executeUpdate();
 
@@ -259,22 +259,22 @@ public class SQLAccessProducts {
     public static int insertarTipoProducto (Tipo tipo) {
         int id = -1;
 
-        String insert = "INSERT INTO tipos VALUES (?, ?);";
+        String insert = "INSERT INTO tipos (nombre) VALUES (?);";
         String consult = "SELECT t.id FROM tipos t WHERE t.nombre = ?;";
 
         try (Connection connection = SQLDataManager.getConnection();
             PreparedStatement statementInsert = connection.prepareStatement(insert);
             PreparedStatement statementConsult = connection.prepareStatement(consult)) {
 
-            statementInsert.setInt(1, -1);
-            statementInsert.setString(2, tipo.getTipoNombre());
+            statementInsert.setString(1, tipo.getTipoNombre());
 
             statementInsert.executeUpdate();
 
             statementConsult.setString(1, tipo.getTipoNombre());
             ResultSet myObj = statementConsult.executeQuery();
-
-            id = myObj.getInt(1);
+            while (myObj.next()) {
+                id = myObj.getInt(1);
+            }
 
 
         } catch (SQLException e) {

@@ -1,22 +1,19 @@
 package almacen;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class ColeccionTipos {
 
     //Variables estaticas
-    private Map<Integer, Tipo> listaTipos = new LinkedHashMap<>();
+    private LinkedList<Tipo> listaTipos = new LinkedList<>();
 
     //Funciones estaticas
     public boolean add(Tipo t) {
         boolean respuesta = false;
 
-        Tipo placeholder = listaTipos.putIfAbsent(t.getIdTipo(), t);
-
-        if (placeholder == null) {
+        if (t != null) {
+            listaTipos.addLast(t);
             respuesta = true;
         }
 
@@ -26,8 +23,8 @@ public class ColeccionTipos {
     public List<String> getStringListaTipos() {
         List<String> tipos = new LinkedList<>();
 
-        for  (Integer key : listaTipos.keySet()) {
-            tipos.add("< ID Tipo: " + key + "\t|\tNombre Tipo: " + listaTipos.get(key) + " >");
+        for  (Tipo t : listaTipos) {
+            tipos.add(t.toString());
         }
 
         return tipos;
@@ -36,7 +33,7 @@ public class ColeccionTipos {
     public List<Tipo> getListaTipos() {
         List<Tipo> tipos = new LinkedList<>();
 
-        tipos.addAll(listaTipos.values());
+        tipos.addAll(listaTipos);
 
         return tipos;
     }
@@ -48,7 +45,7 @@ public class ColeccionTipos {
 
     public boolean tipoExists(String nombreTipo) {
 
-        for (Tipo tipo : listaTipos.values()) {
+        for (Tipo tipo : listaTipos) {
             if (tipo.getTipoNombre().equalsIgnoreCase(nombreTipo)) {
                 return true;
             }
