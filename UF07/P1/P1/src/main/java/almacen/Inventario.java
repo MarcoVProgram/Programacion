@@ -183,7 +183,7 @@ public class Inventario {
                     final String sqlFile = "sqlExportInserts.sql";
 
                     boolean save = MyUtils.confirm("Deseas crear/actualizar sqlExportInserts.sql?" +
-                            "\nAVISO - puede que el archivo no sea 100% seguro, utilizalo unicamente para crear datos a exportar en texto plano" +
+                            "\nAVISO - puede que el archivo no este protegido a inyecciones como texto plano, utilizalo unicamente para crear datos a exportar en texto plano" +
                             "\nQuieres continuar de todos modos? ");
 
                     if (save) {
