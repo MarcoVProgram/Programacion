@@ -311,7 +311,7 @@ public class Inventario {
 
         String nombreTipo = MyUtils.insertValidString("Introduzca el nombre de este producto",
                 Patrones.NOMBRE_FORM,
-                "No puedes introducir mas de 20 caracteres o menos de 1, usa solo letras, numeros y espacios");
+                "No puedes introducir mas de 20 caracteres o menos de 1, usa solo letras, numeros y espacios").toUpperCase();
 
         if (!tipos.tipoExists(nombreTipo)) {
 
@@ -388,7 +388,7 @@ public class Inventario {
                 "El valor introducido no es un IVA valido, debe estar entre 0 y 100", 0, 100);
 
 
-        boolean aplicarDto = MyUtils.confirm("Se aplica el descuento?");
+        boolean aplicarDto = MyUtils.confirm("Se aplica el descuento? ");
 
 
 
