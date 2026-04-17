@@ -9,4 +9,3 @@ INSERT INTO productos VALUE (3, 'C123456789', 'CPU AMD Ryzen 9800', 'Este produc
 INSERT INTO productos VALUE (6, 'E123456789', 'Adidas', 'Estas zapatillas brillan en la oscuridad', 2, 100, 300.0, 0, 21, false);
 INSERT INTO productos VALUE (7, 'F123456789', 'Mercedes', 'Un todoterreno que va a toda maquina', 3, 9999, 9999.99, 90, 90, true);
 INSERT INTO productos VALUE (8, 'G123456789', 'Audi', 'Uno de los coches que son lo mas/menos mejor posibles/''la leche''', 3, 5, 3233.23, 20, 21, true);
-INSERT INTO productos VALUE (9, 'H123456789', 'Lapizeros', 'Los lapizes son lo más', 4, 999999999, 12.32, 0, 21, true);

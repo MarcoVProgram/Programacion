@@ -4,24 +4,82 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * Clase principal encargada de la gestión de una franquicia de videoclubs.
+ * <p>
+ * Esta clase controla la ejecución del programa, incluyendo:
+ * <ul>
+ *     <li>Lectura y escritura de archivos de configuración y datos</li>
+ *     <li>Gestión de múltiples videoclubs</li>
+ *     <li>Interacción con el usuario mediante un menú</li>
+ *     <li>Registro, alquiler, devolución y baja de clientes y artículos</li>
+ * </ul>
+ * </p>
+ *
+ * @author Marco
+ * @version @@
+ */
 public class GestionVideoDaw {
 
-    //Patrones
+    /**
+     * Patrón para validar códigos de artículos con formato P-XXXX.
+     */
     private static final Pattern codForm = Pattern.compile("P-[0-9]{4,}");
+
+    /**
+     * Patrón para validar entradas del menú principal (1-9).
+     */
     private static final Pattern menuInputPattern = Pattern.compile("[1-9]");
+
+    /**
+     * Patrón para validar nombres completos (Nombre Apellido).
+     */
     private static final Pattern nombreForm = Pattern.compile("[A-Z][a-z]+ [A-Z a-z]+");
+
+    /**
+     * Patrón para validar DNI (8 números y una letra).
+     */
     private static final Pattern dniForm = Pattern.compile("[0-9]{8}[A-Za-z]");
+
+    /**
+     * Patrón para validar cadenas no vacías.
+     */
     private static final Pattern notNull = Pattern.compile("^.+");
+
+    /**
+     * Patrón para validar selecciones numéricas positivas.
+     */
     private static final Pattern seleccionform = Pattern.compile("[1-9][0-9]*");
 
+    /**
+     * Método principal del programa.
+     * <p>
+     * Inicializa los datos, carga la configuración y gestiona el flujo del menú
+     * principal permitiendo al usuario interactuar con el sistema.
+     * </p>
+     *
+     * @param args argumentos de línea de comandos (no utilizados)
+     */
     public static void main(String[] args) {
 
-        //Comienzo de codigo
+        /**
+         * Lista que almacena todos los videoclubs de la franquicia.
+         */
         List<VideoDaw> coleccionVideoClubs = new ArrayList<>();
 
-        //Path de Archivos
+        /**
+         * Ruta base de los archivos de datos y configuración.
+         */
         String pathFile = ".\\src\\resources\\";
+
+        /**
+         * Nombre del archivo de datos serializados.
+         */
         String fileData = "archivos_videoclub.dat";
+
+        /**
+         * Nombre del archivo de configuración.
+         */
         String fileConfig = "config.dat";
 
         MyUtils.print("BIENVENIDO AL VIDEOCLUB\n");
@@ -106,7 +164,9 @@ public class GestionVideoDaw {
         }
 
 
-        //Holders de Objetos
+        /**
+         * Variable que almacena el videoclub actualmente seleccionado.
+         */
         VideoDaw miVideoClub;
 
         //Inicializacion de Archivos
@@ -119,11 +179,19 @@ public class GestionVideoDaw {
         //Seleccion por defecto
         miVideoClub = coleccionVideoClubs.get(0);
 
-        //Input variables
+        /**
+         * Variable para almacenar la entrada del usuario en el menú principal.
+         */
         String inputMainMenu;
+
+        /**
+         * Opción seleccionada del menú principal.
+         */
         char option;
 
-        //Menu
+        /**
+         * Array que contiene las opciones del menú principal.
+         */
         String[] menuGestionVideoDaw = new String[9];
         menuGestionVideoDaw[0] = "Crear y Registrar VideoClub en la franquicia";
         menuGestionVideoDaw[1] = "Seleccionar VideoClub en la franquicia";
@@ -519,6 +587,17 @@ public class GestionVideoDaw {
         } while (option != '9'); //Loop sale cuando se Sale de la Aplicacion
     }
 
+    /**
+     * Solicita al usuario una cadena que cumpla un patrón determinado.
+     * <p>
+     * Repite la petición hasta que el valor introducido sea válido.
+     * </p>
+     *
+     * @param text mensaje a mostrar al usuario
+     * @param form patrón de validación
+     * @param err mensaje de error si la entrada es inválida
+     * @return cadena válida introducida por el usuario
+     */
     private static String getStringConPatron(String text, Pattern form, String err) {
         String stringConFormato;
 
@@ -538,6 +617,13 @@ public class GestionVideoDaw {
         return stringConFormato;
     }
 
+    /**
+     * Permite crear un nuevo artículo (Película o Videojuego) solicitando
+     * al usuario el tipo y el género correspondiente.
+     *
+     * @param titulo título del artículo
+     * @return objeto {@link Articulo} creado
+     */
     private static Articulo getNuevoArticulo(String titulo) {
 
         Articulo nuevoArticulo = null;
@@ -613,6 +699,12 @@ public class GestionVideoDaw {
         return nuevoArticulo;
     }
 
+    /**
+     * Solicita al usuario seleccionar un género dentro de un rango válido.
+     *
+     * @param length número total de géneros disponibles
+     * @return índice del género seleccionado como cadena
+     */
     private static String pedirGenero(int length) {
         String generoArticulo;
         do {
@@ -634,6 +726,15 @@ public class GestionVideoDaw {
         return generoArticulo;
     }
 
+    /**
+     * Registra un nuevo videoclub en la colección proporcionada.
+     * <p>
+     * Solicita los datos necesarios al usuario y comprueba que no exista
+     * previamente un videoclub con el mismo CIF.
+     * </p>
+     *
+     * @param coleccion lista de videoclubs donde se añadirá el nuevo videoclub
+     */
     public static void registroDeVideoDaw(List<VideoDaw> coleccion) {
 
         //Declaracion de Variables

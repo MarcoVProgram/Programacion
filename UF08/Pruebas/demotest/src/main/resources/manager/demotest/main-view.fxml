@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="196.0" prefWidth="316.0" spacing="20.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.demotest.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <Label fx:id="hiddenText"/>
+    <Button onAction="#onHelloButtonClick" prefHeight="13.0" prefWidth="62.0" text="Hello!">
+      <font>
+         <Font size="13.0" />
+      </font>
+   </Button>
+   <ButtonBar prefHeight="40.0" prefWidth="128.0">
+      <buttons>
+       <Button alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#onExitButtonClick" styleClass="cancel" text="Cancelar" textOverrun="CENTER_WORD_ELLIPSIS" />
+      </buttons>
+   </ButtonBar>
+</VBox>
