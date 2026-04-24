@@ -1,0 +1,74 @@
+.my-background {
+    -fx-background-color: #EEF2FF;
+}
+
+.button-primary {
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-color: grey;
+    -fx-background-color: #47a8e4;
+    -fx-text-fill: white;
+    -fx-min-height: 40;
+    -fx-min-width: 180;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+.button-primary:hover {
+    -fx-background-color: #0c88ca;
+    -fx-translate-y: 1;
+    -fx-cursor: hand;
+}
+
+.button-return {
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-color: grey;
+    -fx-background-color: #e44747;
+    -fx-text-fill: white;
+    -fx-min-height: 40;
+    -fx-min-width: 180;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+.button-return:hover {
+    -fx-background-color: #ca0c0c;
+    -fx-translate-y: 1;
+    -fx-cursor: hand;
+}
+
+.title-text {
+    -fx-font-size: 36;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-background-color: #FFFFFF;
+}
+
+.button-secondary {
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-color: grey;
+    -fx-background-color: #81e447;
+    -fx-text-fill: white;
+    -fx-min-height: 40;
+    -fx-min-width: 180;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+.button-secondary:hover {
+    -fx-background-color: #3cca0c;
+    -fx-translate-y: 1;
+    -fx-cursor: hand;
+}
+
+.img-hero {
+    -fx-max-width: 300;
+    -fx-max-height: 300;
+    -fx-background-color: white;
+    -fx-background-size: 500;
+    -fx-background-radius: 99;
+}
+
+.text-info {}
